@@ -33,11 +33,9 @@ namespace ChapeauDAL
                 (int)reader["artikelid"],
                 (string)reader["naam"],
                 (int)reader["voorraad"],
-                (double)reader["prijs"],
+                (decimal)reader["prijs"],
                 (string)reader["categorie"],
-                (string)reader["kaart"]
-            );
-
+                (string)reader["kaart"] );
             return product;
         }
     }

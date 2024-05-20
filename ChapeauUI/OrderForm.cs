@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ChapeauModel;
+using ChapeauService;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,6 +27,7 @@ namespace ChapeauUI
         private void drinksButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDark(drinksButton);
+            ProductDisplay("drinks");
         }
 
         private void lunchButton_Click(object sender, EventArgs e)
@@ -42,7 +45,12 @@ namespace ChapeauUI
             drinksButton.BackColor = SystemColors.ControlDark;
             selectedButton.BackColor = SystemColors.ControlDarkDark;
         }
-
+        private List<Product> GetProducts()
+        {
+            ProductService productService = new ProductService();
+            List<Product> products = productService.GetProducts();
+            return products;
+        }
         
     }
 }
