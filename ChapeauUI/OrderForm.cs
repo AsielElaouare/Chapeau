@@ -16,5 +16,33 @@ namespace ChapeauUI
         {
             InitializeComponent();
         }
+
+        private void confirmButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void drinksButton_Click(object sender, EventArgs e)
+        {
+            MakeSelectedButtonDark(drinksButton);
+        }
+
+        private void lunchButton_Click(object sender, EventArgs e)
+        {
+            MakeSelectedButtonDark(lunchButton);
+        }
+        private void dinerButton_Click(object sender, EventArgs e)
+        {
+            MakeSelectedButtonDark(dinerButton);
+        }
+        private void MakeSelectedButtonDark(Button selectedButton)
+        {
+            dinerButton.BackColor = SystemColors.ControlDark;
+            lunchButton.BackColor = SystemColors.ControlDark;
+            drinksButton.BackColor = SystemColors.ControlDark;
+            selectedButton.BackColor = SystemColors.ControlDarkDark;
+        }
+
+        
     }
 }
