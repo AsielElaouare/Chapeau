@@ -254,7 +254,7 @@
             Controls.Add(roundButton2);
             Controls.Add(roundButton1);
             Controls.Add(pictureBox1);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "LoginForm";
             Text = "LoginScreen";
