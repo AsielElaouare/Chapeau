@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace ChapeauDAL
 {
@@ -15,11 +16,10 @@ namespace ChapeauDAL
 
             public BaseDao()
             {
-                // DO NOT FORGET TO INSERT YOUR CONNECTION STRING NAMED 'SOMEREN DATABASE' IN YOUR APP.CONFIG!!
-                /*
-                    conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SomerenDatabase"].ConnectionString);
+               
+                    conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ChapeauDB"].ConnectionString);
                     adapter = new SqlDataAdapter();
-                 */
+                 
             }
 
             protected SqlConnection OpenConnection()
@@ -39,7 +39,7 @@ namespace ChapeauDAL
                 return conn;
             }
 
-            private void CloseConnection()
+            protected void CloseConnection()
             {
                 conn.Close();
             }
