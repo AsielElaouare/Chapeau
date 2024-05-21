@@ -27,16 +27,18 @@ namespace ChapeauUI
         private void drinksButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDark(drinksButton);
-            ProductDisplay("drinks");
+            PlaceRightProductButtons(" Drinks");
         }
 
         private void lunchButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDark(lunchButton);
+            PlaceRightProductButtons("Lunch");
         }
         private void dinerButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDark(dinerButton);
+            PlaceRightProductButtons("Diner");
         }
         private void MakeSelectedButtonDark(Button selectedButton)
         {
@@ -52,5 +54,32 @@ namespace ChapeauUI
             return products;
         }
         
+        private void PlaceRightProductButtons(string product)
+        {
+            flowLayoutPanel1.Controls.Clear();
+            List<Product> products = GetProducts();
+
+            foreach (var item in products)
+             {
+                 if (product ==item.Kaart) 
+                 {
+                     Button btn = new Button();
+                     btn.Text = item.Naam;
+                     btn.Size = new Size(160, 55);
+                     btn.Click += Button_Click;
+                     btn.BackColor = SystemColors.ControlDark;
+                     flowLayoutPanel1.Controls.Add(btn); 
+                 }
+             }
+
+        }
+        private void Button_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = sender as Button;
+            if (clickedButton != null)
+            {
+                MessageBox.Show($"{clickedButton.Text} clicked");
+            }
+        }
     }
 }
