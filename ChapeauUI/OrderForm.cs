@@ -15,15 +15,26 @@ namespace ChapeauUI
     public partial class OrderForm : Form
     {
         List<Product> products;
+        List<Tafel> tafels;
         public OrderForm()
         {
             InitializeComponent();
             products= GetProducts();
+            tafels = GetTafels();
+            PopulateComboBox();
         }
 
         private void confirmButton_Click(object sender, EventArgs e)
         {
-
+            if (TafelSelecter.SelectedItem != null)
+            {
+                string selectedTafel = (string)TafelSelecter.SelectedItem;
+                MessageBox.Show("de geselecteerde tafel is: " + selectedTafel);
+            }
+            else
+            {
+                MessageBox.Show("Selecteer een nummer uit de lijst.");
+            }
         }
 
         private void drinksButton_Click(object sender, EventArgs e)
@@ -55,7 +66,14 @@ namespace ChapeauUI
             List<Product> products = productService.GetProducts();
             return products;
         }
-        
+        private List<Tafel> GetTafels()
+        {
+            TafelService tafelService = new TafelService();
+            List<Tafel> tafels = tafelService.GetTafel();
+            return tafels;
+        }
+
+
         private void FillProductLayoutPanel(ProductKaart kaart)
         {
             productLayoutPanel.Controls.Clear();
@@ -73,7 +91,6 @@ namespace ChapeauUI
                     categories.Add(item.Categorie);
                 }
             }
-
         }
         private void MakePruductForCategorie(ProductKaart kaart,ProductCategorie categorie)
         {   
@@ -96,6 +113,13 @@ namespace ChapeauUI
             if (clickedButton != null)
             {
                 MessageBox.Show($"{clickedButton.Text} clicked");
+            }
+        }
+        private void PopulateComboBox()
+        {
+            foreach(var tafel in tafels)
+            {
+                TafelSelecter.Items.Add($"tafel {tafel.TafelNummer}");
             }
         }
     }

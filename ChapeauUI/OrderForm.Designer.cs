@@ -38,6 +38,7 @@ namespace ChapeauUI
             cancelButton = new Button();
             confirmButton = new Button();
             productLayoutPanel = new FlowLayoutPanel();
+            TafelSelecter = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -111,19 +112,28 @@ namespace ChapeauUI
             confirmButton.UseVisualStyleBackColor = false;
             confirmButton.Click += confirmButton_Click;
             // 
-            // flowLayoutPanel1
+            // productLayoutPanel
             // 
             productLayoutPanel.BackColor = Color.FromArgb(224, 224, 224);
             productLayoutPanel.Location = new Point(26, 120);
-            productLayoutPanel.Name = "flowLayoutPanel1";
+            productLayoutPanel.Name = "productLayoutPanel";
             productLayoutPanel.Size = new Size(690, 600);
             productLayoutPanel.TabIndex = 5;
+            // 
+            // TafelSelecter
+            // 
+            TafelSelecter.FormattingEnabled = true;
+            TafelSelecter.Location = new Point(763, 636);
+            TafelSelecter.Name = "TafelSelecter";
+            TafelSelecter.Size = new Size(330, 28);
+            TafelSelecter.TabIndex = 6;
             // 
             // OrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1133, 744);
+            Controls.Add(TafelSelecter);
             Controls.Add(productLayoutPanel);
             Controls.Add(confirmButton);
             Controls.Add(cancelButton);
@@ -146,5 +156,6 @@ namespace ChapeauUI
         private Button cancelButton;
         private Button confirmButton;
         private FlowLayoutPanel productLayoutPanel;
+        private ComboBox TafelSelecter;
     }
 }
