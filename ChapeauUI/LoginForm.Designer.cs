@@ -36,7 +36,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(800, 450);
             Name = "LoginForm";
-            Text = "Form1";
+            Text = "Chapeau Login";
             ResumeLayout(false);
         }
 

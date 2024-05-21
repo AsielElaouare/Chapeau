@@ -16,5 +16,10 @@ namespace ChapeauUI
         {
             InitializeComponent();
         }
+
+        private void KitchenForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

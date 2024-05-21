@@ -28,12 +28,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            historyOrders = new System.Windows.Forms.Button();
+            openOrdersLabel = new System.Windows.Forms.Label();
+            SuspendLayout();
+            // 
+            // historyOrders
+            // 
+            historyOrders.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            historyOrders.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            historyOrders.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            historyOrders.Location = new System.Drawing.Point(12, 12);
+            historyOrders.Name = "historyOrders";
+            historyOrders.Size = new System.Drawing.Size(136, 34);
+            historyOrders.TabIndex = 0;
+            historyOrders.Text = "Geschidenis";
+            historyOrders.UseVisualStyleBackColor = false;
+            // 
+            // openOrdersLabel
+            // 
+            openOrdersLabel.AutoSize = true;
+            openOrdersLabel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            openOrdersLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            openOrdersLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            openOrdersLabel.Location = new System.Drawing.Point(397, 21);
+            openOrdersLabel.Name = "openOrdersLabel";
+            openOrdersLabel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 2);
+            openOrdersLabel.Size = new System.Drawing.Size(77, 27);
+            openOrdersLabel.TabIndex = 1;
+            openOrdersLabel.Text = "Open: ";
+            // 
+            // KitchenForm
+            // 
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(976, 450);
+            Controls.Add(openOrdersLabel);
+            Controls.Add(historyOrders);
+            Name = "KitchenForm";
+            Text = "Kitchen View";
+            Load += KitchenForm_Load;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private System.Windows.Forms.Button historyOrders;
+        private System.Windows.Forms.Label openOrdersLabel;
     }
 }
