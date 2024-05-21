@@ -14,9 +14,11 @@ namespace ChapeauUI
 {
     public partial class OrderForm : Form
     {
+        List<Product> products;
         public OrderForm()
         {
             InitializeComponent();
+            products= GetProducts();
         }
 
         private void confirmButton_Click(object sender, EventArgs e)
@@ -27,18 +29,18 @@ namespace ChapeauUI
         private void drinksButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDark(drinksButton);
-            PlaceRightProductButtons(" Drinks");
+            FillProductLayoutPanel(ProductKaart.Drinks);
         }
 
         private void lunchButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDark(lunchButton);
-            PlaceRightProductButtons("Lunch");
+            FillProductLayoutPanel(ProductKaart.Lunch);
         }
         private void dinerButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDark(dinerButton);
-            PlaceRightProductButtons("Diner");
+            FillProductLayoutPanel(ProductKaart.Diner);
         }
         private void MakeSelectedButtonDark(Button selectedButton)
         {
@@ -54,24 +56,39 @@ namespace ChapeauUI
             return products;
         }
         
-        private void PlaceRightProductButtons(string product)
+        private void FillProductLayoutPanel(ProductKaart kaart)
         {
-            flowLayoutPanel1.Controls.Clear();
-            List<Product> products = GetProducts();
+            productLayoutPanel.Controls.Clear();
+            List<ProductCategorie> categories = new List<ProductCategorie>();
 
             foreach (var item in products)
-             {
-                 if (product ==item.Kaart) 
-                 {
-                     Button btn = new Button();
-                     btn.Text = item.Naam;
-                     btn.Size = new Size(160, 55);
-                     btn.Click += Button_Click;
-                     btn.BackColor = SystemColors.ControlDark;
-                     flowLayoutPanel1.Controls.Add(btn); 
-                 }
-             }
+            {
+                if (kaart == item.Kaart && !categories.Contains(item.Categorie))
+                {
+                    Label categoryLabel = new Label();
+                    categoryLabel.Text = item.Categorie.ToString()+":";
+                    categoryLabel.Size = new Size(690, 20);
+                    productLayoutPanel.Controls.Add(categoryLabel);
+                    MakePruductForCategorie(item.Kaart,item.Categorie);
+                    categories.Add(item.Categorie);
+                }
+            }
 
+        }
+        private void MakePruductForCategorie(ProductKaart kaart,ProductCategorie categorie)
+        {   
+            foreach (var item in products)
+            {
+                if (kaart == item.Kaart && categorie == item.Categorie)
+                {
+                    Button btn = new Button();
+                    btn.Text = item.Naam;
+                    btn.Size = new Size(165, 55);
+                    btn.Click += Button_Click;
+                    btn.BackColor = SystemColors.ControlDark;
+                    productLayoutPanel.Controls.Add(btn);
+                }
+            }
         }
         private void Button_Click(object sender, EventArgs e)
         {
