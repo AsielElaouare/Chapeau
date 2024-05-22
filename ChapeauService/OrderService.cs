@@ -11,11 +11,18 @@ namespace ChapeauService
     public class OrderService
     {
 
-        OrderDao orderDb = new OrderDao();
-        List<Order> orders = new List<Order>();
-        public void GetKitchenOrders()
+        private OrderDao orderDb;
+        private List<Order> orders;
+
+        public OrderService()
+        {
+            this.orders = new List<Order>();
+            this.orderDb = new OrderDao();
+        }
+        public List<Order> GetKitchenOrders()
         {
             orders = orderDb.GetAllOrders();
+            return orders;
         }
     }
 }
