@@ -38,7 +38,7 @@ namespace ChapeauUI
             cancelButton = new Button();
             confirmButton = new Button();
             productLayoutPanel = new FlowLayoutPanel();
-            flowLayoutPanel1 = new FlowLayoutPanel();
+            orderLayoutPanel = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -120,20 +120,20 @@ namespace ChapeauUI
             productLayoutPanel.Size = new Size(690, 586);
             productLayoutPanel.TabIndex = 5;
             // 
-            // flowLayoutPanel1
+            // orderLayoutPanel
             // 
-            flowLayoutPanel1.BackColor = Color.FromArgb(224, 224, 224);
-            flowLayoutPanel1.Location = new Point(763, 99);
-            flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(330, 510);
-            flowLayoutPanel1.TabIndex = 6;
+            orderLayoutPanel.BackColor = Color.FromArgb(224, 224, 224);
+            orderLayoutPanel.Location = new Point(763, 99);
+            orderLayoutPanel.Name = "orderLayoutPanel";
+            orderLayoutPanel.Size = new Size(330, 510);
+            orderLayoutPanel.TabIndex = 6;
             // 
             // OrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1115, 697);
-            Controls.Add(flowLayoutPanel1);
+            Controls.Add(orderLayoutPanel);
             Controls.Add(productLayoutPanel);
             Controls.Add(confirmButton);
             Controls.Add(cancelButton);
@@ -156,6 +156,6 @@ namespace ChapeauUI
         private Button cancelButton;
         private Button confirmButton;
         private FlowLayoutPanel productLayoutPanel;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel orderLayoutPanel;
     }
 }

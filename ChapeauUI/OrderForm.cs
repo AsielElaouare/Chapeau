@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,11 +17,12 @@ namespace ChapeauUI
     {
         List<Product> products;
         List <Orderline> orders;
-        
+        const int orderId = 0;
         public OrderForm()
         {
             InitializeComponent();
             products = GetProducts();
+            orders=new List<Orderline>();
         }
 
         private void confirmButton_Click(object sender, EventArgs e)
@@ -106,23 +108,65 @@ namespace ChapeauUI
         }
         private void Clickedproduct(string productnaam)
         {
-            int fout = 0;
             foreach(var product in products)
             {
                 if(productnaam == product.Naam)
                 {
-                    MessageBox.Show($"{product.Naam} clicked water");
+                    AddProductToList(product.Artikelid);
                     break;
                 }
-                else { fout++; }
-              
             }
-            MessageBox.Show($"{fout} ");
-
         }
-       
-        
 
-        
+        private void AddProductToList(int ProductID)
+        {
+            if(CheckIfProductIsInList(ProductID) == true)
+            { 
+
+            }
+            else
+            {
+                Orderline newProduct= new Orderline(orderId,1,null,ProductID);
+                orders.Add(newProduct);
+            }
+            DislpayOrders();
+        }
+        private bool CheckIfProductIsInList(int ProductID)
+        { 
+            if (orders.Count != 0)
+            {
+                foreach (var order in orders)
+                {
+                    if (order.ArtikelID == ProductID)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        private void DislpayOrders()
+        { orderLayoutPanel.Controls.Clear();
+            foreach(var order in orders)
+            {
+                Label procductLabel = new Label();
+                procductLabel.Text = ProductIDToProductName(order.ArtikelID);
+                procductLabel.Size = new Size(310, 40);
+                orderLayoutPanel.Controls.Add(procductLabel);
+            }
+        }
+
+        private string ProductIDToProductName(int productID)
+        {
+            foreach (var product in products)
+            {
+                if (productID == product.Artikelid )
+                {
+                    return product.Naam;
+                    break;
+                }
+            }
+            return "";
+        }
     }
 }
