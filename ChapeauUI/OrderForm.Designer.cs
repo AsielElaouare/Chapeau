@@ -39,6 +39,7 @@ namespace ChapeauUI
             confirmButton = new Button();
             productLayoutPanel = new FlowLayoutPanel();
             TafelSelecter = new ComboBox();
+            flowLayoutPanel1 = new FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -46,7 +47,7 @@ namespace ChapeauUI
             // 
             drinksButton.BackColor = SystemColors.ControlDark;
             drinksButton.Font = new Font("Yu Gothic", 30F, FontStyle.Regular, GraphicsUnit.Point);
-            drinksButton.Location = new Point(26, 45);
+            drinksButton.Location = new Point(26, 20);
             drinksButton.Name = "drinksButton";
             drinksButton.Size = new Size(230, 75);
             drinksButton.TabIndex = 0;
@@ -58,7 +59,7 @@ namespace ChapeauUI
             // 
             lunchButton.BackColor = SystemColors.ControlDark;
             lunchButton.Font = new Font("Yu Gothic", 30F, FontStyle.Regular, GraphicsUnit.Point);
-            lunchButton.Location = new Point(256, 45);
+            lunchButton.Location = new Point(256, 20);
             lunchButton.Name = "lunchButton";
             lunchButton.Size = new Size(230, 75);
             lunchButton.TabIndex = 1;
@@ -70,7 +71,7 @@ namespace ChapeauUI
             // 
             dinerButton.BackColor = SystemColors.ControlDark;
             dinerButton.Font = new Font("Yu Gothic", 30F, FontStyle.Regular, GraphicsUnit.Point);
-            dinerButton.Location = new Point(486, 45);
+            dinerButton.Location = new Point(486, 20);
             dinerButton.Name = "dinerButton";
             dinerButton.Size = new Size(230, 75);
             dinerButton.TabIndex = 2;
@@ -93,7 +94,7 @@ namespace ChapeauUI
             // 
             cancelButton.BackColor = Color.Red;
             cancelButton.Font = new Font("Yu Gothic", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            cancelButton.Location = new Point(763, 670);
+            cancelButton.Location = new Point(763, 643);
             cancelButton.Name = "cancelButton";
             cancelButton.Size = new Size(165, 50);
             cancelButton.TabIndex = 3;
@@ -104,7 +105,7 @@ namespace ChapeauUI
             // 
             confirmButton.BackColor = Color.Lime;
             confirmButton.Font = new Font("Yu Gothic", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            confirmButton.Location = new Point(928, 670);
+            confirmButton.Location = new Point(928, 643);
             confirmButton.Name = "confirmButton";
             confirmButton.Size = new Size(165, 50);
             confirmButton.TabIndex = 4;
@@ -115,24 +116,33 @@ namespace ChapeauUI
             // productLayoutPanel
             // 
             productLayoutPanel.BackColor = Color.FromArgb(224, 224, 224);
-            productLayoutPanel.Location = new Point(26, 120);
+            productLayoutPanel.Location = new Point(26, 99);
             productLayoutPanel.Name = "productLayoutPanel";
-            productLayoutPanel.Size = new Size(690, 600);
+            productLayoutPanel.Size = new Size(690, 586);
             productLayoutPanel.TabIndex = 5;
             // 
             // TafelSelecter
             // 
             TafelSelecter.FormattingEnabled = true;
-            TafelSelecter.Location = new Point(763, 636);
+            TafelSelecter.Location = new Point(763, 615);
             TafelSelecter.Name = "TafelSelecter";
             TafelSelecter.Size = new Size(330, 28);
             TafelSelecter.TabIndex = 6;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.BackColor = Color.FromArgb(224, 224, 224);
+            flowLayoutPanel1.Location = new Point(763, 99);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(330, 510);
+            flowLayoutPanel1.TabIndex = 6;
             // 
             // OrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1133, 744);
+            ClientSize = new Size(1115, 697);
+            Controls.Add(flowLayoutPanel1);
             Controls.Add(TafelSelecter);
             Controls.Add(productLayoutPanel);
             Controls.Add(confirmButton);
@@ -157,5 +167,6 @@ namespace ChapeauUI
         private Button confirmButton;
         private FlowLayoutPanel productLayoutPanel;
         private ComboBox TafelSelecter;
+        private FlowLayoutPanel flowLayoutPanel1;
     }
 }
