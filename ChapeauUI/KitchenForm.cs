@@ -21,5 +21,11 @@ namespace ChapeauUI
         {
 
         }
+
+        private void DisplayOrders()
+        {
+            flowLayoutKitchenPnl.Controls.Clear();
+
+        }
     }
 }
