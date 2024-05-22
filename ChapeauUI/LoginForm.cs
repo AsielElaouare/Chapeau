@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace ChapeauUI
         string enteredNumber;
         private int enteredNumbers;
         private int maxAttempts = 3;
+        string youtubeUrl = "https://youtu.be/dQw4w9WgXcQ?si=EMcOrmZ8Kj8C7oY2";
 
         /// <summary>
         /// revove employee test
@@ -28,6 +30,7 @@ namespace ChapeauUI
         public LoginForm()
         {
             InitializeComponent();
+            loginService = new LoginService();
         }
 
         private void UpdateVisualNumbers()
@@ -74,24 +77,30 @@ namespace ChapeauUI
 
         private void CheckPassword()
         {
-            if (enteredPassword.Length == 5)
+            if (enteredPassword.Length == 5) // make const
             {
                 try
-                {
-                    loginService = new LoginService();
+                { 
                     Employee employee = loginService.VerifyEnteredPassword(enteredPassword);
+                    MessageBox.Show($"Successvol ingelogt {employee.name}");
                     OpenRelevantForm(employee);
                 }
-                catch (Exception ex) { adjustAttempts(); MessageBox.Show($"Error: verkeerd wachtwood."+"\n" +$"{maxAttempts} pogingen over."); EnteredNumberDesignsDefault(); ClearPassword();  }
+                catch (Exception ex) { adjustAttempts(); MessageBox.Show($"Error: verkeerd wachtwood." + "\n" + $"{maxAttempts} pogingen over."); EnteredNumberDesignsDefault(); ClearPassword(); }
             }
         }
 
+        
         private void adjustAttempts()
         {
             maxAttempts--;
             if (maxAttempts <= 0)
             {
-
+                Process.Start(new ProcessStartInfo
+                {
+                    
+                    FileName = youtubeUrl,
+                    UseShellExecute = true
+                }); ;
             }
         }
 

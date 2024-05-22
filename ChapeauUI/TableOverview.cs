@@ -14,6 +14,11 @@ namespace ChapeauUI
     public partial class TableOverview : Form
     {
         Employee employee;
+        const int startX = 108;
+        const int topRowY = 150;
+        const int bottomRowY = topRowY + 266;
+        const int spacingX = 189;
+        const int columns = 5;
         public TableOverview(Employee employee)
         {
             InitializeComponent();
@@ -28,24 +33,16 @@ namespace ChapeauUI
 
         private void InitializeTables()
         {
-            int startX = 108;
-            int topRowY = 150;
-            int bottomRowY = topRowY + 266;
-            int spacingX = 189;
-            int columns = 5;
-
             int topRowIndex = 0;
             int bottomRowIndex = 0;
-
             for (int i = 0; i < tableCount; i++)
             {
                 Button tableButton = new Button();
                 tableButton.Text = $"Table {i + 1}";
-
                 int column;
                 int xPosition;
                 int yPosition;
-
+                // make this method smaller
                 //the if is for the even tables to be placed correctly (on the top) and the else is for the odd numbered tables to be placed correctly (on the bottom) :)
                 if ((i + 1) % 2 != 0)
                 {
@@ -61,12 +58,28 @@ namespace ChapeauUI
                     yPosition = bottomRowY;
                     bottomRowIndex++;
                 }
-                tableButton.Location = new Point(xPosition, yPosition);
-                tableButton.Size = new Size(161, 100);
-                tableButton.Click += TableButton_Click;
-                this.Controls.Add(tableButton);
+                CreateTables(tableButton, xPosition, yPosition);
             }
         }
+        private void CreateEvenTables(int column, int xPosition, int yPosition)
+        {
+            
+
+        }
+
+        private void CreateOddTables()
+        {
+
+        }
+        private void CreateTables(Button tableButton, int xPosition, int yPosition)
+        {
+            tableButton.Location = new Point(xPosition, yPosition);
+            tableButton.Size = new Size(161, 100);
+            tableButton.Click += TableButton_Click;
+            this.Controls.Add(tableButton);
+        }
+
+        
 
         private void TableButton_Click(object sender, EventArgs e)
         {

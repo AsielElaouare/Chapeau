@@ -13,10 +13,26 @@ namespace ChapeauDAL
     {
         public Employee GetByPassWord(string hashedPassword)
         {
-            string query = "SELECT personeelnummer, naam , wachtwoord FROM [Docent] WHERE wachtwoord = @password";
+            string query = "SELECT personeelnummer, naam , wachtwoord, functie FROM [personeel] WHERE wachtwoord = @password";
             SqlParameter[] sqlParameters = new SqlParameter[1];
             sqlParameters[0] = new SqlParameter("@password", hashedPassword);
             return ReadSingleRow(ExecuteSelectQuery(query, sqlParameters));
+        }
+
+        public bool GetByEmployeeId(string employeeId)
+        {
+            string query = "SELECT personeelnummer, naam FROM [personeel] WHERE personeelnummer = @EmployeeId";
+            SqlParameter[] sqlParameters = new SqlParameter[1];
+            sqlParameters[0] = new SqlParameter("@EmployeeId", employeeId);
+            return ReadIfEmployeeIdExists(ExecuteSelectQuery(query, sqlParameters));
+        }
+        private bool ReadIfEmployeeIdExists(DataTable dataTable)
+        {
+            if (dataTable.Rows.Count > 0)
+            {
+                return true;
+            }
+            else { return false; }
         }
 
         private Employee ReadSingleRow(DataTable dataTable)
@@ -24,14 +40,20 @@ namespace ChapeauDAL
             if (dataTable.Rows.Count > 0)
             {
                 DataRow dr = dataTable.Rows[0];
-                int Id = (int)dr["personelnummer"];
+                int employeeId = (int)dr["personeelnummer"];
                 string Name = dr["naam"].ToString();
                 string password = dr["wachtwoord"].ToString();
                 string role = dr["functie"].ToString();
-                Employee employee = new Employee(Id, Name, password, role);
+                Employee employee = new Employee(employeeId, Name, password, role);
                 return employee;
             }
             else { throw new Exception("The DataTable is empty"); }
         }
+
+        
+
+
+
+
     }
 }

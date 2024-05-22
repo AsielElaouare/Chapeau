@@ -207,9 +207,9 @@
             roundButtonReturn.FlatAppearance.BorderSize = 0;
             roundButtonReturn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButtonReturn.Image = (System.Drawing.Image)resources.GetObject("roundButtonReturn.Image");
-            roundButtonReturn.Location = new System.Drawing.Point(669, 612);
+            roundButtonReturn.Location = new System.Drawing.Point(666, 617);
             roundButtonReturn.Name = "roundButtonReturn";
-            roundButtonReturn.Size = new System.Drawing.Size(50, 50);
+            roundButtonReturn.Size = new System.Drawing.Size(40, 40);
             roundButtonReturn.TabIndex = 11;
             roundButtonReturn.UseVisualStyleBackColor = false;
             roundButtonReturn.Click += roundButtonReturn_Click;

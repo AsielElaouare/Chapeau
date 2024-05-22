@@ -8,18 +8,22 @@ namespace ChapeauModel
 {
     public class Employee
     {
-        public Employee(int id, string name, string password, string role)
+        public Employee(int employeeId, string name, string password, string role)
         {
-            this.id = id;
+            this.employeeId = employeeId;
             this.name = name;
             this.password = password;
             this.role = role;
         }
 
-        private int id { get; }
-        private string name { get; }
+        private int employeeId { get; }
+        public string name { get; }
         private string password { get; }
         public string role { get; }
 
+        //private EmployeeRoleEnum assignRole(string role)
+        //{
+
+        //}
     }
 }

@@ -14,6 +14,11 @@ namespace ChapeauService
     {
         LoginDao loginDao;
         Employee employee;
+
+        public LoginService()
+        {
+            loginDao = new LoginDao();
+        }
         private string EncryptPassword(string password)
         {
             using (var sha256 = SHA256.Create())
@@ -23,22 +28,19 @@ namespace ChapeauService
             }
         }
 
+        public bool CheckIfEmployeeIdExists(string employeeId)
+        {
+            return loginDao.GetByEmployeeId(employeeId);
+        }
 
         public Employee VerifyEnteredPassword(string password)
         {
-            EncryptPassword(password);
-            loginDao = new LoginDao();
-            employee = loginDao.GetByPassWord(password);
+            string hashedPassword = EncryptPassword(password);
+            employee = loginDao.GetByPassWord(hashedPassword);
             return employee;
             
         }
-        private void OpenRelevantForm()
-        {
-            if (employee.role == "Chef"){ }
-            else if(employee.role == "Bartender"){ }
-            else if (employee.role == "Server") { }
-            else if (employee.role == "Manager") { }
-        }
+        
 
         
 
