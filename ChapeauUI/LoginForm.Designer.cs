@@ -46,6 +46,7 @@
             EnteredNumberDesign3 = new RoundShape();
             EnteredNumberDesign4 = new RoundShape();
             EnteredNumberDesign5 = new RoundShape();
+            CloseApplicationBtn = new BottomLeftRoundedButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -53,7 +54,7 @@
             // 
             pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new System.Drawing.Point(341, 73);
+            pictureBox1.Location = new System.Drawing.Point(350, 97);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new System.Drawing.Size(450, 253);
             pictureBox1.TabIndex = 0;
@@ -62,6 +63,7 @@
             // roundButton1
             // 
             roundButton1.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton1.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton1.FlatAppearance.BorderSize = 0;
             roundButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton1.Location = new System.Drawing.Point(481, 432);
@@ -70,10 +72,12 @@
             roundButton1.TabIndex = 1;
             roundButton1.Text = "1";
             roundButton1.UseVisualStyleBackColor = false;
+            roundButton1.Click += roundButton1_Click;
             // 
             // roundButton2
             // 
             roundButton2.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton2.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton2.FlatAppearance.BorderSize = 0;
             roundButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton2.Location = new System.Drawing.Point(541, 432);
@@ -82,10 +86,12 @@
             roundButton2.TabIndex = 2;
             roundButton2.Text = "2";
             roundButton2.UseVisualStyleBackColor = false;
+            roundButton2.Click += roundButton2_Click;
             // 
             // roundButton3
             // 
             roundButton3.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton3.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton3.FlatAppearance.BorderSize = 0;
             roundButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton3.Location = new System.Drawing.Point(601, 432);
@@ -94,10 +100,12 @@
             roundButton3.TabIndex = 3;
             roundButton3.Text = "3";
             roundButton3.UseVisualStyleBackColor = false;
+            roundButton3.Click += roundButton3_Click;
             // 
             // roundButton4
             // 
             roundButton4.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton4.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton4.FlatAppearance.BorderSize = 0;
             roundButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton4.Location = new System.Drawing.Point(481, 492);
@@ -106,10 +114,12 @@
             roundButton4.TabIndex = 4;
             roundButton4.Text = "4";
             roundButton4.UseVisualStyleBackColor = false;
+            roundButton4.Click += roundButton4_Click;
             // 
             // roundButton5
             // 
             roundButton5.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton5.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton5.FlatAppearance.BorderSize = 0;
             roundButton5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton5.Location = new System.Drawing.Point(541, 492);
@@ -118,10 +128,12 @@
             roundButton5.TabIndex = 5;
             roundButton5.Text = "5";
             roundButton5.UseVisualStyleBackColor = false;
+            roundButton5.Click += roundButton5_Click;
             // 
             // roundButton6
             // 
             roundButton6.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton6.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton6.FlatAppearance.BorderSize = 0;
             roundButton6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton6.Location = new System.Drawing.Point(601, 492);
@@ -130,10 +142,12 @@
             roundButton6.TabIndex = 6;
             roundButton6.Text = "6";
             roundButton6.UseVisualStyleBackColor = false;
+            roundButton6.Click += roundButton6_Click;
             // 
             // roundButton7
             // 
             roundButton7.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton7.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton7.FlatAppearance.BorderSize = 0;
             roundButton7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton7.Location = new System.Drawing.Point(481, 552);
@@ -142,10 +156,12 @@
             roundButton7.TabIndex = 7;
             roundButton7.Text = "7";
             roundButton7.UseVisualStyleBackColor = false;
+            roundButton7.Click += roundButton7_Click;
             // 
             // roundButton8
             // 
             roundButton8.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton8.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton8.FlatAppearance.BorderSize = 0;
             roundButton8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton8.Location = new System.Drawing.Point(541, 552);
@@ -154,10 +170,12 @@
             roundButton8.TabIndex = 8;
             roundButton8.Text = "8";
             roundButton8.UseVisualStyleBackColor = false;
+            roundButton8.Click += roundButton8_Click;
             // 
             // roundButton9
             // 
             roundButton9.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton9.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton9.FlatAppearance.BorderSize = 0;
             roundButton9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton9.Location = new System.Drawing.Point(601, 552);
@@ -166,10 +184,12 @@
             roundButton9.TabIndex = 9;
             roundButton9.Text = "9";
             roundButton9.UseVisualStyleBackColor = false;
+            roundButton9.Click += roundButton9_Click;
             // 
             // roundButton0
             // 
             roundButton0.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButton0.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButton0.FlatAppearance.BorderSize = 0;
             roundButton0.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButton0.Location = new System.Drawing.Point(541, 612);
@@ -178,10 +198,12 @@
             roundButton0.TabIndex = 10;
             roundButton0.Text = "0";
             roundButton0.UseVisualStyleBackColor = false;
+            roundButton0.Click += roundButton0_Click;
             // 
             // roundButtonReturn
             // 
             roundButtonReturn.BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
+            roundButtonReturn.Cursor = System.Windows.Forms.Cursors.Hand;
             roundButtonReturn.FlatAppearance.BorderSize = 0;
             roundButtonReturn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             roundButtonReturn.Image = (System.Drawing.Image)resources.GetObject("roundButtonReturn.Image");
@@ -190,6 +212,7 @@
             roundButtonReturn.Size = new System.Drawing.Size(50, 50);
             roundButtonReturn.TabIndex = 11;
             roundButtonReturn.UseVisualStyleBackColor = false;
+            roundButtonReturn.Click += roundButtonReturn_Click;
             // 
             // EnteredNumberDesign1
             // 
@@ -231,12 +254,27 @@
             EnteredNumberDesign5.Size = new System.Drawing.Size(25, 25);
             EnteredNumberDesign5.TabIndex = 16;
             // 
+            // CloseApplicationBtn
+            // 
+            CloseApplicationBtn.BackColor = System.Drawing.Color.FromArgb(255, 20, 20);
+            CloseApplicationBtn.BackgroundImage = (System.Drawing.Image)resources.GetObject("CloseApplicationBtn.BackgroundImage");
+            CloseApplicationBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            CloseApplicationBtn.FlatAppearance.BorderSize = 0;
+            CloseApplicationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            CloseApplicationBtn.Location = new System.Drawing.Point(1085, 0);
+            CloseApplicationBtn.Name = "CloseApplicationBtn";
+            CloseApplicationBtn.Size = new System.Drawing.Size(48, 48);
+            CloseApplicationBtn.TabIndex = 17;
+            CloseApplicationBtn.UseVisualStyleBackColor = false;
+            CloseApplicationBtn.Click += CloseApplicationBtn_Click;
+            // 
             // LoginForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.White;
-            ClientSize = new System.Drawing.Size(1115, 697);
+            ClientSize = new System.Drawing.Size(1133, 744);
+            Controls.Add(CloseApplicationBtn);
             Controls.Add(EnteredNumberDesign5);
             Controls.Add(EnteredNumberDesign4);
             Controls.Add(EnteredNumberDesign3);
@@ -254,9 +292,10 @@
             Controls.Add(roundButton2);
             Controls.Add(roundButton1);
             Controls.Add(pictureBox1);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "LoginForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "LoginScreen";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
@@ -281,5 +320,6 @@
         private RoundShape EnteredNumberDesign3;
         private RoundShape EnteredNumberDesign4;
         private RoundShape EnteredNumberDesign5;
+        private BottomLeftRoundedButton CloseApplicationBtn;
     }
 }

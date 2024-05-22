@@ -27,14 +27,13 @@ namespace ChapeauUI
             base.OnPaint(pevent);
         }
 
-
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
             GraphicsPath graphics = new GraphicsPath();
             graphics.AddEllipse(0, 0, this.Width, this.Height);
             this.Region = new System.Drawing.Region(graphics);
-            Invalidate();  // Ensures the control is redrawn
+            Invalidate();  
         }
     }
 }

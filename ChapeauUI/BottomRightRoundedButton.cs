@@ -13,13 +13,23 @@ namespace ChapeauUI
     public class BottomRightRoundedButton : Button
     {
         private int cornerRadius = 20;
-
+        private Image backgroundImage;
         public BottomRightRoundedButton()
         {
             this.FlatStyle = FlatStyle.Flat;
             this.FlatAppearance.BorderSize = 0;
+            
         }
 
+        public new Image BackgroundImage
+        {
+            get { return backgroundImage; }
+            set
+            {
+                backgroundImage = value;
+                Invalidate(); 
+            }
+        }
         protected override void OnPaint(PaintEventArgs pevent)
         {
             base.OnPaint(pevent);
@@ -36,6 +46,12 @@ namespace ChapeauUI
             using (SolidBrush brush = new SolidBrush(this.BackColor))
             {
                 pevent.Graphics.FillPath(brush, path);
+            }
+            if (BackgroundImage != null)
+            {
+                int x = (Width - BackgroundImage.Width) / 2;
+                int y = (Height - BackgroundImage.Height) / 2;
+                pevent.Graphics.DrawImage(BackgroundImage, new Rectangle(x, y, BackgroundImage.Width, BackgroundImage.Height));
             }
         }
     }
