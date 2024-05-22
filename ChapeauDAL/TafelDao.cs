@@ -10,7 +10,7 @@ namespace ChapeauDAL
 {
     public class TafelDao : BaseDao
     {
-        public List<Tafel> GetAll()
+        public List<Tafel> GetAllTafels()
         {
             SqlCommand command = new SqlCommand("SELECT [tafelnr],[zitplaats] FROM [tafel]", OpenConnection());
 

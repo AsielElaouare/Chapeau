@@ -17,8 +17,7 @@ namespace ChapeauService
         }
         public List<Tafel> GetTafel()
         {
-            List<Tafel> tafels = tafeldb.GetAll();
-            return tafels;
+            return tafeldb.GetAllTafels();
         }
     }
 }

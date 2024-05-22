@@ -15,26 +15,17 @@ namespace ChapeauUI
     public partial class OrderForm : Form
     {
         List<Product> products;
-        List<Tafel> tafels;
+        List <Orderline> orders;
+        
         public OrderForm()
         {
             InitializeComponent();
             products = GetProducts();
-            tafels = GetTafels();
-            FillComboBoxWithTables();
         }
 
         private void confirmButton_Click(object sender, EventArgs e)
         {
-            if (TafelSelecter.SelectedItem != null)
-            {
-                string selectedTafel = (string)TafelSelecter.SelectedItem;
-                MessageBox.Show("de geselecteerde tafel is: " + selectedTafel);
-            }
-            else
-            {
-                MessageBox.Show("Selecteer een tafel uit de lijst.");
-            }
+            
         }
 
         private void drinksButton_Click(object sender, EventArgs e)
@@ -110,16 +101,27 @@ namespace ChapeauUI
             Button clickedButton = sender as Button;
             if (clickedButton != null)
             {
-                MessageBox.Show($"{clickedButton.Text} clicked");
+                Clickedproduct(clickedButton.Text); 
             }
         }
-        private void FillComboBoxWithTables()
+        private void Clickedproduct(string productnaam)
         {
-            foreach (var tafel in tafels)
+            int fout = 0;
+            foreach(var product in products)
             {
-                TafelSelecter.Items.Add($"tafel {tafel.TafelNummer}");
+                if(productnaam == product.Naam)
+                {
+                    MessageBox.Show($"{product.Naam} clicked water");
+                    break;
+                }
+                else { fout++; }
+              
             }
+            MessageBox.Show($"{fout} ");
+
         }
+       
+        
 
         
     }

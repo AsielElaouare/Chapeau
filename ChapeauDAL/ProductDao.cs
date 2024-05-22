@@ -10,7 +10,7 @@ namespace ChapeauDAL
 {
     public class ProductDao :BaseDao
     {
-        public List<Product> GetAll()
+        public List<Product> GetAllProducts()
         {
             SqlCommand command = new SqlCommand("SELECT artikelid, naam, voorraad, prijs, categorie, kaart FROM [artikel]", OpenConnection());
 

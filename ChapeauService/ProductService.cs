@@ -17,8 +17,7 @@ namespace ChapeauService
         }
         public List<Product> GetProducts()
         {
-            List<Product> products = productdb.GetAll();
-            return products;
+            return productdb.GetAllProducts();
         }
     }
 }
