@@ -39,6 +39,7 @@ namespace ChapeauUI
             confirmButton = new Button();
             productLayoutPanel = new FlowLayoutPanel();
             orderLayoutPanel = new FlowLayoutPanel();
+            tableSelectbox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -99,6 +100,7 @@ namespace ChapeauUI
             cancelButton.TabIndex = 3;
             cancelButton.Text = "cancel";
             cancelButton.UseVisualStyleBackColor = false;
+            cancelButton.Click += cancelButton_Click;
             // 
             // confirmButton
             // 
@@ -122,17 +124,28 @@ namespace ChapeauUI
             // 
             // orderLayoutPanel
             // 
+            orderLayoutPanel.AutoScroll = true;
             orderLayoutPanel.BackColor = Color.FromArgb(224, 224, 224);
             orderLayoutPanel.Location = new Point(763, 99);
             orderLayoutPanel.Name = "orderLayoutPanel";
             orderLayoutPanel.Size = new Size(330, 510);
             orderLayoutPanel.TabIndex = 6;
             // 
+            // tableSelectbox
+            // 
+            tableSelectbox.FormattingEnabled = true;
+            tableSelectbox.Location = new Point(763, 615);
+            tableSelectbox.Name = "tableSelectbox";
+            tableSelectbox.Size = new Size(330, 28);
+            tableSelectbox.TabIndex = 7;
+            tableSelectbox.Text = "Selecteer een tafel nummer";
+            // 
             // OrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1115, 697);
+            Controls.Add(tableSelectbox);
             Controls.Add(orderLayoutPanel);
             Controls.Add(productLayoutPanel);
             Controls.Add(confirmButton);
@@ -157,5 +170,6 @@ namespace ChapeauUI
         private Button confirmButton;
         private FlowLayoutPanel productLayoutPanel;
         private FlowLayoutPanel orderLayoutPanel;
+        private ComboBox tableSelectbox;
     }
 }

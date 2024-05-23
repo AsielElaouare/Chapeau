@@ -10,7 +10,7 @@ namespace ChapeauModel
     {
       
         public int OrderID { get; private set; }
-        public int Aantal { get; private set; }
+        public int Aantal { get;  set; }
         public string Opmerking { get; private set; }
         public int ArtikelID { get; private set; }
         public Orderline(int orderID, int aantal, string opmerking, int artikelID)
@@ -19,6 +19,23 @@ namespace ChapeauModel
             Aantal = aantal;
             Opmerking = opmerking;
             ArtikelID = artikelID;
+        }
+        public void IncreaseQuantity()
+        {
+            Aantal ++;
+        }
+
+        public void DecreaseQuantity()
+        {
+            Aantal --;
+        }
+        public void SetOrderID(int orderID)
+        {
+            OrderID = orderID;
+        }
+        public void AddComment(string comment)
+        {
+            Opmerking = comment;
         }
     }
 }
