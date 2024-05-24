@@ -16,10 +16,8 @@ namespace ChapeauDAL
 
             public BaseDao()
             {
-               
-                    conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ChapeauDB"].ConnectionString);
-                    adapter = new SqlDataAdapter();
-                 
+                conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ChapeauDB"].ConnectionString);
+                adapter = new SqlDataAdapter();
             }
 
             protected SqlConnection OpenConnection()

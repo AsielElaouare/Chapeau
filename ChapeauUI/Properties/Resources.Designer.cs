@@ -69,5 +69,6 @@ namespace ChapeauUI.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
     }
 }

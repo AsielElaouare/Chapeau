@@ -397,3 +397,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+ChapeauUI/App.config
+/ChapeauUI/App.config
