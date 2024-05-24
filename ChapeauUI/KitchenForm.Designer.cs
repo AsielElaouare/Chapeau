@@ -65,14 +65,14 @@
             flowLayoutKitchenPnl.Location = new System.Drawing.Point(12, 65);
             flowLayoutKitchenPnl.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             flowLayoutKitchenPnl.Name = "flowLayoutKitchenPnl";
-            flowLayoutKitchenPnl.Size = new System.Drawing.Size(939, 372);
+            flowLayoutKitchenPnl.Size = new System.Drawing.Size(939, 543);
             flowLayoutKitchenPnl.TabIndex = 2;
             // 
             // KitchenForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(976, 450);
+            ClientSize = new System.Drawing.Size(976, 621);
             Controls.Add(flowLayoutKitchenPnl);
             Controls.Add(openOrdersLabel);
             Controls.Add(historyOrders);

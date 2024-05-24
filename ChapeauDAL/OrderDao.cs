@@ -42,24 +42,28 @@ namespace ChapeauDAL
 
         public List<Order> GetOrdersForKitchen()
         {
-            string query = @"SELECT 
-    rk.tafelnr,
-    [order].orderid,
-    ol.aantal,
-    [ol].opmerking,
-    [order].[status],
-    ak.naam AS Article,
-     ak.categorie
-FROM 
-    [order]
-JOIN 
-    orderline AS OL ON [order].[orderid] = OL.orderid
-JOIN 
-    rekening AS rk ON [order].rekeningnr = rk.rekeningnr
-JOIN 
-    artikel AS ak ON ol.artikelid = ak.artikelid
-ORDER BY 
-    rk.tafelnr, [order].orderid;"; // Placeholder for the actual SQL query
+            string query = @"
+            SELECT 
+                rk.tafelnr,
+                [order].orderid,
+                SUM(ol.aantal) AS aantal,
+                STRING_AGG([ol].opmerking, ', ') AS opmerking,
+                [order].[status],
+                STRING_AGG(ak.naam, ', ') AS Article, 
+                STRING_AGG(ak.categorie, ', ') AS categorie 
+            FROM 
+                [order]
+            JOIN 
+                orderline AS OL ON [order].[orderid] = OL.orderid
+            JOIN 
+                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                artikel AS ak ON ol.artikelid = ak.artikelid
+            where [status] = 'Pending'
+            GROUP BY 
+                rk.tafelnr, [order].orderid, [order].[status]
+            ORDER BY 
+                rk.tafelnr, [order].orderid;";
             SqlCommand command = new SqlCommand(query, OpenConnection());
 
             SqlDataReader reader = command.ExecuteReader();
@@ -76,6 +80,46 @@ ORDER BY
             return orders;
         }
 
+        //impolementing this tomorrow 
+        public List<Order> GetPreviousOrdersForKitchen()
+        {
+            string query = @"
+            SELECT 
+                rk.tafelnr,
+                [order].orderid,
+                SUM(ol.aantal) AS aantal,
+                STRING_AGG([ol].opmerking, ', ') AS opmerking,
+                [order].[status],
+                STRING_AGG(ak.naam, ', ') AS Article, 
+                STRING_AGG(ak.categorie, ', ') AS categorie 
+            FROM 
+                [order]
+            JOIN 
+                orderline AS OL ON [order].[orderid] = OL.orderid
+            JOIN 
+                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                artikel AS ak ON ol.artikelid = ak.artikelid
+            where [status] = 'Pending'
+            GROUP BY 
+                rk.tafelnr, [order].orderid, [order].[status]
+            ORDER BY 
+                rk.tafelnr, [order].orderid;";
+            SqlCommand command = new SqlCommand(query, OpenConnection());
+
+            SqlDataReader reader = command.ExecuteReader();
+            List<Order> orders = new List<Order>();
+
+            while (reader.Read())
+            {
+
+                Order order = ReadOrders(reader);
+                orders.Add(order);
+            }
+            reader.Close();
+            CloseConnection();
+            return orders;
+        }
         public Order ReadOrders(SqlDataReader reader)
         {
             Order currentOrder = null;
@@ -88,8 +132,16 @@ ORDER BY
                     (string)reader["status"],
                     new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null)
                 );
-            currentProduct = new Product((string)reader["Article"], (string)reader["categorie"]);
-            currentOrder.ProductList.Add(currentProduct);
+
+            string products = (string)reader["Article"];
+            string[] productsArray = products.Split(',');
+
+            foreach (string product in productsArray)
+            {
+                currentProduct = new Product(product, (string)reader["categorie"]);
+                currentOrder.ProductList.Add(currentProduct);
+
+            }
             return currentOrder;
         }
     }
