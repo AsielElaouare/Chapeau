@@ -24,13 +24,14 @@ namespace ChapeauUI
 
         private void KitchenForm_Load(object sender, EventArgs e)
         {
-
+            GetKitchenOrders();
         }
 
         private List<Order> GetKitchenOrders()
         {
-            OrderService order = new OrderService();
-            return this.orders = order.GetKitchenOrders();
+            OrderService orderService = new OrderService();
+            List<Order> orders = orderService.GetPendingOrdersForKitchen(); ;
+            return orders;
         }
         private void DisplayOrders()
         {

@@ -22,9 +22,13 @@ namespace ChapeauModel
             Naam = naam;
             Voorraad = voorraad;
             Prijs = prijs;
-            Categorie = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie); 
-            Kaart =(ProductKaart) Enum.Parse(typeof(ProductKaart), kaart);
+            Categorie = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
+            Kaart = (ProductKaart)Enum.Parse(typeof(ProductKaart), kaart);
         }
-        
+        public Product(string naam, string categorie)
+        {
+            Naam = naam;
+            Categorie = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
+        }
     }
 }

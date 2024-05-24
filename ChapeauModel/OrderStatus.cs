@@ -8,6 +8,6 @@ namespace ChapeauModel
 {
     public enum OrderStatus
     {
-        KLaar, Bereid,Besteld
+        Ready, Preparing, Pending 
     }
 }

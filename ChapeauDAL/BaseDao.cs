@@ -13,12 +13,12 @@ namespace ChapeauDAL
     {
         private SqlDataAdapter adapter;
         private SqlConnection conn;
-      
-            public BaseDao()
-            {
-                conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ChapeauDB"].ConnectionString);
-                adapter = new SqlDataAdapter();
-            }
+
+        public BaseDao()
+        {
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ChapeauDB"].ConnectionString);
+            adapter = new SqlDataAdapter();
+        }
 
         protected SqlConnection OpenConnection()
         {
@@ -29,12 +29,7 @@ namespace ChapeauDAL
                     conn.Open();
                 }
             }
-
-            protected void CloseConnection()
-            {
-                //Print.ErrorLog(e);
-                throw;
-            }
+            catch { }
             return conn;
         }
 

@@ -12,8 +12,17 @@ namespace ChapeauModel
         public int RekeningNR { get; private set; }
         public OrderStatus Status { get; private set; }
         public DateTime OrderTime { get; private set; }
+        public Orderline OrderLineComment { get; private set; }
         public int TafelNR { get; private set; }
 
-       
+        public List<Product> ProductList { get; set; }
+        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment)
+        {
+            this.OrderID = OrderID;
+            this.TafelNR = TafelNR;
+            this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status); ;
+            this.OrderLineComment = OrderLineComment;
+            this.ProductList = new List<Product>();
+        }
     }
 }
