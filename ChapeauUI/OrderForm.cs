@@ -246,7 +246,7 @@ namespace ChapeauUI
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:")); break;
                 }
-                else
+                else if(order.ArtikelID == (int)clickedButton.Tag)
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:", "", order.Opmerking)); break;
                 }
