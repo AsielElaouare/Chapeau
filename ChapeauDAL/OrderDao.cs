@@ -26,7 +26,7 @@ namespace ChapeauDAL
         SELECT CAST(SCOPE_IDENTITY() AS INT) AS newOrderID;";
 
             SqlCommand command = new SqlCommand(query, OpenConnection());
-            command.Parameters.AddWithValue("@timeOfOrder", $"{timeOfOrder:yyyy-MM-dd} 00:00:00");
+            command.Parameters.AddWithValue("@timeOfOrder", timeOfOrder.ToString("yyyy-MM-dd HH:mm:ss"));
             command.Parameters.AddWithValue("@selectedTable", $"{selectedtable}");
             SqlDataReader reader = command.ExecuteReader();
             if (reader.Read())
