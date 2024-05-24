@@ -18,8 +18,6 @@ namespace ChapeauDAL
             {
                 conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ChapeauDB"].ConnectionString);
                 adapter = new SqlDataAdapter();
-            
-                
             }
 
             protected SqlConnection OpenConnection()
@@ -39,7 +37,7 @@ namespace ChapeauDAL
                 return conn;
             }
 
-            private void CloseConnection()
+            protected void CloseConnection()
             {
                 conn.Close();
             }
