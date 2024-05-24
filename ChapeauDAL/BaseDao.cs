@@ -9,113 +9,113 @@ using System.Configuration;
 
 namespace ChapeauDAL
 {
-        public abstract class BaseDao
+    public abstract class BaseDao
+    {
+        private SqlDataAdapter adapter;
+        private SqlConnection conn;
+
+        public BaseDao()
         {
-            private SqlDataAdapter adapter;
-            private SqlConnection conn;
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ChapeauDBChapeauDB"].ConnectionString);
+            adapter = new SqlDataAdapter();
+        }
 
-            public BaseDao()
+        protected SqlConnection OpenConnection()
+        {
+            try
             {
-                conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ChapeauDBChapeauDB"].ConnectionString);
-                adapter = new SqlDataAdapter();   
-            }
-
-            protected SqlConnection OpenConnection()
-            {
-                try
+                if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
                 {
-                    if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
-                    {
-                        conn.Open();
-                    }
-                }
-                catch (Exception e)
-                {
-                    //Print.ErrorLog(e);
-                    throw;
-                }
-                return conn;
-            }
-
-            private void CloseConnection()
-            {
-                conn.Close();
-            }
-
-            /* For Insert/Update/Delete Queries with transaction */
-            protected void ExecuteEditTranQuery(string query, SqlParameter[] sqlParameters, SqlTransaction sqlTransaction)
-            {
-                SqlCommand command = new SqlCommand(query, conn, sqlTransaction);
-
-                try
-                {
-                    command.Parameters.AddRange(sqlParameters);
-                    adapter.InsertCommand = command;
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    //Print.ErrorLog(e);
-                    throw;
-                }
-                finally
-                {
-                    CloseConnection();
+                    conn.Open();
                 }
             }
-
-            /* For Insert/Update/Delete Queries */
-            protected void ExecuteEditQuery(string query, SqlParameter[] sqlParameters)
+            catch (Exception e)
             {
-                SqlCommand command = new SqlCommand();
-
-                try
-                {
-                    command.Connection = OpenConnection();
-                    command.CommandText = query;
-                    command.Parameters.AddRange(sqlParameters);
-                    adapter.InsertCommand = command;
-                    command.ExecuteNonQuery();
-                }
-                catch (SqlException e)
-                {
-                    // Print.ErrorLog(e);
-                    throw;
-                }
-                finally
-                {
-                    CloseConnection();
-                }
+                //Print.ErrorLog(e);
+                throw;
             }
+            return conn;
+        }
 
-            /* For Select Queries */
-            protected DataTable ExecuteSelectQuery(string query, params SqlParameter[] sqlParameters)
+        protected void CloseConnection()
+        {
+            conn.Close();
+        }
+
+        /* For Insert/Update/Delete Queries with transaction */
+        protected void ExecuteEditTranQuery(string query, SqlParameter[] sqlParameters, SqlTransaction sqlTransaction)
+        {
+            SqlCommand command = new SqlCommand(query, conn, sqlTransaction);
+
+            try
             {
-                SqlCommand command = new SqlCommand();
-                DataTable dataTable;
-                DataSet dataSet = new DataSet();
-
-                try
-                {
-                    command.Connection = OpenConnection();
-                    command.CommandText = query;
-                    command.Parameters.AddRange(sqlParameters);
-                    command.ExecuteNonQuery();
-                    adapter.SelectCommand = command;
-                    adapter.Fill(dataSet);
-                    dataTable = dataSet.Tables[0];
-                }
-                catch (SqlException e)
-                {
-                    // Print.ErrorLog(e);
-                    throw;
-                }
-                finally
-                {
-                    CloseConnection();
-                }
-
-                return dataTable;
+                command.Parameters.AddRange(sqlParameters);
+                adapter.InsertCommand = command;
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                //Print.ErrorLog(e);
+                throw;
+            }
+            finally
+            {
+                CloseConnection();
             }
         }
+
+        /* For Insert/Update/Delete Queries */
+        protected void ExecuteEditQuery(string query, SqlParameter[] sqlParameters)
+        {
+            SqlCommand command = new SqlCommand();
+
+            try
+            {
+                command.Connection = OpenConnection();
+                command.CommandText = query;
+                command.Parameters.AddRange(sqlParameters);
+                adapter.InsertCommand = command;
+                command.ExecuteNonQuery();
+            }
+            catch (SqlException e)
+            {
+                // Print.ErrorLog(e);
+                throw;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+        /* For Select Queries */
+        protected DataTable ExecuteSelectQuery(string query, params SqlParameter[] sqlParameters)
+        {
+            SqlCommand command = new SqlCommand();
+            DataTable dataTable;
+            DataSet dataSet = new DataSet();
+
+            try
+            {
+                command.Connection = OpenConnection();
+                command.CommandText = query;
+                command.Parameters.AddRange(sqlParameters);
+                command.ExecuteNonQuery();
+                adapter.SelectCommand = command;
+                adapter.Fill(dataSet);
+                dataTable = dataSet.Tables[0];
+            }
+            catch (SqlException e)
+            {
+                // Print.ErrorLog(e);
+                throw;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+
+            return dataTable;
+        }
+    }
 }
