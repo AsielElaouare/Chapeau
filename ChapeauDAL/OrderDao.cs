@@ -47,9 +47,9 @@ namespace ChapeauDAL
                 rk.tafelnr,
                 [order].orderid,
                 SUM(ol.aantal) AS aantal,
-                STRING_AGG([ol].opmerking, ', ') AS opmerking,
+                STRING_AGG([ol].opmerking, '; ') AS opmerking,
                 [order].[status],
-                STRING_AGG(ak.naam, ', ') AS Article, 
+                STRING_AGG(ak.naam, '; ') AS Article, 
                 STRING_AGG(ak.categorie, ', ') AS categorie 
             FROM 
                 [order]
@@ -83,15 +83,16 @@ namespace ChapeauDAL
         //impolementing this tomorrow 
         public List<Order> GetPreviousOrdersForKitchen()
         {
+            // get previous orders of today!!
             string query = @"
             SELECT 
                 rk.tafelnr,
                 [order].orderid,
                 SUM(ol.aantal) AS aantal,
-                STRING_AGG([ol].opmerking, ', ') AS opmerking,
+                STRING_AGG([ol].opmerking, '; ') AS opmerking,
                 [order].[status],
-                STRING_AGG(ak.naam, ', ') AS Article, 
-                STRING_AGG(ak.categorie, ', ') AS categorie 
+                STRING_AGG(ak.naam, '; ') AS Article, 
+                STRING_AGG(ak.categorie, '; ') AS categorie 
             FROM 
                 [order]
             JOIN 
@@ -100,7 +101,7 @@ namespace ChapeauDAL
                 rekening AS rk ON [order].rekeningnr = rk.rekeningnr
             JOIN 
                 artikel AS ak ON ol.artikelid = ak.artikelid
-            where [status] = 'Pending'
+            where [status] = 'Ready'
             GROUP BY 
                 rk.tafelnr, [order].orderid, [order].[status]
             ORDER BY 
@@ -120,6 +121,7 @@ namespace ChapeauDAL
             CloseConnection();
             return orders;
         }
+
         public Order ReadOrders(SqlDataReader reader)
         {
             Order currentOrder = null;
@@ -134,7 +136,7 @@ namespace ChapeauDAL
                 );
 
             string products = (string)reader["Article"];
-            string[] productsArray = products.Split(',');
+            string[] productsArray = products.Split(';');
 
             foreach (string product in productsArray)
             {
