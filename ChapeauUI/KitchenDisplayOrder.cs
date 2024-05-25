@@ -28,21 +28,30 @@ namespace ChapeauUI
             foreach (Product product in Order.ProductList)
             {
                 Label dishlabel = new Label();
+                Label dishLabelComment = new Label();
                 if (product.Categorie == ProductCategorie.Hoofdgerechten)
                 {
                     dishlabel.Text = product.Naam;
+                    dishLabelComment.Text = Order.OrderLineComment.Opmerking;
                     mainDishesLayoutPanel.Controls.Add(dishlabel);
+                    mainDishesLayoutPanel.Controls.Add(dishLabelComment);
                 }
                 else if (product.Categorie == ProductCategorie.Voorgerechten)
                 {
                     dishlabel.Text = product.Naam;
+                    dishLabelComment.Text = Order.OrderLineComment.Opmerking;
                     sideDishesLayoutPanel.Controls.Add(dishlabel);
+                    sideDishesLayoutPanel.Controls.Add(dishLabelComment);
                 }
                 else if (product.Categorie == ProductCategorie.Nagerechten)
                 {
                     dishlabel.Text = product.Naam;
+                    dishLabelComment.Text = Order.OrderLineComment.Opmerking;
                     dessetsDishesLayoutPanel.Controls.Add(dishlabel);
+                    dessetsDishesLayoutPanel.Controls.Add(dishLabelComment);
                 }
+                dishLabelComment.ForeColor = Color.Yellow;
+                dishLabelComment.Font = new Font(dishLabelComment.Font, FontStyle.Italic);
                 dishlabel.BackColor = Color.FromArgb(123, 123, 123);
                 dishlabel.Width = 200;
                 dishlabel.Margin = new Padding(0, 10, 0, 0);

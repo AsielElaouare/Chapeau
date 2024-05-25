@@ -26,5 +26,10 @@ namespace ChapeauService
             List<Order> orders;
             return orders = orderdb.GetOrdersForKitchen();
         }
+        public List<Order> GetPreviousOrdersForKitchen()
+        {
+            List<Order> orders;
+            return orders = orderdb.GetPreviousOrdersForKitchen();
+        }
     }
 }

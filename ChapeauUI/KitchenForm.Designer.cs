@@ -44,6 +44,7 @@
             historyOrders.TabIndex = 0;
             historyOrders.Text = "Geschidenis";
             historyOrders.UseVisualStyleBackColor = false;
+            historyOrders.Click += historyOrders_Click;
             // 
             // openOrdersLabel
             // 
@@ -51,7 +52,7 @@
             openOrdersLabel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             openOrdersLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             openOrdersLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            openOrdersLabel.Location = new System.Drawing.Point(397, 21);
+            openOrdersLabel.Location = new System.Drawing.Point(670, 19);
             openOrdersLabel.Name = "openOrdersLabel";
             openOrdersLabel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 2);
             openOrdersLabel.Size = new System.Drawing.Size(77, 27);
@@ -65,14 +66,14 @@
             flowLayoutKitchenPnl.Location = new System.Drawing.Point(12, 65);
             flowLayoutKitchenPnl.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             flowLayoutKitchenPnl.Name = "flowLayoutKitchenPnl";
-            flowLayoutKitchenPnl.Size = new System.Drawing.Size(939, 543);
+            flowLayoutKitchenPnl.Size = new System.Drawing.Size(1436, 532);
             flowLayoutKitchenPnl.TabIndex = 2;
             // 
             // KitchenForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(976, 621);
+            ClientSize = new System.Drawing.Size(1473, 610);
             Controls.Add(flowLayoutKitchenPnl);
             Controls.Add(openOrdersLabel);
             Controls.Add(historyOrders);

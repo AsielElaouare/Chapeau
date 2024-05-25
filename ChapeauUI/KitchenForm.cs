@@ -15,9 +15,11 @@ namespace ChapeauUI
 {
     public partial class KitchenForm : Form
     {
+        PreviousOrders previousOrdersForm;
         public KitchenForm()
         {
             InitializeComponent();
+            this.previousOrdersForm = new PreviousOrders();
         }
 
         private void KitchenForm_Load(object sender, EventArgs e)
@@ -44,6 +46,12 @@ namespace ChapeauUI
                 numberOfOrders++;
             }
             openOrdersLabel.Text = $"Open: {numberOfOrders}";
+        }
+
+        private void historyOrders_Click(object sender, EventArgs e)
+        {
+            previousOrdersForm.Show();
+            this.Hide();
         }
     }
 }
