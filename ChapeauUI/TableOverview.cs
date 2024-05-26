@@ -21,7 +21,14 @@ namespace ChapeauUI
         const int bottomRowY = topRowY + 266;
         const int spacingX = 189;
         const int columns = 5;
-        
+
+        // for table creation
+        int column;
+        int xPosition;
+        int yPosition;
+        int topRowIndex = 0;
+        int bottomRowIndex = 0;
+
         public TableOverview(Employee employee)
         {
             InitializeComponent();
@@ -44,8 +51,6 @@ namespace ChapeauUI
 
         private void InitializeTables()
         {
-            int topRowIndex = 0;
-            int bottomRowIndex = 0;
             foreach (Tafel table in tables)
             {
                 Button tableButton = new Button();
@@ -54,38 +59,25 @@ namespace ChapeauUI
                 tableButton.Tag = table;
                 tableButton.FlatStyle = FlatStyle.Flat;
                 tableButton.FlatAppearance.BorderSize = 0;
-                int column;
-                int xPosition;
-                int yPosition;
-                // make this method smaller
-                //the if is for the even tables to be placed correctly (on the top) and the else is for the odd numbered tables to be placed correctly (on the bottom) :)
-                // Add it so that when the tables are above 10 that another row is created below the already existing row.
-                if ((table.TafelNummer + 1) % 2 != 0)
-                {
-                    column = topRowIndex % columns;
-                    xPosition = startX + column * spacingX;
-                    yPosition = topRowY;
-                    topRowIndex++;
-                }
-                else
-                {
-                    column = bottomRowIndex % columns;
-                    xPosition = startX + column * spacingX;
-                    yPosition = bottomRowY;
-                    bottomRowIndex++;
-                }
+                if ((table.TafelNummer + 1) % 2 != 0){CreateEvenTables();}
+                else{CreateOddTables();}
                 CreateTables(tableButton, xPosition, yPosition, table);
             }
         }
-        private void CreateEvenTables(int column, int xPosition, int yPosition)
+        private void CreateEvenTables()
         {
-
-
+            column = topRowIndex % columns;
+            xPosition = startX + column * spacingX;
+            yPosition = topRowY;
+            topRowIndex++;
         }
 
         private void CreateOddTables()
         {
-
+            column = bottomRowIndex % columns;
+            xPosition = startX + column * spacingX;
+            yPosition = bottomRowY;
+            bottomRowIndex++;
         }
         private void CreateTables(Button tableButton, int xPosition, int yPosition, Tafel table)
         {
@@ -100,10 +92,10 @@ namespace ChapeauUI
         {
             switch (table.Status) 
             { 
-                case TableStatusEnum.Free:return Color.Green;
-                case TableStatusEnum.Reserved: return Color.Blue;
-                case TableStatusEnum.Occupied:return Color.Red;
-                case TableStatusEnum.ordered: return Color.Yellow;
+                case TableStatusEnum.Free:return Color.FromArgb(5, 123, 31);
+                case TableStatusEnum.Reserved: return Color.FromArgb(12, 18, 150);
+                case TableStatusEnum.Occupied:return Color.FromArgb(153, 0, 17);
+                case TableStatusEnum.ordered: return Color.FromArgb(201, 126, 13);
                 default: return Color.DarkGray;
             }
         }
