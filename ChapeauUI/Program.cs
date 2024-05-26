@@ -21,8 +21,8 @@ namespace ChapeauUI
             ApplicationConfiguration.Initialize();
             LoginForm loginForm = new LoginForm();
             loginForm.Show();
-            OrderForm orderForm = new OrderForm();
-            orderForm.Show();
+            //TableOverview tableOverview = new TableOverview(new ChapeauModel.Employee(1,"Henk","test","Waitress"));
+            //tableOverview.Show();
             Application.Run();
         }
     }

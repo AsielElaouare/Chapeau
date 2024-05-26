@@ -11,10 +11,13 @@ namespace ChapeauModel
         public int TafelNummer { get; private set; }
         public int ZitPlaatsen { get; private set; }
 
+        public TableStatusEnum Status { get; set; }
+
         public Tafel(int tafelNummer, int zitPlaatsen)
         {
             TafelNummer = tafelNummer;
             ZitPlaatsen = zitPlaatsen;
+            Status = TableStatusEnum.Free;
         }
     }
 }

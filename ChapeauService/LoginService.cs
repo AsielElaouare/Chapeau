@@ -35,14 +35,21 @@ namespace ChapeauService
 
         public Employee checkLogin(string username,string password) 
         {
-            loginDao.GetPassWordbyID(username);
-            string encryptedPassword = EncryptPassword(password);
-            Employee employee = loginDao.GetPassWordbyID(username);
-            if (employee.password == encryptedPassword)
+            try
             {
-                return employee;
+                loginDao.GetPassWordbyID(username);
+                string encryptedPassword = EncryptPassword(password);
+                Employee employee = loginDao.GetPassWordbyID(username);
+                if (employee.password == encryptedPassword)
+                {
+                    return employee;
+                }
+                else
+                {
+                    throw new Exception("Verkeerde gebruikersnaam of wachtwoord");
+                }
             }
-            throw new Exception("Onjuist wachtwoord");
+            catch (Exception ex) { throw new Exception(ex.Message); }
         }
 
         

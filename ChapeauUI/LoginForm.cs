@@ -39,12 +39,15 @@ namespace ChapeauUI
 
         private void CheckLogin()
         {
-            if(loginService.CheckIfEmployeeIdExists(enteredUsername))
+            try
             {
-                Employee employee = loginService.checkLogin(enteredUsername, enteredPassword);
-                if (employee != null){ try { OpenRelevantForm(employee); } catch (Exception ex) { adjustAttempts(ex.Message); ClearPassword(); } }
-            }
-            else{adjustAttempts("Verkeerde gebruikersnaam"); ClearPassword();}     
+                if (loginService.CheckIfEmployeeIdExists(enteredUsername))
+                {
+                    Employee employee = loginService.checkLogin(enteredUsername, enteredPassword);
+                    if (employee != null) { try { OpenRelevantForm(employee); } catch (Exception ex) { adjustAttempts(ex.Message); ClearPassword(); } }
+                }
+                else { adjustAttempts("Verkeerde gebruikersnaam"); ClearPassword(); }
+            }catch(Exception  ex) { adjustAttempts(ex.Message);}
         }
 
 

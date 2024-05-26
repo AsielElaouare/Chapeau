@@ -47,7 +47,7 @@ namespace ChapeauDAL
                 Employee employee = new Employee(employeeId, Name, password, role);
                 return employee;
             }
-            else { throw new Exception("Incorrect password"); }
+            else { throw new Exception("Verkeerde gebruikersnaam of wachtwoord"); }
         }
 
         

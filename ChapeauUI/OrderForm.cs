@@ -19,7 +19,16 @@ namespace ChapeauUI
         List<Product> products;
         List<Orderline> orders;
         List<Tafel> tafel;
+        Employee employee;
+        Tafel table;
         public OrderForm()
+        {
+            InitializeComponent();
+            products = GetProducts();
+            FillTableBox();
+            orders = new List<Orderline>();
+        }
+        public OrderForm(Employee employee, Tafel table)
         {
             InitializeComponent();
             products = GetProducts();

@@ -8,43 +8,59 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ChapeauModel;
+using ChapeauService;
 
 namespace ChapeauUI
 {
     public partial class TableOverview : Form
     {
         Employee employee;
+        List<Tafel> tables;
         const int startX = 108;
         const int topRowY = 150;
         const int bottomRowY = topRowY + 266;
         const int spacingX = 189;
         const int columns = 5;
+        
         public TableOverview(Employee employee)
         {
             InitializeComponent();
-            InitializeTables();
             this.employee = employee;
+            this.tables = GetTables();
+
+            InitializeTables();
         }
 
-        // adjust this so it gets the tables out of the database!!!!!
-        private int tableCount = 10;
-        // ^^^^^^^^^^^^^^^^^^^^
+        private void CheckLayOut()
+        {
+
+        }
+        private List<Tafel> GetTables()
+        {
+            TafelService tafelService = new TafelService();
+            return tafelService.GetTafel();
+        }
 
 
         private void InitializeTables()
         {
             int topRowIndex = 0;
             int bottomRowIndex = 0;
-            for (int i = 0; i < tableCount; i++)
+            foreach (Tafel table in tables)
             {
                 Button tableButton = new Button();
-                tableButton.Text = $"Table {i + 1}";
+                if (table.Status == TableStatusEnum.Free || table.Status == TableStatusEnum.Reserved) { tableButton.Font = new Font(tableButton.Font.FontFamily, 40); }
+                tableButton.Text = $"{table.TafelNummer}";
+                tableButton.Tag = table;
+                tableButton.FlatStyle = FlatStyle.Flat;
+                tableButton.FlatAppearance.BorderSize = 0;
                 int column;
                 int xPosition;
                 int yPosition;
                 // make this method smaller
                 //the if is for the even tables to be placed correctly (on the top) and the else is for the odd numbered tables to be placed correctly (on the bottom) :)
-                if ((i + 1) % 2 != 0)
+                // Add it so that when the tables are above 10 that another row is created below the already existing row.
+                if ((table.TafelNummer + 1) % 2 != 0)
                 {
                     column = topRowIndex % columns;
                     xPosition = startX + column * spacingX;
@@ -58,12 +74,12 @@ namespace ChapeauUI
                     yPosition = bottomRowY;
                     bottomRowIndex++;
                 }
-                CreateTables(tableButton, xPosition, yPosition);
+                CreateTables(tableButton, xPosition, yPosition, table);
             }
         }
         private void CreateEvenTables(int column, int xPosition, int yPosition)
         {
-            
+
 
         }
 
@@ -71,20 +87,34 @@ namespace ChapeauUI
         {
 
         }
-        private void CreateTables(Button tableButton, int xPosition, int yPosition)
+        private void CreateTables(Button tableButton, int xPosition, int yPosition, Tafel table)
         {
             tableButton.Location = new Point(xPosition, yPosition);
             tableButton.Size = new Size(161, 100);
             tableButton.Click += TableButton_Click;
+            tableButton.BackColor = tableStatus(table);
             this.Controls.Add(tableButton);
         }
 
-        
+        private Color tableStatus(Tafel table)
+        {
+            switch (table.Status) 
+            { 
+                case TableStatusEnum.Free:return Color.Green;
+                case TableStatusEnum.Reserved: return Color.Blue;
+                case TableStatusEnum.Occupied:return Color.Red;
+                case TableStatusEnum.ordered: return Color.Yellow;
+                default: return Color.DarkGray;
+            }
+        }
+
+
 
         private void TableButton_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
-            MessageBox.Show($"{clickedButton.Text} clicked");
+            Tafel clickedTable = clickedButton.Tag as Tafel;
+            OpenCorrectForm(clickedTable);
         }
 
         private void logOutBtn_Click(object sender, EventArgs e)
@@ -93,6 +123,34 @@ namespace ChapeauUI
             LoginForm loginForm = new LoginForm();
             loginForm.Show();
             this.Close();
+        }
+
+        private void OpenCorrectForm(Tafel table)
+        {
+            switch (table.Status)
+            {
+                case TableStatusEnum.Free:
+                    OpenPopUpFreeTable(table); break;
+                case TableStatusEnum.Reserved:
+                    OpenPopUpFreeTable(table); break;
+                case TableStatusEnum.Occupied:
+                    OpenPopUpOccupiedTable(table); break;
+                case TableStatusEnum.ordered:
+                    OpenPopUpOccupiedTable(table); break;
+                default: OpenPopUpFreeTable(table); break;
+            }
+        }
+
+        private void OpenPopUpFreeTable(Tafel table)
+        {
+            PopUpFreeTable popUpFreeTable = new PopUpFreeTable(employee, table, this);
+            popUpFreeTable.Show();
+        }
+        private void OpenPopUpOccupiedTable(Tafel table)
+        {
+            /// add if else for when an order is ready to be delivered
+            PopUpOccupiedTable popUpFreeTable = new PopUpOccupiedTable(employee, table, this);
+            popUpFreeTable.Show();
         }
     }
 }
