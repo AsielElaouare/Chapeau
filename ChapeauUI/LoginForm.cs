@@ -15,17 +15,13 @@ namespace ChapeauUI
 {
     public partial class LoginForm : Form
     {
-        public string enteredPassword;
-        string enteredNumber;
-        private int enteredNumbers;
-        private int maxAttempts = 3;
+        private string enteredUsername;
+        private string enteredPassword;
+        private const int maxAttempts = 3;
+        private int Attempts = 0;
         string youtubeUrl = "https://youtu.be/dQw4w9WgXcQ?si=EMcOrmZ8Kj8C7oY2";
 
-        /// <summary>
-        /// revove employee test
-        /// </summary>
-        Employee employeeTest = new Employee(50, "George", "test", "Server");
-
+        
         private LoginService loginService;
         public LoginForm()
         {
@@ -33,71 +29,33 @@ namespace ChapeauUI
             loginService = new LoginService();
         }
 
-        private void UpdateVisualNumbers()
-        {
-            switch (enteredPassword.Length)
-            {
-                case 0: { EnteredNumberDesignsDefault(); return; }
-                case 1: { EnteredNumberDesign1.BackColor = Color.Black; return; }
-                case 2: { EnteredNumberDesign2.BackColor = Color.Black; return; }
-                case 3: { EnteredNumberDesign3.BackColor = Color.Black; return; }
-                case 4: { EnteredNumberDesign4.BackColor = Color.Black; return; }
-                case 5: { EnteredNumberDesign5.BackColor = Color.Black; return; }
-                default: { EnteredNumberDesignsDefault(); ClearPassword(); return; }
-            }
-        }
+       
 
         private void ClearPassword()
         {
-            enteredPassword = "";
-            enteredNumbers = 0;
+            PasswordTextBox.Text = string.Empty;
         }
 
-        private void ReturnVisualNumbers()
+
+        private void CheckLogin()
         {
-            switch (enteredPassword.Length)
+            if(loginService.CheckIfEmployeeIdExists(enteredUsername))
             {
-                case 0: { EnteredNumberDesign1.BackColor = ColorTranslator.FromHtml("#D9D9D9"); return; }
-                case 1: { EnteredNumberDesign2.BackColor = ColorTranslator.FromHtml("#D9D9D9"); return; }
-                case 2: { EnteredNumberDesign3.BackColor = ColorTranslator.FromHtml("#D9D9D9"); return; }
-                case 3: { EnteredNumberDesign4.BackColor = ColorTranslator.FromHtml("#D9D9D9"); return; }
-                case 4: { EnteredNumberDesign5.BackColor = ColorTranslator.FromHtml("#D9D9D9"); return; }
-                default: { EnteredNumberDesignsDefault(); return; }
+                Employee employee = loginService.checkLogin(enteredUsername, enteredPassword);
+                if (employee != null){ try { OpenRelevantForm(employee); } catch (Exception ex) { adjustAttempts(ex.Message); ClearPassword(); } }
             }
+            else{adjustAttempts("Verkeerde gebruikersnaam"); ClearPassword();}     
         }
 
-        private void EnteredNumberDesignsDefault()
-        {
-            EnteredNumberDesign1.BackColor = ColorTranslator.FromHtml("#D9D9D9");
-            EnteredNumberDesign2.BackColor = ColorTranslator.FromHtml("#D9D9D9");
-            EnteredNumberDesign3.BackColor = ColorTranslator.FromHtml("#D9D9D9");
-            EnteredNumberDesign4.BackColor = ColorTranslator.FromHtml("#D9D9D9");
-            EnteredNumberDesign5.BackColor = ColorTranslator.FromHtml("#D9D9D9");
-        }
 
-        private void CheckPassword()
+        private void adjustAttempts(string message)
         {
-            if (enteredPassword.Length == 5) // make const
-            {
-                try
-                { 
-                    Employee employee = loginService.VerifyEnteredPassword(enteredPassword);
-                    MessageBox.Show($"Successvol ingelogt {employee.name}");
-                    OpenRelevantForm(employee);
-                }
-                catch (Exception ex) { adjustAttempts(); MessageBox.Show($"Error: verkeerd wachtwood." + "\n" + $"{maxAttempts} pogingen over."); EnteredNumberDesignsDefault(); ClearPassword(); }
-            }
-        }
-
-        
-        private void adjustAttempts()
-        {
-            maxAttempts--;
-            if (maxAttempts <= 0)
+            Attempts++;
+            MessageBox.Show(message);
+            if (Attempts >= maxAttempts)
             {
                 Process.Start(new ProcessStartInfo
                 {
-                    
                     FileName = youtubeUrl,
                     UseShellExecute = true
                 }); ;
@@ -106,104 +64,22 @@ namespace ChapeauUI
 
         private void OpenRelevantForm(Employee employee)
         {
-            if (employee.role == "Chef") { KitchenForm kitchenform = new KitchenForm(); kitchenform.Show(); this.Close(); }
-            else if (employee.role == "Bartender") { }
-            else if (employee.role == "Server") { TableOverview tableOverview = new TableOverview(employee);  tableOverview.Show(); this.Close(); }
-            else if (employee.role == "Manager") { TableOverview tableOverview = new TableOverview(employee);  tableOverview.Show(); this.Close(); }
-        }
-        private void roundButton1_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "1";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-        }
-
-        private void roundButtonReturn_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(enteredPassword))
-            {
-                enteredPassword = enteredPassword.Remove(enteredPassword.Length - 1);
-                ReturnVisualNumbers();
-            }
-        }
-
-        private void roundButton2_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "2";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-        }
-
-        private void roundButton3_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "3";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-        }
-
-        private void roundButton4_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "4";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-        }
-
-        private void roundButton5_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "5";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-        }
-
-        private void roundButton6_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "6";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-        }
-
-        private void roundButton7_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "7";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-        }
-
-        private void roundButton8_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "8";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-        }
-
-        private void roundButton9_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "9";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-        }
-
-        private void roundButton0_Click(object sender, EventArgs e)
-        {
-            enteredNumber = "0";
-            enteredPassword += enteredNumber;
-            UpdateVisualNumbers();
-            if (enteredPassword.Length == 5) { CheckPassword(); }
-            else { TableOverview tableOverview = new TableOverview(employeeTest);  tableOverview.Show(); this.Close(); }
+            if (employee.role == EmployeeRoleEnum.Chef) { KitchenForm kitchenform = new KitchenForm(); kitchenform.Show(); this.Close(); }
+            else if (employee.role == EmployeeRoleEnum.Barista) { BarForm barform = new BarForm(); barform.Show(); this.Close(); }
+            else if (employee.role == EmployeeRoleEnum.Waiter) { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
+            else if (employee.role == EmployeeRoleEnum.Manager) { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
         }
 
         private void CloseApplicationBtn_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void ConfirmBtn_Click(object sender, EventArgs e)
+        {
+            enteredUsername = UsernameTextBox.Text.ToString();
+            enteredPassword = PasswordTextBox.Text.ToString();
+            CheckLogin();
         }
     }
 }

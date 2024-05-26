@@ -21,6 +21,8 @@ namespace ChapeauUI
             ApplicationConfiguration.Initialize();
             LoginForm loginForm = new LoginForm();
             loginForm.Show();
+            OrderForm orderForm = new OrderForm();
+            orderForm.Show();
             Application.Run();
         }
     }
