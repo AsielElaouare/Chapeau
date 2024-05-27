@@ -20,25 +20,19 @@ namespace ChapeauUI
             InitializeComponent();
 
         }
-        private List<Order> GetPreviousKitchenOrders()
-        {
-            OrderService orderService = new OrderService();
-            List<Order> orders = orderService.GetPreviousOrdersForKitchen(); ;
-            return orders;
-        }
 
-        private void DisplayOrders()
-        {
-            List<Order> orders = GetPreviousKitchenOrders();
-            int numberOfOrders = 0;
-            foreach (Order order in orders)
-            {
-                KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order);
-                flowLayoutPreviousOrdersPanel.Controls.Add(kitchenDisplayOrder);
-                numberOfOrders++;
-            }
-            PreviousOrdersLabel.Text = $"Open: {numberOfOrders}";
-        }
+        //private void DisplayOrders()
+        //{
+        //    List<Order> orders = GetPreviousKitchenOrders();
+        //    int numberOfOrders = 0;
+        //    foreach (Order order in orders)
+        //    {
+        //        KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order);
+        //        flowLayoutPreviousOrdersPanel.Controls.Add(kitchenDisplayOrder);
+        //        numberOfOrders++;
+        //    }
+        //    PreviousOrdersLabel.Text = $"Open: {numberOfOrders}";
+        //}
 
         private void goBackBtn_Click(object sender, EventArgs e)
         {

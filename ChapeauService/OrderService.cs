@@ -21,15 +21,25 @@ namespace ChapeauService
             return orderdb.MakeNewOrder(timeOfOrder, selectedtable);
         }
 
+        public List<Order> GetAllPendingOrdersForBar()
+        {
+            List<Order> orders;
+            return orders = orderdb.GetOrdersForBar();
+        }
+
         public List<Order> GetPendingOrdersForKitchen()
         {
             List<Order> orders;
             return orders = orderdb.GetOrdersForKitchen();
         }
-        public List<Order> GetPreviousOrdersForKitchen()
+
+        public void UpdateToReadyOrders(int orederID, OrderStatus orderStatus)
         {
-            List<Order> orders;
-            return orders = orderdb.GetPreviousOrdersForKitchen();
+            orderdb.CompleteOrder(orederID, orderStatus);
+        }
+        public void UpdateToPreparingOrders(int orederID, OrderStatus orderStatus)
+        {
+            orderdb.StartOrder(orederID, orderStatus);
         }
     }
 }

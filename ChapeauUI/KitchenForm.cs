@@ -9,25 +9,49 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ChapeauModel;
+using System.Media;
 
 
 namespace ChapeauUI
 {
-    public partial class KitchenForm : Form
+    public partial class KitchenForm : Form, IObserver
     {
-        PreviousOrders previousOrdersForm;
-        public KitchenForm()
+        private List<Order> orders;
+        private OrderService orderService;
+        private string name;
+        private ISubject subject;
+        public ISubject Subject
+        {
+            get { return subject; }
+            set { subject = value; }
+        }
+
+        public KitchenForm(ISubject subject)
         {
             InitializeComponent();
-            this.previousOrdersForm = new PreviousOrders();
-        }
-
-        private void KitchenForm_Load(object sender, EventArgs e)
-        {
+            subject.Attach(this);
             DisplayOrders();
+            this.subject = subject;
+            this.orderService = new OrderService();
+        }
+        public void Update()
+        {
+
+            List<Order> latestOrders = orderService.GetPendingOrdersForKitchen();
+
+            foreach (Order order in latestOrders)
+            {
+                if (!orders.Any(o => o.OrderID == order.OrderID))
+                {
+                    orders.Add(order);
+                    KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel);
+                    flowLayoutKitchenPnl.Controls.Add(kitchenDisplayOrder);
+                    openOrdersLabel.Text = $"Open: {orders.Count}";
+                    playNotificationSound();
+                }
+            }
 
         }
-
         private List<Order> GetKitchenOrders()
         {
             OrderService orderService = new OrderService();
@@ -37,21 +61,25 @@ namespace ChapeauUI
 
         private void DisplayOrders()
         {
-            List<Order> orders = GetKitchenOrders();
-            int numberOfOrders = 0;
+            orders = GetKitchenOrders();
             foreach (Order order in orders)
             {
-                KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order);
+                KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel);
                 flowLayoutKitchenPnl.Controls.Add(kitchenDisplayOrder);
-                numberOfOrders++;
             }
-            openOrdersLabel.Text = $"Open: {numberOfOrders}";
+            openOrdersLabel.Text = $"Open: {orders.Count}";
         }
 
-        private void historyOrders_Click(object sender, EventArgs e)
+        //private void historyOrders_Click(object sender, EventArgs e)
+        //{
+        //    previousOrdersForm.Show();
+        //    this.Hide();
+        //}
+
+        private void playNotificationSound()
         {
-            previousOrdersForm.Show();
-            this.Hide();
+            SoundPlayer sound = new SoundPlayer("NewOrder.wav");
+            sound.Play();
         }
     }
 }

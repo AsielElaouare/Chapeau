@@ -34,17 +34,8 @@ namespace ChapeauUI
         /// </summary>
         private void InitializeComponent()
         {
-            this.holdTimer = new System.Windows.Forms.Timer();
-
-            // Timer settings
-            this.holdTimer.Interval = 5000;
-
-
-
-            // Add the buttons to the form (adjust location and size as needed)
-
-
             components = new System.ComponentModel.Container();
+            holdTimer = new Timer(components);
             timer = new Timer(components);
             timeLabel = new Label();
             orderInfLabel = new Label();
@@ -62,13 +53,14 @@ namespace ChapeauUI
             flowLayoutPanelOrder.SuspendLayout();
             SuspendLayout();
             // 
+            // holdTimer
+            // 
+            holdTimer.Interval = 5000;
+            // 
             // timer
             // 
-            timer.Enabled = true;
             timer.Interval = 1000;
             timer.Tick += TimerTick;
-
-
             // 
             // timeLabel
             // 
@@ -91,6 +83,7 @@ namespace ChapeauUI
             // mainDishesLabel
             // 
             mainDishesLabel.BackColor = Color.FromArgb(255, 143, 143);
+            mainDishesLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             mainDishesLabel.Location = new Point(0, 61);
             mainDishesLabel.Margin = new Padding(0, 10, 0, 0);
             mainDishesLabel.Name = "mainDishesLabel";
@@ -101,6 +94,7 @@ namespace ChapeauUI
             // sideDishesLabel
             // 
             sideDishesLabel.BackColor = Color.FromArgb(119, 234, 109);
+            sideDishesLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             sideDishesLabel.Location = new Point(0, 137);
             sideDishesLabel.Margin = new Padding(0, 60, 0, 0);
             sideDishesLabel.Name = "sideDishesLabel";
@@ -111,6 +105,7 @@ namespace ChapeauUI
             // dessertsLabel
             // 
             dessertsLabel.BackColor = Color.FromArgb(234, 199, 109);
+            dessertsLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             dessertsLabel.Location = new Point(0, 213);
             dessertsLabel.Margin = new Padding(0, 60, 0, 0);
             dessertsLabel.Name = "dessertsLabel";
@@ -120,6 +115,7 @@ namespace ChapeauUI
             // 
             // orderPanel
             // 
+            orderPanel.BackColor = Color.Gray;
             orderPanel.Controls.Add(timeLabel);
             orderPanel.Controls.Add(orderInfLabel);
             orderPanel.Controls.Add(mainDishesLabel);
@@ -177,6 +173,7 @@ namespace ChapeauUI
             // StartBtn
             // 
             StartBtn.BackColor = Color.FromArgb(0, 132, 255);
+            StartBtn.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             StartBtn.ForeColor = Color.MintCream;
             StartBtn.Location = new Point(0, 398);
             StartBtn.Margin = new Padding(0);
@@ -191,6 +188,7 @@ namespace ChapeauUI
             // 
             CompleteBtn.BackColor = Color.FromArgb(23, 185, 8);
             CompleteBtn.Enabled = false;
+            CompleteBtn.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             CompleteBtn.ForeColor = SystemColors.ButtonHighlight;
             CompleteBtn.Location = new Point(125, 398);
             CompleteBtn.Margin = new Padding(50, 0, 0, 0);

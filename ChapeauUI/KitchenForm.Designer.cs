@@ -44,7 +44,6 @@
             historyOrders.TabIndex = 0;
             historyOrders.Text = "Geschidenis";
             historyOrders.UseVisualStyleBackColor = false;
-            historyOrders.Click += historyOrders_Click;
             // 
             // openOrdersLabel
             // 
@@ -79,7 +78,6 @@
             Controls.Add(historyOrders);
             Name = "KitchenForm";
             Text = "Kitchen View";
-            Load += KitchenForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

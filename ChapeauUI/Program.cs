@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChapeauModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,12 @@ namespace ChapeauUI
             //ApplicationConfiguration.Initialize();
             //LoginForm loginForm = new LoginForm();
             //loginForm.Show();
-            Application.Run(new KitchenForm());
+            OrderForm form = new OrderForm();
+            form.Show();
+            KitchenForm kitchenForm = new KitchenForm(form);
+            kitchenForm.Show();
+            Application.Run(new BarForm(form));
+
 
 
         }

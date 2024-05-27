@@ -39,6 +39,46 @@ namespace ChapeauDAL
             return orderId;
         }
 
+        public List<Order> GetOrdersForBar()
+        {
+            string query = @"
+            SELECT 
+                rk.tafelnr,
+                [order].orderid,
+                SUM(ol.aantal) AS aantal,
+                STRING_AGG([ol].opmerking, '; ') AS opmerking,
+                [order].[status],
+                STRING_AGG(ak.naam, '; ') AS Article, 
+                STRING_AGG(ak.categorie, ', ') AS categorie 
+            FROM 
+                [order]
+            JOIN 
+                orderline AS OL ON [order].[orderid] = OL.orderid
+            JOIN 
+                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                artikel AS ak ON ol.artikelid = ak.artikelid
+            where [status] = 'Pending' AND (ak.categorie = 'bier' or ak.categorie = 'KoffieThee' or ak.categorie = 'Gedistilleerd' or ak.categorie = 'Frisdrank' or ak.categorie = 'wijn')
+            GROUP BY 
+                rk.tafelnr, [order].orderid, [order].[status]
+            ORDER BY 
+                rk.tafelnr, [order].orderid";
+            SqlCommand command = new SqlCommand(query, OpenConnection());
+
+            SqlDataReader reader = command.ExecuteReader();
+            List<Order> orders = new List<Order>();
+
+            while (reader.Read())
+            {
+
+                Order order = ReadOrders(reader);
+                orders.Add(order);
+            }
+            reader.Close();
+            CloseConnection();
+            return orders;
+        }
+
 
         public List<Order> GetOrdersForKitchen()
         {
@@ -59,53 +99,11 @@ namespace ChapeauDAL
                 rekening AS rk ON [order].rekeningnr = rk.rekeningnr
             JOIN 
                 artikel AS ak ON ol.artikelid = ak.artikelid
-            where [status] = 'Pending'
+            where [status] = 'Pending' AND (ak.categorie = 'Hoofdgerechten' or ak.categorie = 'Nagerechten' or ak.categorie = 'Tussengerechten' or ak.categorie = 'Voorgerechten')
             GROUP BY 
                 rk.tafelnr, [order].orderid, [order].[status]
             ORDER BY 
-                rk.tafelnr, [order].orderid;";
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-
-            SqlDataReader reader = command.ExecuteReader();
-            List<Order> orders = new List<Order>();
-
-            while (reader.Read())
-            {
-
-                Order order = ReadOrders(reader);
-                orders.Add(order);
-            }
-            reader.Close();
-            CloseConnection();
-            return orders;
-        }
-
-        //impolementing this tomorrow 
-        public List<Order> GetPreviousOrdersForKitchen()
-        {
-            // get previous orders of today!!
-            string query = @"
-            SELECT 
-                rk.tafelnr,
-                [order].orderid,
-                SUM(ol.aantal) AS aantal,
-                STRING_AGG([ol].opmerking, '; ') AS opmerking,
-                [order].[status],
-                STRING_AGG(ak.naam, '; ') AS Article, 
-                STRING_AGG(ak.categorie, '; ') AS categorie 
-            FROM 
-                [order]
-            JOIN 
-                orderline AS OL ON [order].[orderid] = OL.orderid
-            JOIN 
-                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
-            JOIN 
-                artikel AS ak ON ol.artikelid = ak.artikelid
-            where [status] = 'Ready'
-            GROUP BY 
-                rk.tafelnr, [order].orderid, [order].[status]
-            ORDER BY 
-                rk.tafelnr, [order].orderid;";
+                rk.tafelnr, [order].orderid";
             SqlCommand command = new SqlCommand(query, OpenConnection());
 
             SqlDataReader reader = command.ExecuteReader();
@@ -145,6 +143,28 @@ namespace ChapeauDAL
 
             }
             return currentOrder;
+        }
+
+        public void CompleteOrder(int orderId, OrderStatus orderStatus)
+        {
+            string query = $"UPDATE [order] SET [status] = @orderStatus WHERE [orderId] = @OrderId";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@OrderId", orderId),
+                new SqlParameter("@orderStatus", orderStatus.ToString())
+            };
+            ExecuteEditQuery(query, parameters);
+
+        }
+        public void StartOrder(int orderId, OrderStatus orderStatus)
+        {
+            string query = $"UPDATE [order] SET [status] = @orderStatus WHERE [orderId] = @OrderId";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@OrderId", orderId),
+                new SqlParameter("@orderStatus", orderStatus.ToString())
+            };
+            ExecuteEditQuery(query, parameters);
         }
     }
 }
