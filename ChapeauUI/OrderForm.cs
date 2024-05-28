@@ -19,6 +19,9 @@ namespace ChapeauUI
         List<Product> products;
         List<Orderline> orders;
         List<Tafel> tafel;
+        
+        Employee employee;
+        Tafel table;
 
         private List<IObserver> observers = new List<IObserver>();
         public Order SubjectOrder
@@ -43,7 +46,15 @@ namespace ChapeauUI
             }
         }
 
+
         public OrderForm()
+        {
+            InitializeComponent();
+            products = GetProducts();
+            FillTableBox();
+            orders = new List<Orderline>();
+        }
+        public OrderForm(Tafel table)
         {
             InitializeComponent();
             products = GetProducts();
