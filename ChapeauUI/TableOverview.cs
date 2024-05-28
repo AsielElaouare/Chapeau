@@ -107,7 +107,7 @@ namespace ChapeauUI
             column = thirdRowIndex % columns;
             xPosition = startX + column * spacingX;
             yPosition = thirdRowY;
-            bottomRowIndex++;
+            thirdRowIndex++;
         }
         private void CreateTables(Button tableButton, int xPosition, int yPosition, Tafel table)
         {
