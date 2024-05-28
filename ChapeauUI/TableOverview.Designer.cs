@@ -107,6 +107,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.FromArgb(252, 246, 245);
             ClientSize = new System.Drawing.Size(1133, 744);
             Controls.Add(IndicateEntranceRightPnl);
             Controls.Add(IndicateEntranceLeftPnl);

@@ -8,6 +8,6 @@ namespace ChapeauModel
 {
     public enum TableStatusEnum
     {
-        Free, Reserved, Occupied, ordered
+        Free, Reserved, Occupied, Ordered
     }
 }

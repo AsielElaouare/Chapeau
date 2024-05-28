@@ -21,7 +21,7 @@ namespace ChapeauUI
         private int Attempts = 0;
         string youtubeUrl = "https://youtu.be/dQw4w9WgXcQ?si=EMcOrmZ8Kj8C7oY2";
 
-        
+
         private LoginService loginService;
         public LoginForm()
         {
@@ -29,7 +29,7 @@ namespace ChapeauUI
             loginService = new LoginService();
         }
 
-       
+
 
         private void ClearPassword()
         {
@@ -47,22 +47,43 @@ namespace ChapeauUI
                     if (employee != null) { try { OpenRelevantForm(employee); } catch (Exception ex) { adjustAttempts(ex.Message); ClearPassword(); } }
                 }
                 else { adjustAttempts("Verkeerde gebruikersnaam"); ClearPassword(); }
-            }catch(Exception  ex) { adjustAttempts(ex.Message);}
+            }
+            catch (Exception ex) { adjustAttempts(ex.Message); }
         }
 
 
         private void adjustAttempts(string message)
         {
             Attempts++;
-            MessageBox.Show(message);
+            ShowAttempts(message);
             if (Attempts >= maxAttempts)
             {
+                LockDownSystem();
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = youtubeUrl,
                     UseShellExecute = true
                 }); ;
             }
+        }
+
+        private void ShowAttempts(string message)
+        {
+            if (Attempts >= maxAttempts)
+            {
+                MessageBox.Show(message + "\n Systeem staat op slot. \n Start het systeem opnieuw op om weer te proberen.");
+            }
+            else
+            {
+                MessageBox.Show(message + $"\n {maxAttempts - Attempts} pogingen over");
+            }
+        }
+
+        private void LockDownSystem()
+        {
+            UsernameTextBox.Enabled = false;
+            PasswordTextBox.Enabled = false;
+            ConfirmBtn.Enabled = false;
         }
 
         private void OpenRelevantForm(Employee employee)

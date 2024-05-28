@@ -17,8 +17,9 @@ namespace ChapeauUI
         Employee employee;
         List<Tafel> tables;
         const int startX = 108;
-        const int topRowY = 150;
-        const int bottomRowY = topRowY + 266;
+        int topRowY = 150;
+        int bottomRowY = 416;
+        int thirdRowY = 416;
         const int spacingX = 189;
         const int columns = 5;
 
@@ -28,24 +29,42 @@ namespace ChapeauUI
         int yPosition;
         int topRowIndex = 0;
         int bottomRowIndex = 0;
+        int thirdRowIndex = 0;
 
+        int amountOfTablesCreated = 0;
+
+        const int regularAmountOfTables = 10;
         public TableOverview(Employee employee)
         {
             InitializeComponent();
             this.employee = employee;
             this.tables = GetTables();
-
-            InitializeTables();
+            CheckLayOut();
         }
 
         private void CheckLayOut()
         {
-
+            if (tables.Count <= regularAmountOfTables)
+            {
+                InitializeTables();
+            }
+            else
+            {
+                UpdateRows();
+                InitializeTables();
+            }
         }
+
+        private void UpdateRows()
+        {
+            topRowY = 100;
+            bottomRowY = 314;
+        }
+
         private List<Tafel> GetTables()
         {
             TafelService tafelService = new TafelService();
-            return tafelService.GetTafel();
+            return tafelService.GetTablesAndStatus();
         }
 
 
@@ -54,13 +73,16 @@ namespace ChapeauUI
             foreach (Tafel table in tables)
             {
                 Button tableButton = new Button();
-                if (table.Status == TableStatusEnum.Free || table.Status == TableStatusEnum.Reserved) { tableButton.Font = new Font(tableButton.Font.FontFamily, 40); }
+                tableButton.Font = new Font(tableButton.Font.FontFamily, 16);
+                tableButton.ForeColor = Color.White;
+                if (table.Status == TableStatusEnum.Free) { tableButton.Font = new Font(tableButton.Font.FontFamily, 40); }
                 tableButton.Text = $"{table.TafelNummer}";
                 tableButton.Tag = table;
                 tableButton.FlatStyle = FlatStyle.Flat;
                 tableButton.FlatAppearance.BorderSize = 0;
-                if ((table.TafelNummer + 1) % 2 != 0){CreateEvenTables();}
-                else{CreateOddTables();}
+                if ((table.TafelNummer + 1) % 2 != 0) { CreateEvenTables(); }
+                else if (amountOfTablesCreated <= 10) { CreateOddTables(); }
+                else { CreateExtraTables(); }
                 CreateTables(tableButton, xPosition, yPosition, table);
             }
         }
@@ -79,6 +101,14 @@ namespace ChapeauUI
             yPosition = bottomRowY;
             bottomRowIndex++;
         }
+
+        private void CreateExtraTables()
+        {
+            column = thirdRowIndex % columns;
+            xPosition = startX + column * spacingX;
+            yPosition = thirdRowY;
+            bottomRowIndex++;
+        }
         private void CreateTables(Button tableButton, int xPosition, int yPosition, Tafel table)
         {
             tableButton.Location = new Point(xPosition, yPosition);
@@ -90,16 +120,23 @@ namespace ChapeauUI
 
         private Color tableStatus(Tafel table)
         {
-            switch (table.Status) 
-            { 
-                case TableStatusEnum.Free:return Color.FromArgb(5, 123, 31);
+            switch (table.Status)
+            {
+                case TableStatusEnum.Free: return Color.FromArgb(5, 123, 31);
                 case TableStatusEnum.Reserved: return Color.FromArgb(12, 18, 150);
-                case TableStatusEnum.Occupied:return Color.FromArgb(153, 0, 17);
-                case TableStatusEnum.ordered: return Color.FromArgb(201, 126, 13);
+                case TableStatusEnum.Occupied: return Color.FromArgb(153, 0, 17);
+                case TableStatusEnum.Ordered: return Color.FromArgb(201, 126, 13);
                 default: return Color.DarkGray;
             }
         }
 
+        public void ReOpenForm()
+        {
+            this.Hide();
+            TableOverview tableOverview = new TableOverview(employee);
+            tableOverview.Show();
+            this.Close();
+        }
 
 
         private void TableButton_Click(object sender, EventArgs e)
@@ -121,14 +158,10 @@ namespace ChapeauUI
         {
             switch (table.Status)
             {
-                case TableStatusEnum.Free:
-                    OpenPopUpFreeTable(table); break;
-                case TableStatusEnum.Reserved:
-                    OpenPopUpFreeTable(table); break;
-                case TableStatusEnum.Occupied:
-                    OpenPopUpOccupiedTable(table); break;
-                case TableStatusEnum.ordered:
-                    OpenPopUpOccupiedTable(table); break;
+                case TableStatusEnum.Free: OpenPopUpFreeTable(table); break;
+                case TableStatusEnum.Reserved: OpenPopUpFreeTable(table); break;
+                case TableStatusEnum.Occupied: OpenPopUpOccupiedTable(table); break;
+                case TableStatusEnum.Ordered:   /*Write a statement to check if order is ready to open ordered form else open -->>*/ OpenPopUpOccupiedTable(table); break;
                 default: OpenPopUpFreeTable(table); break;
             }
         }

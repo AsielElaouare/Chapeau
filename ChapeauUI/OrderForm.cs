@@ -28,7 +28,7 @@ namespace ChapeauUI
             FillTableBox();
             orders = new List<Orderline>();
         }
-        public OrderForm(Employee employee, Tafel table)
+        public OrderForm(Tafel table)
         {
             InitializeComponent();
             products = GetProducts();

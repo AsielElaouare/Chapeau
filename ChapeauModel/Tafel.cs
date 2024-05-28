@@ -17,7 +17,22 @@ namespace ChapeauModel
         {
             TafelNummer = tafelNummer;
             ZitPlaatsen = zitPlaatsen;
-            Status = TableStatusEnum.Free;
+        }
+
+        public Tafel(int tafelNummer, int zitPlaatsen, string status) : this(tafelNummer, zitPlaatsen)
+        {
+            Status = SetStatus(status);
+        }
+
+        public TableStatusEnum SetStatus(string status)
+        {
+            switch (status)
+            {
+                case "Vrij": return TableStatusEnum.Free;
+                case "Bezet": return TableStatusEnum.Occupied;
+                case "Besteld": return TableStatusEnum.Ordered;
+                default: return TableStatusEnum.Free;
+            }
         }
     }
 }

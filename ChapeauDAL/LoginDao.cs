@@ -13,7 +13,7 @@ namespace ChapeauDAL
     {
         public Employee GetPassWordbyID(string personeelNummer)
         {
-            string query = "SELECT personeelnummer, naam , wachtwoord, functie FROM [personeel] WHERE personeelnummer = @personeelnummer";
+            string query = "SELECT [personeelnummer], [naam] , [wachtwoord], [functie] FROM [personeel] WHERE [personeelnummer] = @personeelnummer";
             SqlParameter[] sqlParameters = new SqlParameter[1];
             sqlParameters[0] = new SqlParameter("@personeelnummer", personeelNummer);
             return ReadSingleRow(ExecuteSelectQuery(query, sqlParameters));
@@ -21,7 +21,7 @@ namespace ChapeauDAL
 
         public bool GetByEmployeeId(string employeeId)
         {
-            string query = "SELECT personeelnummer, naam FROM [personeel] WHERE personeelnummer = @EmployeeId";
+            string query = "SELECT [personeelnummer], [naam] FROM [personeel] WHERE [personeelnummer] = @EmployeeId";
             SqlParameter[] sqlParameters = new SqlParameter[1];
             sqlParameters[0] = new SqlParameter("@EmployeeId", employeeId);
             return ReadIfEmployeeIdExists(ExecuteSelectQuery(query, sqlParameters));

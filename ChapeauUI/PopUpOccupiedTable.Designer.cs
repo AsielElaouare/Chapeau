@@ -35,6 +35,7 @@
             // 
             // tableLbl
             // 
+            tableLbl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             tableLbl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             tableLbl.Location = new System.Drawing.Point(80, 26);
             tableLbl.Name = "tableLbl";
@@ -48,6 +49,7 @@
             OrderBtn.BackColor = System.Drawing.Color.Black;
             OrderBtn.FlatAppearance.BorderSize = 0;
             OrderBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            OrderBtn.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             OrderBtn.ForeColor = System.Drawing.Color.White;
             OrderBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             OrderBtn.Location = new System.Drawing.Point(80, 78);
@@ -63,6 +65,7 @@
             RecieptBtn.BackColor = System.Drawing.Color.Black;
             RecieptBtn.FlatAppearance.BorderSize = 0;
             RecieptBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            RecieptBtn.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             RecieptBtn.ForeColor = System.Drawing.Color.White;
             RecieptBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             RecieptBtn.Location = new System.Drawing.Point(80, 153);
@@ -73,19 +76,19 @@
             RecieptBtn.UseVisualStyleBackColor = false;
             RecieptBtn.Click += RecieptBtn_Click;
             // 
-            // PupUpOccupiedTable
+            // PopUpOccupiedTable
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
             ClientSize = new System.Drawing.Size(432, 210);
             Controls.Add(RecieptBtn);
             Controls.Add(OrderBtn);
             Controls.Add(tableLbl);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            Name = "PupUpOccupiedTable";
+            Name = "PopUpOccupiedTable";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "PupUpOccupiedTable";
+            Deactivate += PopUpOccupiedTable_Deactivate;
             ResumeLayout(false);
         }
 

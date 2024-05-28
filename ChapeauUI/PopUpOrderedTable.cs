@@ -11,13 +11,13 @@ using System.Windows.Forms;
 
 namespace ChapeauUI
 {
-    public partial class PopUpOccupiedTable : Form
+    public partial class PopUpOrderedTable : Form
     {
         Employee employee;
         Tafel table;
         OrderForm orderForm;
         TableOverview tableOverview;
-        public PopUpOccupiedTable(Employee employee, Tafel table, TableOverview tableOverview)
+        public PopUpOrderedTable(Employee employee, Tafel table, TableOverview tableOverview)
         {
             InitializeComponent();
             this.table = table;
@@ -26,23 +26,16 @@ namespace ChapeauUI
             this.tableOverview = tableOverview;
         }
 
+        private void PopUpOrderedTable_Deactivate(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void OrderBtn_Click(object sender, EventArgs e)
         {
             orderForm = new OrderForm(table);
             orderForm.Show();
             tableOverview.Close();
-            this.Close();
-        }
-
-        private void RecieptBtn_Click(object sender, EventArgs e)
-        {
-            //////Open reciept form
-
-            this.Close();
-        }
-
-        private void PopUpOccupiedTable_Deactivate(object sender, EventArgs e)
-        {
             this.Close();
         }
     }

@@ -38,6 +38,7 @@
             StartOrderBtn.BackColor = System.Drawing.Color.Black;
             StartOrderBtn.FlatAppearance.BorderSize = 0;
             StartOrderBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            StartOrderBtn.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             StartOrderBtn.ForeColor = System.Drawing.Color.White;
             StartOrderBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             StartOrderBtn.Location = new System.Drawing.Point(80, 78);
@@ -53,6 +54,7 @@
             MarkTableOccupiedBtn.BackColor = System.Drawing.Color.Black;
             MarkTableOccupiedBtn.FlatAppearance.BorderSize = 0;
             MarkTableOccupiedBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            MarkTableOccupiedBtn.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             MarkTableOccupiedBtn.ForeColor = System.Drawing.Color.White;
             MarkTableOccupiedBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             MarkTableOccupiedBtn.Location = new System.Drawing.Point(80, 153);
@@ -65,6 +67,7 @@
             // 
             // tableLbl
             // 
+            tableLbl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             tableLbl.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             tableLbl.Location = new System.Drawing.Point(80, 26);
             tableLbl.Name = "tableLbl";

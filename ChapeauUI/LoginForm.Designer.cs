@@ -121,8 +121,7 @@
             // 
             // LoginForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(1133, 744);
             Controls.Add(ConfirmBtn);
