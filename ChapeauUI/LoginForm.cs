@@ -80,7 +80,7 @@ namespace ChapeauUI
             if (enteredPassword.Length == 5) // make const
             {
                 try
-                { 
+                {
                     Employee employee = loginService.VerifyEnteredPassword(enteredPassword);
                     MessageBox.Show($"Successvol ingelogt {employee.name}");
                     OpenRelevantForm(employee);
@@ -89,7 +89,7 @@ namespace ChapeauUI
             }
         }
 
-        
+
         private void adjustAttempts()
         {
             maxAttempts--;
@@ -97,7 +97,7 @@ namespace ChapeauUI
             {
                 Process.Start(new ProcessStartInfo
                 {
-                    
+
                     FileName = youtubeUrl,
                     UseShellExecute = true
                 }); ;
@@ -106,10 +106,12 @@ namespace ChapeauUI
 
         private void OpenRelevantForm(Employee employee)
         {
-            if (employee.role == "Chef") { KitchenForm kitchenform = new KitchenForm(); kitchenform.Show(); this.Close(); }
+            if (employee.role == "Chef")
+            { //KitchenForm kitchenform = new KitchenForm(); kitchenform.Show(); this.Close();
+            }
             else if (employee.role == "Bartender") { }
-            else if (employee.role == "Server") { TableOverview tableOverview = new TableOverview(employee);  tableOverview.Show(); this.Close(); }
-            else if (employee.role == "Manager") { TableOverview tableOverview = new TableOverview(employee);  tableOverview.Show(); this.Close(); }
+            else if (employee.role == "Server") { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
+            else if (employee.role == "Manager") { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
         }
         private void roundButton1_Click(object sender, EventArgs e)
         {
@@ -198,7 +200,7 @@ namespace ChapeauUI
             enteredPassword += enteredNumber;
             UpdateVisualNumbers();
             if (enteredPassword.Length == 5) { CheckPassword(); }
-            else { TableOverview tableOverview = new TableOverview(employeeTest);  tableOverview.Show(); this.Close(); }
+            else { TableOverview tableOverview = new TableOverview(employeeTest); tableOverview.Show(); this.Close(); }
         }
 
         private void CloseApplicationBtn_Click(object sender, EventArgs e)
