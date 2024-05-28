@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -45,12 +45,12 @@ namespace ChapeauUI
                 {
                     Employee employee = loginService.checkLogin(enteredUsername, enteredPassword);
                     if (employee != null) { try { OpenRelevantForm(employee); } catch (Exception ex) { adjustAttempts(ex.Message); ClearPassword(); } }
+
                 }
                 else { adjustAttempts("Verkeerde gebruikersnaam"); ClearPassword(); }
             }
             catch (Exception ex) { adjustAttempts(ex.Message); }
         }
-
 
         private void adjustAttempts(string message)
         {

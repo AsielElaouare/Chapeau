@@ -13,6 +13,12 @@ namespace ChapeauModel
         public int Aantal { get;  set; }
         public string Opmerking { get; private set; }
         public int ArtikelID { get; private set; }
+        public Orderline(int orderID, int aantal, string opmerking)
+        {
+            OrderID = orderID;
+            Aantal = aantal;
+            Opmerking = opmerking;
+        }
         public Orderline(int orderID, int aantal, string opmerking, int artikelID)
         {
             OrderID = orderID;

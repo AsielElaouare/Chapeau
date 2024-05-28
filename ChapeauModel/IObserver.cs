@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ChapeauModel
 {
-    public enum OrderStatus
+    public interface IObserver
     {
-        Ready, Preparing, Pending 
+        public void Update();
     }
 }

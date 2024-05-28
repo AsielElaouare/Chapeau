@@ -14,13 +14,39 @@ using System.Windows.Forms;
 
 namespace ChapeauUI
 {
-    public partial class OrderForm : Form
+    public partial class OrderForm : Form, ISubject
     {
         List<Product> products;
         List<Orderline> orders;
         List<Tafel> tafel;
+        
         Employee employee;
         Tafel table;
+
+        private List<IObserver> observers = new List<IObserver>();
+        public Order SubjectOrder
+        {
+            get { return SubjectOrder; }
+            set { SubjectOrder = value; }
+        }
+        public void Attach(IObserver observer)
+        {
+            observers.Add(observer);
+        }
+        public void Deattach(IObserver observer)
+        {
+            observers.Remove(observer);
+
+        }
+        public void NotifyOberservers()
+        {
+            foreach (IObserver observer in observers)
+            {
+                observer.Update();
+            }
+        }
+
+
         public OrderForm()
         {
             InitializeComponent();
@@ -73,6 +99,7 @@ namespace ChapeauUI
                 int orderID = GetNewOrderID(timeOfOrder, selectedTable);
                 PlaceOrderIDInOrderline(orderID);
                 StoreOrdersInDB(orders);
+                NotifyOberservers();
             }
             else
             {
@@ -255,7 +282,7 @@ namespace ChapeauUI
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:")); break;
                 }
-                else
+                else if(order.ArtikelID == (int)clickedButton.Tag)
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:", "", order.Opmerking)); break;
                 }
@@ -294,5 +321,7 @@ namespace ChapeauUI
             }
             return "";
         }
+
+
     }
 }
