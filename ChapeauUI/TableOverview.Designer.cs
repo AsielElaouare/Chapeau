@@ -29,29 +29,30 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableOverview));
-            bottomRightRoundedButton1 = new BottomRightRoundedButton();
+            OpenLegendBtn = new BottomRightRoundedButton();
             logOutBtn = new BottomLeftRoundedButton();
             bottomRoundedButton1 = new BottomRoundedButton();
             IndicateEntranceLeftPnl = new System.Windows.Forms.Panel();
             IndicateEntranceRightPnl = new System.Windows.Forms.Panel();
             SuspendLayout();
             // 
-            // bottomRightRoundedButton1
+            // OpenLegendBtn
             // 
-            bottomRightRoundedButton1.BackColor = System.Drawing.Color.FromArgb(201, 126, 13);
-            bottomRightRoundedButton1.BackgroundImage = (System.Drawing.Image)resources.GetObject("bottomRightRoundedButton1.BackgroundImage");
-            bottomRightRoundedButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            bottomRightRoundedButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            bottomRightRoundedButton1.FlatAppearance.BorderSize = 0;
-            bottomRightRoundedButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            bottomRightRoundedButton1.ForeColor = System.Drawing.Color.Transparent;
-            bottomRightRoundedButton1.Location = new System.Drawing.Point(0, 0);
-            bottomRightRoundedButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            bottomRightRoundedButton1.Name = "bottomRightRoundedButton1";
-            bottomRightRoundedButton1.Size = new System.Drawing.Size(48, 48);
-            bottomRightRoundedButton1.TabIndex = 0;
-            bottomRightRoundedButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            bottomRightRoundedButton1.UseVisualStyleBackColor = false;
+            OpenLegendBtn.BackColor = System.Drawing.Color.FromArgb(201, 126, 13);
+            OpenLegendBtn.BackgroundImage = (System.Drawing.Image)resources.GetObject("OpenLegendBtn.BackgroundImage");
+            OpenLegendBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            OpenLegendBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            OpenLegendBtn.FlatAppearance.BorderSize = 0;
+            OpenLegendBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            OpenLegendBtn.ForeColor = System.Drawing.Color.Transparent;
+            OpenLegendBtn.Location = new System.Drawing.Point(0, 0);
+            OpenLegendBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            OpenLegendBtn.Name = "OpenLegendBtn";
+            OpenLegendBtn.Size = new System.Drawing.Size(48, 48);
+            OpenLegendBtn.TabIndex = 0;
+            OpenLegendBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            OpenLegendBtn.UseVisualStyleBackColor = false;
+            OpenLegendBtn.Click += OpenLegendBtn_Click;
             // 
             // logOutBtn
             // 
@@ -113,7 +114,7 @@
             Controls.Add(IndicateEntranceLeftPnl);
             Controls.Add(bottomRoundedButton1);
             Controls.Add(logOutBtn);
-            Controls.Add(bottomRightRoundedButton1);
+            Controls.Add(OpenLegendBtn);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             Name = "TableOverview";
@@ -124,7 +125,7 @@
 
         #endregion
 
-        private BottomRightRoundedButton bottomRightRoundedButton1;
+        private BottomRightRoundedButton OpenLegendBtn;
         private BottomLeftRoundedButton logOutBtn;
         private BottomRoundedButton bottomRoundedButton1;
         private System.Windows.Forms.Panel IndicateEntranceLeftPnl;

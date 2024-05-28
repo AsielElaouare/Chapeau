@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PopUpFreeTable));
             StartOrderBtn = new PillButton();
             MarkTableOccupiedBtn = new PillButton();
             tableLbl = new System.Windows.Forms.Label();
@@ -40,12 +41,14 @@
             StartOrderBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             StartOrderBtn.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             StartOrderBtn.ForeColor = System.Drawing.Color.White;
+            StartOrderBtn.Image = (System.Drawing.Image)resources.GetObject("StartOrderBtn.Image");
             StartOrderBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             StartOrderBtn.Location = new System.Drawing.Point(80, 78);
             StartOrderBtn.Name = "StartOrderBtn";
             StartOrderBtn.Size = new System.Drawing.Size(272, 38);
             StartOrderBtn.TabIndex = 0;
             StartOrderBtn.Text = "Start bestelling";
+            StartOrderBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             StartOrderBtn.UseVisualStyleBackColor = false;
             StartOrderBtn.Click += StartOrderBtn_Click;
             // 
@@ -56,12 +59,14 @@
             MarkTableOccupiedBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             MarkTableOccupiedBtn.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             MarkTableOccupiedBtn.ForeColor = System.Drawing.Color.White;
+            MarkTableOccupiedBtn.Image = (System.Drawing.Image)resources.GetObject("MarkTableOccupiedBtn.Image");
             MarkTableOccupiedBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             MarkTableOccupiedBtn.Location = new System.Drawing.Point(80, 153);
             MarkTableOccupiedBtn.Name = "MarkTableOccupiedBtn";
             MarkTableOccupiedBtn.Size = new System.Drawing.Size(272, 38);
             MarkTableOccupiedBtn.TabIndex = 1;
             MarkTableOccupiedBtn.Text = "Bezet markeren";
+            MarkTableOccupiedBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             MarkTableOccupiedBtn.UseVisualStyleBackColor = false;
             MarkTableOccupiedBtn.Click += MarkTableOccupiedBtn_Click;
             // 

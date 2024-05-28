@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PopUpOccupiedTable));
             tableLbl = new System.Windows.Forms.Label();
             OrderBtn = new PillButton();
             RecieptBtn = new PillButton();
@@ -51,6 +52,7 @@
             OrderBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             OrderBtn.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             OrderBtn.ForeColor = System.Drawing.Color.White;
+            OrderBtn.Image = (System.Drawing.Image)resources.GetObject("OrderBtn.Image");
             OrderBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             OrderBtn.Location = new System.Drawing.Point(80, 78);
             OrderBtn.Name = "OrderBtn";
@@ -67,6 +69,7 @@
             RecieptBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             RecieptBtn.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             RecieptBtn.ForeColor = System.Drawing.Color.White;
+            RecieptBtn.Image = (System.Drawing.Image)resources.GetObject("RecieptBtn.Image");
             RecieptBtn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             RecieptBtn.Location = new System.Drawing.Point(80, 153);
             RecieptBtn.Name = "RecieptBtn";

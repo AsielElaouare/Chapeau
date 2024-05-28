@@ -177,5 +177,10 @@ namespace ChapeauUI
             PopUpOccupiedTable popUpFreeTable = new PopUpOccupiedTable(employee, table, this);
             popUpFreeTable.Show();
         }
+        private void OpenLegendBtn_Click(object sender, EventArgs e)
+        {
+            Legend legend = new Legend();
+            legend.Show();
+        }
     }
 }

@@ -31,11 +31,20 @@ namespace ChapeauUI
             {
                 pevent.Graphics.FillPath(brush, path);
             }
-            if (BackgroundImage != null)
+
+            int imageWidth = Image != null ? Image.Width : 0;
+            int imageHeight = Image != null ? Image.Height : 0;
+            int textWidth = TextRenderer.MeasureText(Text, Font).Width;
+            int padding = 20;
+
+            int totalWidth = imageWidth + padding + textWidth;
+            int imageX = (Width - totalWidth) / 2;
+            int textX = imageX + imageWidth + padding;
+            int centerY = (Height - Math.Max(imageHeight, Font.Height)) / 2;
+
+            if (Image != null)
             {
-                int x = (Width - BackgroundImage.Width) / 2;
-                int y = (Height - BackgroundImage.Height) / 2;
-                pevent.Graphics.DrawImage(BackgroundImage, new Rectangle(x, y, BackgroundImage.Width, BackgroundImage.Height));
+                pevent.Graphics.DrawImage(Image, new Rectangle(imageX, centerY, imageWidth, imageHeight));
             }
             TextRenderer.DrawText(pevent.Graphics, Text, Font, ClientRectangle, ForeColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
         }

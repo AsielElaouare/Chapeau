@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,14 +21,27 @@ namespace ChapeauUI
         TableOverview tableOverview;
         TafelService tableService;
         string status = "Bezet";
+        private int cornerRadius = 30;
         public PopUpFreeTable(Employee employee, Tafel table, TableOverview tableOverview)
         {
             InitializeComponent();
+            SetRoundedRegion();
             this.table = table;
             this.employee = employee;
             tableLbl.Text = $"Tafel {table.TafelNummer.ToString()}";
             this.tableOverview = tableOverview;
             tableService = new TafelService();
+        }
+        private void SetRoundedRegion()
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, cornerRadius, cornerRadius, 180, 90);
+            path.AddArc(this.Width - cornerRadius, 0, cornerRadius, cornerRadius, 270, 90);
+            path.AddArc(this.Width - cornerRadius, this.Height - cornerRadius, cornerRadius, cornerRadius, 0, 90);
+            path.AddArc(0, this.Height - cornerRadius, cornerRadius, cornerRadius, 90, 90);
+            path.CloseFigure();
+            this.Region = new Region(path);
+            this.Invalidate();
         }
 
         private void StartOrderBtn_Click(object sender, EventArgs e)
