@@ -36,7 +36,6 @@ namespace ChapeauUI
         public BarForm()
         {
             InitializeComponent();
-            subject.Attach(this);
             DisplayOrders();
             this.orderService = new OrderService();
         }

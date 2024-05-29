@@ -38,7 +38,6 @@ namespace ChapeauUI
         public KitchenForm()
         {
             InitializeComponent();
-            subject.Attach(this);
             DisplayOrders();
             this.orderService = new OrderService();
         }
