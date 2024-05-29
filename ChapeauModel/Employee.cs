@@ -13,17 +13,28 @@ namespace ChapeauModel
             this.employeeId = employeeId;
             this.name = name;
             this.password = password;
-            this.role = role;
+            this.role=assignRole(role);
         }
 
         private int employeeId { get; }
         public string name { get; }
-        private string password { get; }
-        public string role { get; }
+        public string password { get; }
+        public EmployeeRoleEnum role { get; }
 
-        //private EmployeeRoleEnum assignRole(string role)
-        //{
-
-        //}
+        private EmployeeRoleEnum assignRole(string role)
+        {
+            switch (role)
+            {
+                case "chef":
+                    return EmployeeRoleEnum.Chef;
+                case "Owner/Manager":
+                    return EmployeeRoleEnum.Manager;
+                case "Waitress":
+                    return EmployeeRoleEnum.Waiter;
+                case "Barmen/Barista":
+                    return EmployeeRoleEnum.Barista;
+                default: throw new Exception("Role doesn't exist. Please inform manager!");
+            }
+        }
     }
 }

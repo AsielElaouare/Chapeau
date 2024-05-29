@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using ChapeauDAL;
 using ChapeauModel;
-
+using System.Globalization;
 
 namespace ChapeauService
 {
@@ -33,13 +33,26 @@ namespace ChapeauService
             return loginDao.GetByEmployeeId(employeeId);
         }
 
-        public Employee VerifyEnteredPassword(string password)
+        public Employee checkLogin(string username,string password) 
         {
-            string hashedPassword = EncryptPassword(password);
-            employee = loginDao.GetByPassWord(hashedPassword);
-            return employee;
-            
+            try
+            {
+                loginDao.GetPassWordbyID(username);
+                string encryptedPassword = EncryptPassword(password);
+                Employee employee = loginDao.GetPassWordbyID(username);
+                if (employee.password == encryptedPassword)
+                {
+                    return employee;
+                }
+                else
+                {
+                    throw new Exception("Verkeerde gebruikersnaam of wachtwoord");
+                }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
         }
+
+        
         
 
         

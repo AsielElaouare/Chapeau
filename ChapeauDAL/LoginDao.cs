@@ -11,17 +11,17 @@ namespace ChapeauDAL
 {
     public class LoginDao : BaseDao
     {
-        public Employee GetByPassWord(string hashedPassword)
+        public Employee GetPassWordbyID(string personeelNummer)
         {
-            string query = "SELECT personeelnummer, naam , wachtwoord, functie FROM [personeel] WHERE wachtwoord = @password";
+            string query = "SELECT [personeelnummer], [naam] , [wachtwoord], [functie] FROM [personeel] WHERE [personeelnummer] = @personeelnummer";
             SqlParameter[] sqlParameters = new SqlParameter[1];
-            sqlParameters[0] = new SqlParameter("@password", hashedPassword);
+            sqlParameters[0] = new SqlParameter("@personeelnummer", personeelNummer);
             return ReadSingleRow(ExecuteSelectQuery(query, sqlParameters));
         }
 
         public bool GetByEmployeeId(string employeeId)
         {
-            string query = "SELECT personeelnummer, naam FROM [personeel] WHERE personeelnummer = @EmployeeId";
+            string query = "SELECT [personeelnummer], [naam] FROM [personeel] WHERE [personeelnummer] = @EmployeeId";
             SqlParameter[] sqlParameters = new SqlParameter[1];
             sqlParameters[0] = new SqlParameter("@EmployeeId", employeeId);
             return ReadIfEmployeeIdExists(ExecuteSelectQuery(query, sqlParameters));
@@ -47,7 +47,7 @@ namespace ChapeauDAL
                 Employee employee = new Employee(employeeId, Name, password, role);
                 return employee;
             }
-            else { throw new Exception("The DataTable is empty"); }
+            else { throw new Exception("Verkeerde gebruikersnaam of wachtwoord"); }
         }
 
         

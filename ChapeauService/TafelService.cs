@@ -19,5 +19,15 @@ namespace ChapeauService
         {
             return tafeldb.GetAllTafels();
         }
+
+        public List<Tafel> GetTablesAndStatus()
+        {
+            return tafeldb.GetAllTablesAndStatus();
+        }
+
+        public void UpdateTableStatus(Tafel table, string status)
+        {
+            tafeldb.UpdateTableStatus(table, status);
+        }
     }
 }
