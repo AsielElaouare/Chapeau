@@ -50,8 +50,7 @@ namespace ChapeauUI
                 StartBtn.Enabled = false;
                 // changing status to preparing in database (DAO)
                 timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-                Order.Status = OrderStatus.Preparing;
-                orderService.UpdateToPreparingOrders(Order.OrderID, Order.Status);
+                orderService.UpdateToPreparingOrders(Order.OrderID, OrderStatus.Preparing);
             }
             else if (result == DialogResult.No)
             {
@@ -68,8 +67,7 @@ namespace ChapeauUI
             {
                 StartBtn.Enabled = false;
                 timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-                Order.Status = OrderStatus.Ready;
-                orderService.UpdateToReadyOrders(Order.OrderID, Order.Status);
+                orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready);
                 int nrOfOrders = int.Parse(orderLabel.Text.Substring(6));
                 nrOfOrders--;
                 orderLabel.Text = $"Open: {nrOfOrders}";

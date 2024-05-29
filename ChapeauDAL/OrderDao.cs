@@ -21,8 +21,8 @@ namespace ChapeauDAL
                 WHERE [tafelnr] = @selectedTable 
                 ORDER BY [rekeningnr] DESC;
 
-                INSERT INTO [dbo].[order] (rekeningnr, ordertime) 
-                VALUES (@currentrekeningnummer, @timeOfOrder); 
+                INSERT INTO [dbo].[order] (rekeningnr, ordertime, status) 
+                VALUES (@currentrekeningnummer, @timeOfOrder, 'Pending'); 
 
                 SELECT CAST(SCOPE_IDENTITY() AS INT) AS newOrderID;";
 
