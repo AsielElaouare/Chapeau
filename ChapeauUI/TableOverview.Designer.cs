@@ -46,7 +46,6 @@
             OpenLegendBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             OpenLegendBtn.ForeColor = System.Drawing.Color.Transparent;
             OpenLegendBtn.Location = new System.Drawing.Point(0, 0);
-            OpenLegendBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             OpenLegendBtn.Name = "OpenLegendBtn";
             OpenLegendBtn.Size = new System.Drawing.Size(48, 48);
             OpenLegendBtn.TabIndex = 0;
@@ -62,7 +61,6 @@
             logOutBtn.FlatAppearance.BorderSize = 0;
             logOutBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             logOutBtn.Location = new System.Drawing.Point(1085, 0);
-            logOutBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             logOutBtn.Name = "logOutBtn";
             logOutBtn.Size = new System.Drawing.Size(48, 48);
             logOutBtn.TabIndex = 1;
@@ -78,7 +76,6 @@
             bottomRoundedButton1.FlatAppearance.BorderSize = 0;
             bottomRoundedButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             bottomRoundedButton1.Location = new System.Drawing.Point(50, 0);
-            bottomRoundedButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             bottomRoundedButton1.Name = "bottomRoundedButton1";
             bottomRoundedButton1.Size = new System.Drawing.Size(48, 48);
             bottomRoundedButton1.TabIndex = 2;
@@ -90,7 +87,6 @@
             // 
             IndicateEntranceLeftPnl.BackColor = System.Drawing.Color.Black;
             IndicateEntranceLeftPnl.Location = new System.Drawing.Point(864, 714);
-            IndicateEntranceLeftPnl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             IndicateEntranceLeftPnl.Name = "IndicateEntranceLeftPnl";
             IndicateEntranceLeftPnl.Size = new System.Drawing.Size(15, 30);
             IndicateEntranceLeftPnl.TabIndex = 4;
@@ -99,15 +95,13 @@
             // 
             IndicateEntranceRightPnl.BackColor = System.Drawing.Color.Black;
             IndicateEntranceRightPnl.Location = new System.Drawing.Point(999, 714);
-            IndicateEntranceRightPnl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             IndicateEntranceRightPnl.Name = "IndicateEntranceRightPnl";
             IndicateEntranceRightPnl.Size = new System.Drawing.Size(15, 30);
             IndicateEntranceRightPnl.TabIndex = 5;
             // 
             // TableOverview
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(252, 246, 245);
             ClientSize = new System.Drawing.Size(1133, 744);
             Controls.Add(IndicateEntranceRightPnl);
@@ -116,7 +110,6 @@
             Controls.Add(logOutBtn);
             Controls.Add(OpenLegendBtn);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             Name = "TableOverview";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "TableOverview";
