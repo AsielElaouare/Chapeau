@@ -14,52 +14,21 @@ using System.Windows.Forms;
 
 namespace ChapeauUI
 {
-    public partial class OrderForm : Form, ISubject
+    public partial class OrderForm : Form
     {
         List<Product> products;
         List<Orderline> orders;
         List<Tafel> tafel;
-        
         Employee employee;
         Tafel table;
-
-        private List<IObserver> observers = new List<IObserver>();
-        public Order SubjectOrder
-        {
-            get { return SubjectOrder; }
-            set { SubjectOrder = value; }
-        }
-        public void Attach(IObserver observer)
-        {
-            observers.Add(observer);
-        }
-        public void Deattach(IObserver observer)
-        {
-            observers.Remove(observer);
-
-        }
-        public void NotifyOberservers()
-        {
-            foreach (IObserver observer in observers)
-            {
-                observer.Update();
-            }
-        }
-
-
-        public OrderForm()
+        public OrderForm(Tafel table, Employee employee)
         {
             InitializeComponent();
             products = GetProducts();
             FillTableBox();
             orders = new List<Orderline>();
-        }
-        public OrderForm(Tafel table)
-        {
-            InitializeComponent();
-            products = GetProducts();
-            FillTableBox();
-            orders = new List<Orderline>();
+            this.employee= employee;
+            this.table = table;
         }
         private List<Product> GetProducts()
         {
@@ -92,24 +61,33 @@ namespace ChapeauUI
         }
         private void confirmButton_Click(object sender, EventArgs e)
         {
-            if (tableSelectbox.SelectedItem != null)
+            if (tableSelectbox.SelectedItem != null && orders.Count != 0)
             {
                 DateTime timeOfOrder = DateTime.Now;
                 int selectedTable = (int)tableSelectbox.SelectedItem;
                 int orderID = GetNewOrderID(timeOfOrder, selectedTable);
                 PlaceOrderIDInOrderline(orderID);
                 StoreOrdersInDB(orders);
-                NotifyOberservers();
+                GoToTableOverview();
             }
-            else
+            else if(tableSelectbox.SelectedItem == null)
             {
                 MessageBox.Show("Selecteer een tafel uit de lijst.");
             }
-            //go to taffel overzicht!!!
+            else 
+            {
+                MessageBox.Show("Selecteer een producten");
+            }
         }
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            //naar tafel overzicht
+            GoToTableOverview();
+        }
+        private void GoToTableOverview()
+        {
+            TableOverview tableOverview = new TableOverview(employee);
+            tableOverview.Show();
+            this.Close();
         }
         private void drinksButton_Click(object sender, EventArgs e)
         {
@@ -170,6 +148,7 @@ namespace ChapeauUI
                     productBtn.Text = product.Naam;
                     productBtn.Size = new Size(165, 55);
                     productBtn.Click += Product_Button_Click;
+                    productBtn.Tag = product.Voorraad;
                     productBtn.BackColor = SystemColors.ControlDark;
                     productLayoutPanel.Controls.Add(productBtn);
                 }
@@ -178,9 +157,13 @@ namespace ChapeauUI
         private void Product_Button_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
-            if (clickedButton != null)
+            if (clickedButton != null&&(int)clickedButton.Tag!=0)
             {
                 Clickedproduct(clickedButton.Text);
+            }
+            else
+            {
+                MessageBox.Show($"{clickedButton.Text} is op");
             }
         }
         private void Clickedproduct(string productnaam)
@@ -194,13 +177,13 @@ namespace ChapeauUI
                 }
             }
         }
-        private void AddProductToList(int ProductID)
+        private void AddProductToList(int productID)
         {
-            if (CheckIfProductIsInList(ProductID))
+            if (CheckIfProductIsInList(productID))
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArtikelID == ProductID)
+                    if (order.ArtikelID == productID&&EnoughStock(productID,order.Aantal))
                     {
                         order.IncreaseQuantity();
                         break;
@@ -209,10 +192,22 @@ namespace ChapeauUI
             }
             else
             {
-                Orderline newProduct = new Orderline(0, 1, null, ProductID);
+                Orderline newProduct = new Orderline(0, 1, null, productID);
                 orders.Add(newProduct);
             }
             DislpayOrders();
+        }
+        private bool EnoughStock(int productID, int amountOfOrderdProduct)
+        {
+            foreach(Product product in products) 
+            {
+                if (product.Artikelid == productID && product.Voorraad > amountOfOrderdProduct)
+                {
+                    return true;
+                }
+            }
+            MessageBox.Show($"niet genoeg meer op voorraad van {ProductIDToProductName(productID)}");
+            return false;
         }
         private bool CheckIfProductIsInList(int ProductID)
         {
@@ -321,7 +316,5 @@ namespace ChapeauUI
             }
             return "";
         }
-
-
     }
 }

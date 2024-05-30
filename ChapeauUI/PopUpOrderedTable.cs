@@ -47,7 +47,7 @@ namespace ChapeauUI
 
         private void OrderBtn_Click(object sender, EventArgs e)
         {
-            orderForm = new OrderForm(table);
+            orderForm = new OrderForm(table, employee);
             orderForm.Show();
             tableOverview.Close();
             this.Close();
