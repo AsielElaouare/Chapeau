@@ -45,27 +45,27 @@ namespace ChapeauDAL
         private void AdjustStock(Orderline orderline)
         {
             SqlCommand command = new SqlCommand("UPDATE [dbo].[artikel] SET [voorraad] = [voorraad] - @aantal WHERE [artikelid] = @artikelid;", OpenConnection());
-            command.Parameters.AddWithValue("@artikelid", orderline.ArtikelID);
-            command.Parameters.AddWithValue("@aantal", orderline.Aantal);
+            command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
+            command.Parameters.AddWithValue("@aantal", orderline.Quantity);
             command.ExecuteNonQuery();
         }
         private void StoreOrderline(Orderline orderline, int orderid)
         {
-            if (orderline.Opmerking != null)
+            if (orderline.Commentary != null)
             {
                 SqlCommand command = new SqlCommand("INSERT INTO [orderline] (orderid, aantal, opmerking, artikelid) VALUES (@orderId, @aantal, @opmerking, @artikelid)", OpenConnection());
                 command.Parameters.AddWithValue("@orderId", orderid);
-                command.Parameters.AddWithValue("@aantal", orderline.Aantal);
-                command.Parameters.AddWithValue("@opmerking", orderline.Opmerking);
-                command.Parameters.AddWithValue("@artikelid", orderline.ArtikelID);
+                command.Parameters.AddWithValue("@aantal", orderline.Quantity);
+                command.Parameters.AddWithValue("@opmerking", orderline.Commentary);
+                command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
                 command.ExecuteNonQuery();
             }
             else
             {
                 SqlCommand command = new SqlCommand("INSERT INTO [orderline] (orderid, aantal, artikelid) VALUES (@orderId, @aantal, @artikelid)", OpenConnection());
                 command.Parameters.AddWithValue("@orderId", orderid);
-                command.Parameters.AddWithValue("@aantal", orderline.Aantal);
-                command.Parameters.AddWithValue("@artikelid", orderline.ArtikelID);
+                command.Parameters.AddWithValue("@aantal", orderline.Quantity);
+                command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
                 command.ExecuteNonQuery();
             }
             

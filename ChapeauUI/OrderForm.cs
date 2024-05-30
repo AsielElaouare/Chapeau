@@ -91,14 +91,14 @@ namespace ChapeauUI
 
             foreach (Product item in products)
             {
-                if (kaart == item.Kaart && !categories.Contains(item.Categorie))
+                if (kaart == item.Menu && !categories.Contains(item.Category))
                 {
                     Label categoryLabel = new Label();
-                    categoryLabel.Text = item.Categorie.ToString() + ":";
+                    categoryLabel.Text = item.Category.ToString() + ":";
                     categoryLabel.Size = new Size(690, 20);
                     productLayoutPanel.Controls.Add(categoryLabel);
-                    MakePruductForCategorie(item.Kaart, item.Categorie);
-                    categories.Add(item.Categorie);
+                    MakePruductForCategorie(item.Menu, item.Category);
+                    categories.Add(item.Category);
                 }
             }
         }
@@ -106,18 +106,34 @@ namespace ChapeauUI
         {
             foreach (Product product in products)
             {
-                if (kaart == product.Kaart && categorie == product.Categorie)
+                if (kaart == product.Menu && categorie == product.Category)
                 {
                     Button productBtn = new Button();
-                    productBtn.Text = product.Naam;
+                    productBtn.Text = product.Name;
                     productBtn.Size = new Size(165, 55);
                     productBtn.Click += Product_Button_Click;
-                    productBtn.Tag = product.Voorraad;
-                    productBtn.BackColor = SystemColors.ControlDark;
+                    productBtn.Tag = product.Stock;
+                    productBtn.BackColor = SelectProductBtnColor(product);
                     productLayoutPanel.Controls.Add(productBtn);
                 }
             }
         }
+        private Color SelectProductBtnColor(Product product)
+        {
+            if (product.Stock > 10)
+            {
+                return SystemColors.ControlDark;
+            }
+            else if (product.Stock > 0)
+            {
+                return Color.Yellow; 
+            }
+            else
+            {
+                return Color.Red; 
+            }
+        }
+
         private void Product_Button_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
@@ -134,7 +150,7 @@ namespace ChapeauUI
         {
             foreach (Product product in products)
             {
-                if (productnaam == product.Naam)
+                if (productnaam == product.Name)
                 {
                     AddProductToList(product.Artikelid);
                     break;
@@ -147,7 +163,7 @@ namespace ChapeauUI
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArtikelID == productID&&EnoughStock(productID,order.Aantal))
+                    if (order.ArticleID == productID&&EnoughStock(productID,order.Quantity))
                     {
                         order.IncreaseQuantity();
                         break;
@@ -165,7 +181,7 @@ namespace ChapeauUI
         {
             foreach(Product product in products) 
             {
-                if (product.Artikelid == productID && product.Voorraad > amountOfOrderdProduct)
+                if (product.Artikelid == productID && product.Stock > amountOfOrderdProduct)
                 {
                     return true;
                 }
@@ -179,7 +195,7 @@ namespace ChapeauUI
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArtikelID == ProductID)
+                    if (order.ArticleID == ProductID)
                     {
                         return true;
                     }
@@ -193,19 +209,19 @@ namespace ChapeauUI
             foreach (Orderline order in orders)
             {
                 Label procductNaamLabel = new Label();
-                procductNaamLabel.Text = ProductIDToProductName(order.ArtikelID);
+                procductNaamLabel.Text = ProductIDToProductName(order.ArticleID);
                 procductNaamLabel.Size = new Size(280, 40);
                 orderLayoutPanel.Controls.Add(procductNaamLabel);
                 //hier moet nog een aantal selcter komen
                 Label procductAantalmLabel = new Label();
-                procductAantalmLabel.Text = order.Aantal.ToString();
+                procductAantalmLabel.Text = order.Quantity.ToString();
                 procductAantalmLabel.Size = new Size(25, 40);
                 orderLayoutPanel.Controls.Add(procductAantalmLabel);
                 //verwijder button
                 Button verwijderBtn = new Button();
                 verwijderBtn.Text = "-1";
                 verwijderBtn.Size = new Size(150, 35);
-                verwijderBtn.Tag = order.ArtikelID;
+                verwijderBtn.Tag = order.ArticleID;
                 verwijderBtn.Click += Verwijder_Button_Click;
                 verwijderBtn.BackColor = Color.Red;
                 orderLayoutPanel.Controls.Add(verwijderBtn);
@@ -213,15 +229,15 @@ namespace ChapeauUI
                 Button opmerkingBtn = new Button();
                 opmerkingBtn.Text = "opmerking";
                 opmerkingBtn.Size = new Size(150, 35);
-                opmerkingBtn.Tag = order.ArtikelID;
+                opmerkingBtn.Tag = order.ArticleID;
                 opmerkingBtn.Click += Opmerking_Button_Click;
                 opmerkingBtn.BackColor = Color.DodgerBlue;
                 orderLayoutPanel.Controls.Add(opmerkingBtn);
                 //laat opmerking zien
-                if (order.Opmerking != null)
+                if (order.Commentary != null)
                 {
                     Label commentLabel = new Label();
-                    commentLabel.Text = order.Opmerking;
+                    commentLabel.Text = order.Commentary;
                     commentLabel.Size = new Size(280, 20);
                     orderLayoutPanel.Controls.Add(commentLabel);
                 }
@@ -237,13 +253,13 @@ namespace ChapeauUI
 
             foreach (Orderline order in orders)
             {
-                if (order.ArtikelID == (int)clickedButton.Tag && order.Opmerking == null)
+                if (order.ArticleID == (int)clickedButton.Tag && order.Commentary == null)
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:")); break;
                 }
-                else if(order.ArtikelID == (int)clickedButton.Tag)
+                else if(order.ArticleID == (int)clickedButton.Tag)
                 {
-                    order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:", "", order.Opmerking)); break;
+                    order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:", "", order.Commentary)); break;
                 }
             }
             DislpayOrders();
@@ -256,12 +272,12 @@ namespace ChapeauUI
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArtikelID == (int)clickedButton.Tag && order.Aantal == 1)
+                    if (order.ArticleID == (int)clickedButton.Tag && order.Quantity == 1)
                     {
                         orders.Remove(order);
                         break;
                     }
-                    else if (order.ArtikelID == (int)clickedButton.Tag)
+                    else if (order.ArticleID == (int)clickedButton.Tag)
                     {
                         order.DecreaseQuantity();
                     }
@@ -275,7 +291,7 @@ namespace ChapeauUI
             {
                 if (productID == product.Artikelid)
                 {
-                    return product.Naam;
+                    return product.Name;
                 }
             }
             return "";

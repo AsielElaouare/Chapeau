@@ -79,27 +79,27 @@ namespace ChapeauUI
 
         public void CheckProductCategory(Product product, Label dishlabel, Label dishLabelComment)
         {
-            if (product.Categorie == ProductCategorie.Hoofdgerechten)
+            if (product.Category == ProductCategorie.Hoofdgerechten)
             {
-                dishlabel.Text = product.Naam;
+                dishlabel.Text = product.Name;
                 mainDishesLayoutPanel.Controls.Add(dishlabel);
                 mainDishesLayoutPanel.Controls.Add(dishLabelComment);
             }
-            else if (product.Categorie == ProductCategorie.Voorgerechten)
+            else if (product.Category == ProductCategorie.Voorgerechten)
             {
-                dishlabel.Text = product.Naam;
+                dishlabel.Text = product.Name;
                 sideDishesLayoutPanel.Controls.Add(dishlabel);
                 sideDishesLayoutPanel.Controls.Add(dishLabelComment);
             }
-            else if (product.Categorie == ProductCategorie.Nagerechten)
+            else if (product.Category == ProductCategorie.Nagerechten)
             {
-                dishlabel.Text = product.Naam;
+                dishlabel.Text = product.Name;
                 dessetsDishesLayoutPanel.Controls.Add(dishlabel);
                 dessetsDishesLayoutPanel.Controls.Add(dishLabelComment);
             }
-            if (!Order.OrderLineComment.Opmerking.IsNullOrEmpty())
+            if (!Order.OrderLineComment.Commentary.IsNullOrEmpty())
             {
-                dishLabelComment.Text = "Opmerking: " + Order.OrderLineComment.Opmerking;
+                dishLabelComment.Text = "Opmerking: " + Order.OrderLineComment.Commentary;
             }
         }
     }

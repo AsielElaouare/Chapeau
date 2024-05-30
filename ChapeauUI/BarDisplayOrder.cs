@@ -39,7 +39,7 @@ namespace ChapeauUI
                 Label drinkLabel = new Label();
                 Label drinkLabelCommment = new Label();
 
-                drinkLabel.Text = product.Naam;
+                drinkLabel.Text = product.Name;
 
                 drinkLabelCommment.ForeColor = Color.White;
                 drinkLabelCommment.Font = new Font(drinkLabelCommment.Font, FontStyle.Italic);

@@ -10,30 +10,30 @@ namespace ChapeauModel
     {
       
         public int OrderID { get; private set; }
-        public int Aantal { get;  set; }
-        public string Opmerking { get; private set; }
-        public int ArtikelID { get; private set; }
+        public int Quantity { get;  set; }
+        public string Commentary { get; private set; }
+        public int ArticleID { get; private set; }
         public Orderline(int orderID, int aantal, string opmerking)
         {
             OrderID = orderID;
-            Aantal = aantal;
-            Opmerking = opmerking;
+            Quantity = aantal;
+            Commentary = opmerking;
         }
         public Orderline(int orderID, int aantal, string opmerking, int artikelID)
         {
             OrderID = orderID;
-            Aantal = aantal;
-            Opmerking = opmerking;
-            ArtikelID = artikelID;
+            Quantity = aantal;
+            Commentary = opmerking;
+            ArticleID = artikelID;
         }
         public void IncreaseQuantity()
         {
-            Aantal ++;
+            Quantity ++;
         }
 
         public void DecreaseQuantity()
         {
-            Aantal --;
+            Quantity --;
         }
         public void SetOrderID(int orderID)
         {
@@ -41,7 +41,7 @@ namespace ChapeauModel
         }
         public void AddComment(string comment)
         {
-            Opmerking = comment;
+            Commentary = comment;
         }
     }
 }
