@@ -67,11 +67,12 @@
             // 
             // UsernameLbl
             // 
+            UsernameLbl.AutoSize = true;
             UsernameLbl.Font = new System.Drawing.Font("Century Gothic", 23.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             UsernameLbl.Location = new System.Drawing.Point(383, 368);
             UsernameLbl.Margin = new System.Windows.Forms.Padding(0);
             UsernameLbl.Name = "UsernameLbl";
-            UsernameLbl.Size = new System.Drawing.Size(350, 50);
+            UsernameLbl.Size = new System.Drawing.Size(338, 46);
             UsernameLbl.TabIndex = 18;
             UsernameLbl.Text = "Gebruikersnaam";
             // 
@@ -79,9 +80,9 @@
             // 
             PasswordLbl.AutoSize = true;
             PasswordLbl.Font = new System.Drawing.Font("Century Gothic", 23F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            PasswordLbl.Location = new System.Drawing.Point(383, 527);
+            PasswordLbl.Location = new System.Drawing.Point(383, 520);
             PasswordLbl.Name = "PasswordLbl";
-            PasswordLbl.Size = new System.Drawing.Size(213, 37);
+            PasswordLbl.Size = new System.Drawing.Size(271, 46);
             PasswordLbl.TabIndex = 19;
             PasswordLbl.Text = "Wachtwoord";
             // 
@@ -92,7 +93,7 @@
             UsernameTextBox.Font = new System.Drawing.Font("Century Gothic", 23F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             UsernameTextBox.Location = new System.Drawing.Point(383, 421);
             UsernameTextBox.Name = "UsernameTextBox";
-            UsernameTextBox.Size = new System.Drawing.Size(367, 45);
+            UsernameTextBox.Size = new System.Drawing.Size(367, 54);
             UsernameTextBox.TabIndex = 20;
             // 
             // PasswordTextBox
@@ -103,7 +104,7 @@
             PasswordTextBox.Location = new System.Drawing.Point(383, 567);
             PasswordTextBox.Name = "PasswordTextBox";
             PasswordTextBox.PasswordChar = '*';
-            PasswordTextBox.Size = new System.Drawing.Size(367, 45);
+            PasswordTextBox.Size = new System.Drawing.Size(367, 54);
             PasswordTextBox.TabIndex = 22;
             // 
             // ConfirmBtn
@@ -122,6 +123,8 @@
             // LoginForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            AutoSize = true;
+            AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(1133, 744);
             Controls.Add(ConfirmBtn);
