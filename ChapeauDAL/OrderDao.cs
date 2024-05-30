@@ -10,7 +10,7 @@ namespace ChapeauDAL
 {
     public class OrderDao : BaseDao
     {
-        public int MakeNewOrder(DateTime timeOfOrder, int selectedtable)
+        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines)
         {
             //add order status to database!!!!!!
             int orderId = 0;
@@ -35,10 +35,35 @@ namespace ChapeauDAL
                 orderId = Convert.ToInt32((int)reader["newOrderID"]);
             }
             reader.Close();
+             foreach (Orderline line in orderlines)
+            {
+                StoreOrderline(line, orderId);
+            }
             CloseConnection();
-            return orderId;
-        }
+            
 
+        }
+        public void StoreOrderline(Orderline orderline, int orderid)
+        {
+            if (orderline.Opmerking != null)
+            {
+                SqlCommand command = new SqlCommand("INSERT INTO [orderline] (orderid, aantal, opmerking, artikelid) VALUES (@orderId, @aantal, @opmerking, @artikelid)");
+                command.Parameters.AddWithValue("@orderId", orderid);
+                command.Parameters.AddWithValue("@aantal", orderline.Aantal);
+                command.Parameters.AddWithValue("@opmerking", orderline.Opmerking);
+                command.Parameters.AddWithValue("@artikelid", orderline.ArtikelID);
+                command.ExecuteNonQuery();
+            }
+            else
+            {
+                SqlCommand command = new SqlCommand("INSERT INTO [orderline] (orderid, aantal, artikelid) VALUES (@orderId, @aantal, @artikelid)");
+                command.Parameters.AddWithValue("@orderId", orderid);
+                command.Parameters.AddWithValue("@aantal", orderline.Aantal);
+                command.Parameters.AddWithValue("@artikelid", orderline.ArtikelID);
+                command.ExecuteNonQuery();
+            }
+            
+        }
         public List<Order> GetOrdersForBar()
         {
             string query = @"
@@ -78,8 +103,6 @@ namespace ChapeauDAL
             CloseConnection();
             return orders;
         }
-
-
         public List<Order> GetOrdersForKitchen()
         {
             string query = @"
@@ -119,7 +142,6 @@ namespace ChapeauDAL
             CloseConnection();
             return orders;
         }
-
         public Order ReadOrders(SqlDataReader reader)
         {
             Order currentOrder = null;
@@ -144,7 +166,6 @@ namespace ChapeauDAL
             }
             return currentOrder;
         }
-
         public void CompleteOrder(int orderId, OrderStatus orderStatus)
         {
             string query = $"UPDATE [order] SET [status] = @orderStatus WHERE [orderId] = @OrderId";

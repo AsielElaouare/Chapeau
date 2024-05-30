@@ -42,22 +42,10 @@ namespace ChapeauUI
             List<Tafel> tafels = tafelService.GetTafel();
             return tafels;
         }
-        private void PlaceOrderIDInOrderline(int orderID)
-        {
-            foreach (Orderline order in orders)
-            {
-                order.SetOrderID(orderID);
-            }
-        }
-        private int GetNewOrderID(DateTime timeOfOrde, int selectedTable)
+        private void StoreThisOrder(DateTime timeOfOrde, int selectedTable)
         {
             OrderService orderService = new OrderService();
-            return orderService.GetNewOrderID(timeOfOrde, selectedTable);
-        }
-        private void StoreOrdersInDB(List<Orderline> ordersList)
-        {
-            OrderlineService orderlineService = new OrderlineService();
-            orderlineService.StoreOrder(ordersList);
+            orderService.StoreOrder(timeOfOrde, selectedTable,orders);
         }
         private void confirmButton_Click(object sender, EventArgs e)
         {
@@ -65,9 +53,7 @@ namespace ChapeauUI
             {
                 DateTime timeOfOrder = DateTime.Now;
                 int selectedTable = (int)tableSelectbox.SelectedItem;
-                int orderID = GetNewOrderID(timeOfOrder, selectedTable);
-                PlaceOrderIDInOrderline(orderID);
-                StoreOrdersInDB(orders);
+                StoreThisOrder(timeOfOrder, selectedTable);
                 GoToTableOverview();
             }
             else if(tableSelectbox.SelectedItem == null)
