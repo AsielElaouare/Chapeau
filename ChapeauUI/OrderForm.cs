@@ -18,29 +18,22 @@ namespace ChapeauUI
     {
         List<Product> products;
         List<Orderline> orders;
-        List<Tafel> tafel;
         Employee employee;
         Tafel table;
         public OrderForm(Tafel table, Employee employee)
         {
             InitializeComponent();
             products = GetProducts();
-            FillTableBox();
             orders = new List<Orderline>();
             this.employee= employee;
             this.table = table;
+            tafelNRText.Text = $"bestelling voor tafel {table.TafelNummer}.";
         }
         private List<Product> GetProducts()
         {
             ProductService productService = new ProductService();
             List<Product> products = productService.GetProducts();
             return products;
-        }
-        private List<Tafel> GetTafels()
-        {
-            TafelService tafelService = new TafelService();
-            List<Tafel> tafels = tafelService.GetTafel();
-            return tafels;
         }
         private void StoreThisOrder(DateTime timeOfOrde, int selectedTable)
         {
@@ -49,16 +42,10 @@ namespace ChapeauUI
         }
         private void confirmButton_Click(object sender, EventArgs e)
         {
-            if (tableSelectbox.SelectedItem != null && orders.Count != 0)
+            if (orders.Count != 0)
             {
-                DateTime timeOfOrder = DateTime.Now;
-                int selectedTable = (int)tableSelectbox.SelectedItem;
-                StoreThisOrder(timeOfOrder, selectedTable);
+                StoreThisOrder(DateTime.Now, table.TafelNummer);
                 GoToTableOverview();
-            }
-            else if(tableSelectbox.SelectedItem == null)
-            {
-                MessageBox.Show("Selecteer een tafel uit de lijst.");
             }
             else 
             {
@@ -96,15 +83,6 @@ namespace ChapeauUI
             lunchButton.BackColor = SystemColors.ControlDark;
             drinksButton.BackColor = SystemColors.ControlDark;
             selectedButton.BackColor = SystemColors.ControlDarkDark;
-        }
-        private void FillTableBox()
-        {
-            tafel = GetTafels();
-
-            foreach (Tafel table in tafel)
-            {
-                tableSelectbox.Items.Add(table.TafelNummer);
-            }
         }
         private void FillProductLayoutPanel(ProductKaart kaart)
         {
