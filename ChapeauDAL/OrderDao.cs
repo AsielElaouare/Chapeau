@@ -1,6 +1,7 @@
 ﻿using ChapeauModel;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -165,6 +166,72 @@ namespace ChapeauDAL
                 new SqlParameter("@orderStatus", orderStatus.ToString())
             };
             ExecuteEditQuery(query, parameters);
+        }
+
+        public List<Order> GetOrdersForTable(Tafel table)
+        {
+            string query = @"
+            SELECT 
+                  rk.tafelnr,
+                  [order].orderid AS OrderID,
+                   ol.aantal AS Aantal,
+                   ol.opmerking AS Opmerking,
+                  [order].[status] AS Status,
+                   ak.naam AS Article, 
+                   ak.categorie AS Categorie,
+                  [order].ordertime AS OrderTime
+            FROM 
+                  [order]
+            JOIN 
+                  orderline AS ol ON [order].[orderid] = ol.orderid
+            JOIN 
+                  rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                  artikel AS ak ON ol.artikelid = ak.artikelid
+            WHERE 
+                  rk.tafelnr = @tableNumber AND [status] IS NOT NULL
+            ORDER BY 
+                  [order].ordertime DESC";
+            SqlCommand command = new SqlCommand(query, OpenConnection());
+            command.Parameters.AddWithValue("@tableNumber", table.TafelNummer);
+            SqlDataReader reader = command.ExecuteReader();
+            List<Order> orders = new List<Order>();
+
+            while (reader.Read())
+            {
+
+                Order order = ReadOrderForTable(reader);
+                orders.Add(order);
+            }
+            reader.Close();
+            CloseConnection();
+            return orders;
+        }
+
+        public Order ReadOrderForTable(SqlDataReader reader)
+        {
+            Order currentOrder = null;
+            Product currentProduct = null;
+
+            currentOrder = new Order
+                (
+                    (int)reader["orderid"],
+                    (int)reader["tafelnr"],
+                    (string)reader["status"],
+                    new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
+                    (DateTime)reader["ordertime"]
+                );
+
+            string products = (string)reader["Article"];
+            string[] productsArray = products.Split(';');
+
+            foreach (string product in productsArray)
+            {
+                currentProduct = new Product(product, (string)reader["categorie"]);
+                currentOrder.ProductList.Add(currentProduct);
+
+            }
+            return currentOrder;
         }
     }
 }

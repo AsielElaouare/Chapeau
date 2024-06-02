@@ -41,5 +41,11 @@ namespace ChapeauService
         {
             orderdb.StartOrder(orederID, orderStatus);
         }
+
+        public List<Order> GetOrdersByTable(Tafel table)
+        {
+            List<Order> orders;
+            return orders = orderdb.GetOrdersForTable(table);
+        }
     }
 }

@@ -16,6 +16,9 @@ namespace ChapeauUI
     {
         Employee employee;
         List<Tafel> tables;
+        OrderService orderService;
+        TafelService tableService;
+
         const int startX = 108;
         int topRowY = 150;
         int bottomRowY = 416;
@@ -76,6 +79,7 @@ namespace ChapeauUI
                 tableButton.Font = new Font(tableButton.Font.FontFamily, 16);
                 tableButton.ForeColor = Color.White;
                 if (table.Status == TableStatusEnum.Free) { tableButton.Font = new Font(tableButton.Font.FontFamily, 40); }
+                if (table.Status == TableStatusEnum.Ordered) { tableButton.Paint += TableButton_Paint; }
                 tableButton.Text = $"{table.TafelNummer}";
                 tableButton.Tag = table;
                 tableButton.FlatStyle = FlatStyle.Flat;
@@ -86,6 +90,40 @@ namespace ChapeauUI
                 CreateTables(tableButton, xPosition, yPosition, table);
             }
         }
+
+        private void TableButton_Paint(object sender, PaintEventArgs e)
+        {
+            Button button = sender as Button;
+            if (button != null && button.Tag is Tafel table && table.Status == TableStatusEnum.Ordered){
+                Image icon = Properties.Resources.time_24x24; 
+                int iconSize = 24; 
+                int iconX = 5; 
+                int iconY = button.Height - iconSize - 5; 
+                e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                string text = GetOrderTime(table) + " Minuten";
+                Font font = new Font(button.Font.FontFamily, 10);
+                Brush brush = Brushes.White;
+                int textX = iconX + iconSize + 5; 
+                int textY = iconY + (iconSize / 2) - (font.Height / 2); 
+                e.Graphics.DrawString(text, font, brush, textX, textY);}
+        }
+
+        private string GetOrderTime(Tafel table)
+        {
+            orderService = new OrderService();
+            List<Order> orders = orderService.GetOrdersByTable(table);
+            if (orders.Count == 0)
+            {
+                tableService = new TafelService(); tableService.UpdateTableStatus(table, "Bezet");
+            }
+            Order mostRecentOrder = orders.OrderByDescending(o => o.OrderTime).FirstOrDefault();
+            TimeSpan timeDifference = DateTime.Now - mostRecentOrder.OrderTime;
+            int minutes = (int)timeDifference.TotalMinutes;
+            return minutes.ToString();
+        }
+
+        
+
         private void CreateEvenTables()
         {
             column = topRowIndex % columns;

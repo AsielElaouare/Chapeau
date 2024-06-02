@@ -19,9 +19,15 @@ namespace ChapeauUI
         List<Product> products;
         List<Orderline> orders;
         List<Tafel> tafel;
+
         
         Employee employee;
         Tafel table;
+
+        TafelService tafelService = new TafelService();
+        string besteldeTafelStatus = "Besteld";
+
+        TableOverview tableOverview;
 
         private List<IObserver> observers = new List<IObserver>();
         public Order SubjectOrder
@@ -54,12 +60,14 @@ namespace ChapeauUI
             FillTableBox();
             orders = new List<Orderline>();
         }
-        public OrderForm(Tafel table)
+        public OrderForm(Tafel table, Employee employee)
         {
             InitializeComponent();
             products = GetProducts();
             FillTableBox();
             orders = new List<Orderline>();
+            this.table = table;
+            this.tableOverview = new TableOverview(employee);
         }
         private List<Product> GetProducts()
         {
@@ -100,16 +108,17 @@ namespace ChapeauUI
                 PlaceOrderIDInOrderline(orderID);
                 StoreOrdersInDB(orders);
                 NotifyOberservers();
+                ChangeTableStatus();
             }
             else
             {
                 MessageBox.Show("Selecteer een tafel uit de lijst.");
             }
-            //go to taffel overzicht!!!
+            tableOverview.Show();
         }
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            //naar tafel overzicht
+            tableOverview.Show();
         }
         private void drinksButton_Click(object sender, EventArgs e)
         {
@@ -322,6 +331,10 @@ namespace ChapeauUI
             return "";
         }
 
+        private void ChangeTableStatus()
+        {
+            tafelService.UpdateTableStatus(table,besteldeTafelStatus);
+        }
 
     }
 }

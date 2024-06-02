@@ -24,5 +24,10 @@ namespace ChapeauModel
             this.OrderLineComment = OrderLineComment;
             this.ProductList = new List<Product>();
         }
+
+        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment, DateTime orderTime):this(OrderID, TafelNR, Status, OrderLineComment) 
+        { 
+            this.OrderTime = orderTime;
+        }
     }
 }
