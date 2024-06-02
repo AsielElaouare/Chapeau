@@ -36,10 +36,12 @@
             // barFlowLayoutPanel
             // 
             barFlowLayoutPanel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            barFlowLayoutPanel.Location = new System.Drawing.Point(1, 65);
+            barFlowLayoutPanel.AutoScroll = true;
+            barFlowLayoutPanel.Location = new System.Drawing.Point(12, 71);
             barFlowLayoutPanel.Name = "barFlowLayoutPanel";
-            barFlowLayoutPanel.Size = new System.Drawing.Size(1396, 577);
+            barFlowLayoutPanel.Size = new System.Drawing.Size(1360, 552);
             barFlowLayoutPanel.TabIndex = 0;
+            barFlowLayoutPanel.WrapContents = false;
             // 
             // previousOrdersBar
             // 

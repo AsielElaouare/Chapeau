@@ -1,6 +1,7 @@
 ﻿using ChapeauModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -106,6 +107,50 @@ namespace ChapeauDAL
                 rk.tafelnr, [order].orderid";
             SqlCommand command = new SqlCommand(query, OpenConnection());
 
+            SqlDataReader reader = command.ExecuteReader();
+            List<Order> orders = new List<Order>();
+
+            while (reader.Read())
+            {
+
+                Order order = ReadOrders(reader);
+                orders.Add(order);
+            }
+            reader.Close();
+            CloseConnection();
+            return orders;
+        }
+
+        public List<Order> GetPreviousOrdersForKitchen(DateOnly dateToday)
+        {
+            string query = @"
+            SELECT 
+                rk.tafelnr,
+                [order].orderid,
+                SUM(ol.aantal) AS aantal,
+                STRING_AGG([ol].opmerking, '; ') AS opmerking,
+                [order].[status],
+                STRING_AGG(ak.naam, '; ') AS Article, 
+                STRING_AGG(ak.categorie, ', ') AS categorie 
+            FROM 
+                [order]
+            JOIN 
+                orderline AS OL ON [order].[orderid] = OL.orderid
+            JOIN 
+                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                artikel AS ak ON ol.artikelid = ak.artikelid
+            WHERE 
+                [status] = 'Ready' 
+                AND (ak.categorie = 'Hoofdgerechten' OR ak.categorie = 'Nagerechten' OR ak.categorie = 'Voorgerechten') 
+                AND CAST([order].ordertime AS DATE) = @dateToday
+            GROUP BY 
+                rk.tafelnr, [order].orderid, [order].[status]
+            ORDER BY 
+                rk.tafelnr, [order].orderid";
+
+            SqlCommand command = new SqlCommand(query, OpenConnection());
+            command.Parameters.Add(new SqlParameter("@dateToday", dateToday.ToString("yyyy-MM-dd")));
             SqlDataReader reader = command.ExecuteReader();
             List<Order> orders = new List<Order>();
 

@@ -43,12 +43,13 @@ namespace ChapeauUI
             sideDishesLabel = new Label();
             dessertsLabel = new Label();
             orderPanel = new FlowLayoutPanel();
-            mainDishesLayoutPanel = new FlowLayoutPanel();
             sideDishesLayoutPanel = new FlowLayoutPanel();
+            mainDishesLayoutPanel = new FlowLayoutPanel();
             dessetsDishesLayoutPanel = new FlowLayoutPanel();
             flowLayoutPanelOrder = new FlowLayoutPanel();
             StartBtn = new Button();
             CompleteBtn = new Button();
+            remakeOrder = new Button();
             orderPanel.SuspendLayout();
             flowLayoutPanelOrder.SuspendLayout();
             SuspendLayout();
@@ -84,7 +85,7 @@ namespace ChapeauUI
             // 
             mainDishesLabel.BackColor = Color.FromArgb(255, 143, 143);
             mainDishesLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            mainDishesLabel.Location = new Point(0, 61);
+            mainDishesLabel.Location = new Point(0, 97);
             mainDishesLabel.Margin = new Padding(0, 10, 0, 0);
             mainDishesLabel.Name = "mainDishesLabel";
             mainDishesLabel.Size = new Size(200, 16);
@@ -95,8 +96,8 @@ namespace ChapeauUI
             // 
             sideDishesLabel.BackColor = Color.FromArgb(119, 234, 109);
             sideDishesLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            sideDishesLabel.Location = new Point(0, 137);
-            sideDishesLabel.Margin = new Padding(0, 60, 0, 0);
+            sideDishesLabel.Location = new Point(0, 71);
+            sideDishesLabel.Margin = new Padding(0, 20, 0, 0);
             sideDishesLabel.Name = "sideDishesLabel";
             sideDishesLabel.Size = new Size(200, 16);
             sideDishesLabel.TabIndex = 3;
@@ -106,7 +107,7 @@ namespace ChapeauUI
             // 
             dessertsLabel.BackColor = Color.FromArgb(234, 199, 109);
             dessertsLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            dessertsLabel.Location = new Point(0, 213);
+            dessertsLabel.Location = new Point(0, 173);
             dessertsLabel.Margin = new Padding(0, 60, 0, 0);
             dessertsLabel.Name = "dessertsLabel";
             dessertsLabel.Size = new Size(200, 16);
@@ -118,41 +119,41 @@ namespace ChapeauUI
             orderPanel.BackColor = Color.Gray;
             orderPanel.Controls.Add(timeLabel);
             orderPanel.Controls.Add(orderInfLabel);
-            orderPanel.Controls.Add(mainDishesLabel);
-            orderPanel.Controls.Add(mainDishesLayoutPanel);
             orderPanel.Controls.Add(sideDishesLabel);
             orderPanel.Controls.Add(sideDishesLayoutPanel);
+            orderPanel.Controls.Add(mainDishesLabel);
+            orderPanel.Controls.Add(mainDishesLayoutPanel);
             orderPanel.Controls.Add(dessertsLabel);
             orderPanel.Controls.Add(dessetsDishesLayoutPanel);
             orderPanel.FlowDirection = FlowDirection.TopDown;
             orderPanel.Location = new Point(0, 0);
             orderPanel.Margin = new Padding(0);
             orderPanel.Name = "orderPanel";
-            orderPanel.Size = new Size(200, 398);
+            orderPanel.Size = new Size(200, 397);
             orderPanel.TabIndex = 0;
-            // 
-            // mainDishesLayoutPanel
-            // 
-            mainDishesLayoutPanel.AutoSize = true;
-            mainDishesLayoutPanel.Location = new Point(0, 77);
-            mainDishesLayoutPanel.Margin = new Padding(0);
-            mainDishesLayoutPanel.Name = "mainDishesLayoutPanel";
-            mainDishesLayoutPanel.Size = new Size(0, 0);
-            mainDishesLayoutPanel.TabIndex = 5;
             // 
             // sideDishesLayoutPanel
             // 
             sideDishesLayoutPanel.AutoSize = true;
-            sideDishesLayoutPanel.Location = new Point(0, 153);
+            sideDishesLayoutPanel.Location = new Point(0, 87);
             sideDishesLayoutPanel.Margin = new Padding(0);
             sideDishesLayoutPanel.Name = "sideDishesLayoutPanel";
             sideDishesLayoutPanel.Size = new Size(0, 0);
             sideDishesLayoutPanel.TabIndex = 6;
             // 
+            // mainDishesLayoutPanel
+            // 
+            mainDishesLayoutPanel.AutoSize = true;
+            mainDishesLayoutPanel.Location = new Point(0, 113);
+            mainDishesLayoutPanel.Margin = new Padding(0);
+            mainDishesLayoutPanel.Name = "mainDishesLayoutPanel";
+            mainDishesLayoutPanel.Size = new Size(0, 0);
+            mainDishesLayoutPanel.TabIndex = 5;
+            // 
             // dessetsDishesLayoutPanel
             // 
             dessetsDishesLayoutPanel.AutoSize = true;
-            dessetsDishesLayoutPanel.Location = new Point(0, 229);
+            dessetsDishesLayoutPanel.Location = new Point(0, 189);
             dessetsDishesLayoutPanel.Margin = new Padding(0);
             dessetsDishesLayoutPanel.Name = "dessetsDishesLayoutPanel";
             dessetsDishesLayoutPanel.Size = new Size(0, 0);
@@ -164,6 +165,7 @@ namespace ChapeauUI
             flowLayoutPanelOrder.Controls.Add(orderPanel);
             flowLayoutPanelOrder.Controls.Add(StartBtn);
             flowLayoutPanelOrder.Controls.Add(CompleteBtn);
+            flowLayoutPanelOrder.Controls.Add(remakeOrder);
             flowLayoutPanelOrder.Location = new Point(0, 0);
             flowLayoutPanelOrder.Margin = new Padding(0);
             flowLayoutPanelOrder.Name = "flowLayoutPanelOrder";
@@ -175,7 +177,7 @@ namespace ChapeauUI
             StartBtn.BackColor = Color.FromArgb(0, 132, 255);
             StartBtn.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             StartBtn.ForeColor = Color.MintCream;
-            StartBtn.Location = new Point(0, 398);
+            StartBtn.Location = new Point(0, 397);
             StartBtn.Margin = new Padding(0);
             StartBtn.Name = "StartBtn";
             StartBtn.Size = new Size(75, 27);
@@ -190,7 +192,7 @@ namespace ChapeauUI
             CompleteBtn.Enabled = false;
             CompleteBtn.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             CompleteBtn.ForeColor = SystemColors.ButtonHighlight;
-            CompleteBtn.Location = new Point(125, 398);
+            CompleteBtn.Location = new Point(125, 397);
             CompleteBtn.Margin = new Padding(50, 0, 0, 0);
             CompleteBtn.Name = "CompleteBtn";
             CompleteBtn.Size = new Size(75, 27);
@@ -198,6 +200,22 @@ namespace ChapeauUI
             CompleteBtn.Text = "Compleet";
             CompleteBtn.UseVisualStyleBackColor = false;
             CompleteBtn.Click += CompleteBtn_Click;
+            // 
+            // remakeOrder
+            // 
+            remakeOrder.BackColor = Color.FromArgb(0, 132, 255);
+            remakeOrder.Enabled = false;
+            remakeOrder.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            remakeOrder.ForeColor = SystemColors.ButtonHighlight;
+            remakeOrder.Location = new Point(0, 424);
+            remakeOrder.Margin = new Padding(0);
+            remakeOrder.Name = "remakeOrder";
+            remakeOrder.Size = new Size(200, 27);
+            remakeOrder.TabIndex = 3;
+            remakeOrder.Text = "Maak Opniew";
+            remakeOrder.UseVisualStyleBackColor = false;
+            remakeOrder.Visible = false;
+            remakeOrder.Click += remakeOrder_Click;
             // 
             // KitchenDisplayOrder
             // 
@@ -234,5 +252,6 @@ namespace ChapeauUI
         private FlowLayoutPanel mainDishesLayoutPanel;
         private FlowLayoutPanel sideDishesLayoutPanel;
         private FlowLayoutPanel dessetsDishesLayoutPanel;
+        private Button remakeOrder;
     }
 }
