@@ -1,4 +1,5 @@
 ﻿using ChapeauModel;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -179,7 +180,9 @@ namespace ChapeauDAL
                   [order].[status] AS Status,
                    ak.naam AS Article, 
                    ak.categorie AS Categorie,
-                  [order].ordertime AS OrderTime
+                  [order].ordertime AS OrderTime,
+                  [order].bar,
+                  [order].keuken
             FROM 
                   [order]
             JOIN 
@@ -189,7 +192,7 @@ namespace ChapeauDAL
             JOIN 
                   artikel AS ak ON ol.artikelid = ak.artikelid
             WHERE 
-                  rk.tafelnr = @tableNumber AND [status] IS NOT NULL
+                  rk.tafelnr = @tableNumber AND [status] IS NOT NULL AND [bar] IS NOT NULL AND [keuken] IS NOT NULL
             ORDER BY 
                   [order].ordertime DESC";
             SqlCommand command = new SqlCommand(query, OpenConnection());
@@ -219,7 +222,9 @@ namespace ChapeauDAL
                     (int)reader["tafelnr"],
                     (string)reader["status"],
                     new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
-                    (DateTime)reader["ordertime"]
+                    (DateTime)reader["ordertime"],
+                    (byte)reader["bar"],
+                    (byte)reader["keuken"]
                 );
 
             string products = (string)reader["Article"];
@@ -233,5 +238,37 @@ namespace ChapeauDAL
             }
             return currentOrder;
         }
+
+        public void SetDelivered(Order order)
+        {
+            byte bar = SetBarByte(order);
+            byte kitchen = SetKitchenByte(order);
+            UpdateOrder(order, bar, kitchen);
+            
+        }
+        private byte SetBarByte(Order order)
+        {
+            if (order.barStatus == OrderStatus.Delivered || order.barStatus != OrderStatus.Ready) { return 0; }
+            return 1;
+        }
+        private byte SetKitchenByte(Order order)
+        {
+            if (order.kitchenStatus == OrderStatus.Delivered && order.kitchenStatus != OrderStatus.Ready) { return 0; }
+            return 1;
+        }
+
+        private void UpdateOrder(Order order, byte bar, byte kitchen)
+        {
+            string query = $"UPDATE [order] SET [status] = @orderStatus, [bar] = @bar, [keuken] = @kitchen WHERE [orderId] = @OrderId";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@OrderId", order.OrderID),
+                new SqlParameter("@orderStatus", order.Status.ToString()),
+                new SqlParameter("@bar",bar),
+                new SqlParameter("@kitchen", kitchen)
+            };
+            ExecuteEditQuery(query, parameters);
+        }
+
     }
 }

@@ -48,7 +48,7 @@ namespace ChapeauUI
         private void StartOrderBtn_Click(object sender, EventArgs e)
         {
             MakeNewInvoice();
-            orderForm = new OrderForm(table,employee);
+            orderForm = new OrderForm(table, employee);
             orderForm.Show();
             tableOverview.Close();
             this.Close();
@@ -72,6 +72,12 @@ namespace ChapeauUI
         {
             invoiceService = new InvoiceService();
             invoiceService.CreateInvoice(table, employee);
+        }
+
+        private void exitPopUpBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            tableOverview.ReOpenForm();
         }
     }
 }

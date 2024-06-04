@@ -47,5 +47,12 @@ namespace ChapeauService
             List<Order> orders;
             return orders = orderdb.GetOrdersForTable(table);
         }
+
+        public void SetOrderDelivered(Order order)
+        {
+            orderdb.SetDelivered(order);
+        }
+
+       
     }
 }

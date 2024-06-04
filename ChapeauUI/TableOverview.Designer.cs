@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableOverview));
             OpenLegendBtn = new BottomRightRoundedButton();
             logOutBtn = new BottomLeftRoundedButton();
-            bottomRoundedButton1 = new BottomRoundedButton();
+            ReservationBtn = new BottomRoundedButton();
             IndicateEntranceLeftPnl = new System.Windows.Forms.Panel();
             IndicateEntranceRightPnl = new System.Windows.Forms.Panel();
             SuspendLayout();
@@ -68,20 +68,20 @@
             logOutBtn.UseVisualStyleBackColor = false;
             logOutBtn.Click += logOutBtn_Click;
             // 
-            // bottomRoundedButton1
+            // ReservationBtn
             // 
-            bottomRoundedButton1.BackColor = System.Drawing.Color.FromArgb(12, 18, 150);
-            bottomRoundedButton1.BackgroundImage = (System.Drawing.Image)resources.GetObject("bottomRoundedButton1.BackgroundImage");
-            bottomRoundedButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            bottomRoundedButton1.FlatAppearance.BorderSize = 0;
-            bottomRoundedButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            bottomRoundedButton1.Location = new System.Drawing.Point(50, 0);
-            bottomRoundedButton1.Name = "bottomRoundedButton1";
-            bottomRoundedButton1.Size = new System.Drawing.Size(48, 48);
-            bottomRoundedButton1.TabIndex = 2;
-            bottomRoundedButton1.Text = "bottomRoundedButton1";
-            bottomRoundedButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            bottomRoundedButton1.UseVisualStyleBackColor = false;
+            ReservationBtn.BackColor = System.Drawing.Color.FromArgb(12, 18, 150);
+            ReservationBtn.BackgroundImage = (System.Drawing.Image)resources.GetObject("ReservationBtn.BackgroundImage");
+            ReservationBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            ReservationBtn.FlatAppearance.BorderSize = 0;
+            ReservationBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            ReservationBtn.Location = new System.Drawing.Point(50, 0);
+            ReservationBtn.Name = "ReservationBtn";
+            ReservationBtn.Size = new System.Drawing.Size(48, 48);
+            ReservationBtn.TabIndex = 2;
+            ReservationBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            ReservationBtn.UseVisualStyleBackColor = false;
+            ReservationBtn.Click += ReservationBtn_Click;
             // 
             // IndicateEntranceLeftPnl
             // 
@@ -106,7 +106,7 @@
             ClientSize = new System.Drawing.Size(1133, 744);
             Controls.Add(IndicateEntranceRightPnl);
             Controls.Add(IndicateEntranceLeftPnl);
-            Controls.Add(bottomRoundedButton1);
+            Controls.Add(ReservationBtn);
             Controls.Add(logOutBtn);
             Controls.Add(OpenLegendBtn);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -120,7 +120,7 @@
 
         private BottomRightRoundedButton OpenLegendBtn;
         private BottomLeftRoundedButton logOutBtn;
-        private BottomRoundedButton bottomRoundedButton1;
+        private BottomRoundedButton ReservationBtn;
         private System.Windows.Forms.Panel IndicateEntranceLeftPnl;
         private System.Windows.Forms.Panel IndicateEntranceRightPnl;
     }
