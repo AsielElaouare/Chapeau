@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ChapeauModel;
 using ChapeauService;
+using System.Timers;
 
 namespace ChapeauUI
 {
@@ -33,18 +34,44 @@ namespace ChapeauUI
         int topRowIndex = 0;
         int bottomRowIndex = 0;
         int thirdRowIndex = 0;
-
         int amountOfTablesCreated = 0;
-
         const int regularAmountOfTables = 10;
+
+        //refresh the form
+        private System.Windows.Forms.Timer refreshTimer;
         public TableOverview(Employee employee)
         {
             InitializeComponent();
             this.employee = employee;
             this.tables = GetTables();
             CheckLayOut();
+            InitializeTimer();
         }
 
+        //again this is to refresh the form every 30 seconds
+        private void InitializeTimer()
+        {
+            refreshTimer = new System.Windows.Forms.Timer();
+            refreshTimer.Interval = 30000; 
+            refreshTimer.Tick += RefreshTimer_Tick;
+            refreshTimer.Start();
+        }
+
+        private void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            RefreshTableButtons();
+        }
+
+        private void RefreshTableButtons()
+        {
+            var tableButtons = this.Controls.OfType<Button>().Where(button => button.Tag is Tafel).ToList();
+            foreach (var tableButton in tableButtons)
+            {
+                this.Controls.Remove(tableButton);
+            }
+            this.tables = GetTables();
+            CheckLayOut();
+        }
         private void CheckLayOut()
         {
             if (tables.Count <= regularAmountOfTables)
