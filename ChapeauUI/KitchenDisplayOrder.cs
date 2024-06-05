@@ -106,6 +106,7 @@ namespace ChapeauUI
         {
             orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending);
             flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
+
         }
     }
 }

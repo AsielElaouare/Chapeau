@@ -39,7 +39,7 @@ namespace ChapeauUI
             confirmButton = new Button();
             productLayoutPanel = new FlowLayoutPanel();
             orderLayoutPanel = new FlowLayoutPanel();
-            tableSelectbox = new ComboBox();
+            tafelNRText = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -131,21 +131,19 @@ namespace ChapeauUI
             orderLayoutPanel.Size = new Size(330, 510);
             orderLayoutPanel.TabIndex = 6;
             // 
-            // tableSelectbox
+            // tafelNRTextBox
             // 
-            tableSelectbox.FormattingEnabled = true;
-            tableSelectbox.Location = new Point(763, 615);
-            tableSelectbox.Name = "tableSelectbox";
-            tableSelectbox.Size = new Size(330, 28);
-            tableSelectbox.TabIndex = 7;
-            tableSelectbox.Text = "Selecteer een tafel nummer";
+            tafelNRText.Location = new Point(763, 615);
+            tafelNRText.Name = "tafelNRText";
+            tafelNRText.Size = new Size(330, 27);
+            tafelNRText.TabIndex = 7;
             // 
             // OrderForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1115, 697);
-            Controls.Add(tableSelectbox);
+            Controls.Add(tafelNRText);
             Controls.Add(orderLayoutPanel);
             Controls.Add(productLayoutPanel);
             Controls.Add(confirmButton);
@@ -158,6 +156,7 @@ namespace ChapeauUI
             Text = "OrderForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -170,6 +169,6 @@ namespace ChapeauUI
         private Button confirmButton;
         private FlowLayoutPanel productLayoutPanel;
         private FlowLayoutPanel orderLayoutPanel;
-        private ComboBox tableSelectbox;
+        private Label tafelNRText;
     }
 }

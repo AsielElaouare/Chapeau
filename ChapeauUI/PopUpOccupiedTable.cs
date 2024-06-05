@@ -28,7 +28,7 @@ namespace ChapeauUI
             tableLbl.Text = $"Tafel {table.TafelNummer.ToString()}";
             this.tableOverview = tableOverview;
         }
-        
+
         private void SetRoundedRegion()
         {
             GraphicsPath path = new GraphicsPath();
@@ -43,7 +43,8 @@ namespace ChapeauUI
 
         private void OrderBtn_Click(object sender, EventArgs e)
         {
-            orderForm = new OrderForm(table);
+
+            orderForm = new OrderForm(table,employee);
             orderForm.Show();
             tableOverview.Close();
             this.Close();
@@ -54,13 +55,19 @@ namespace ChapeauUI
             //////Open reciept form
 
             this.Close();
+            tableOverview.Close();
         }
 
         private void PopUpOccupiedTable_Deactivate(object sender, EventArgs e)
         {
             this.Close();
+            tableOverview.ReOpenForm();
         }
 
-        
+        private void exitPopUpBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            tableOverview.ReOpenForm();
+        }
     }
 }
