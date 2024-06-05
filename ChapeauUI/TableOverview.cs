@@ -118,6 +118,7 @@ namespace ChapeauUI
             }
         }
 
+
         private void TableButton_PaintNotReady(object sender, PaintEventArgs e)
         {
             Button button = sender as Button;
