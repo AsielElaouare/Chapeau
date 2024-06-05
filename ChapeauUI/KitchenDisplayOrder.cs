@@ -21,10 +21,10 @@ namespace ChapeauUI
             this.orderLabel = openOrdersLabel;
             InitializeComponent();
             DisplayOrderData();
+            CheckTypeOfOrder();
         }
         private void DisplayOrderData()
         {
-            CheckTypeOfOrder();
             orderInfLabel.Text = $"Order: {Order.OrderID}                               Tafel: {Order.TafelNR}";
             foreach (Product product in Order.ProductList)
             {

@@ -26,9 +26,11 @@ namespace ChapeauUI
             //tableOverview.Show();
 
             KitchenForm form = new KitchenForm();
+            BarForm barForm = new BarForm();
             OrderForm orderForm = new OrderForm();
             orderForm.Show();
             form.Show();
+            barForm.Show();
 
 
             Application.Run();

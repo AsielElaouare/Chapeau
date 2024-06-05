@@ -22,11 +22,11 @@ namespace ChapeauUI
 
         public KitchenForm()
         {
+            this.orderService = new OrderService();
             InitTimer();
             InitializeComponent();
             DisplayOrders();
-            openOrdersLabel.Text = $"Open: {flowLayoutKitchenPnl.Controls.Count}";
-            this.orderService = new OrderService();
+            UpdateLabelOpenOrders();
         }
 
         public void Update()
@@ -44,6 +44,11 @@ namespace ChapeauUI
                     playNotificationSound();
                 }
             }
+            UpdateLabelOpenOrders();
+        }
+        private void UpdateLabelOpenOrders()
+        {
+            openOrdersLabel.Text = $"Open: {flowLayoutKitchenPnl.Controls.Count}";
         }
         private List<Order> GetKitchenOrders()
         {

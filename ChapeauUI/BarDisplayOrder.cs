@@ -14,11 +14,7 @@ namespace ChapeauUI
 {
     public partial class BarDisplayOrder : UserControl
     {
-        public BarDisplayOrder()
-        {
-            InitializeComponent();
-        }
-        int nrOfOrders;
+
         Order Order;
         Label orderLabel;
         OrderService orderService;
@@ -30,69 +26,66 @@ namespace ChapeauUI
             this.orderService = new OrderService();
             InitializeComponent();
             DisplayOrderData();
+            CheckTypeOfOrder();
+        }
+
+        private void CheckTypeOfOrder()
+        {
+            if (Order.Status == OrderStatus.Ready)
+            {
+                remakeOrderBtn.Visible = true;
+                remakeOrderBtn.Enabled = true;
+                StartBtn.Visible = false;
+                CompleteBtn.Visible = false;
+            }
         }
         public void DisplayOrderData()
         {
             orderInfLabel.Text = $"Order: {Order.OrderID}                               Tafel: {Order.TafelNR}";
             foreach (Product product in Order.ProductList)
             {
-                Label drinkLabel = new Label();
-                Label drinkLabelCommment = new Label();
-
-                drinkLabel.Text = product.Naam;
-
-                drinkLabelCommment.ForeColor = Color.White;
-                drinkLabelCommment.Font = new Font(drinkLabelCommment.Font, FontStyle.Italic);
-                drinkLabelCommment.Width = 200;
-                drinkLabel.BackColor = Color.FromArgb(123, 123, 123);
-                drinkLabel.Width = 200;
-                drinkLabel.Height = 30;
-                drinkLabel.Margin = new Padding(0, 10, 0, 0);
-                drinksFlowLayoutPnl.Controls.Add(drinkLabel);
-                drinksFlowLayoutPnl.Controls.Add(drinkLabelCommment);
+                DrawLabels(product);
             }
+        }
+
+        private void DrawLabels(Product product)
+        {
+            Label drinkLabel = new Label();
+            Label drinkLabelCommment = new Label();
+
+            drinkLabel.Text = product.Naam;
+
+            drinkLabelCommment.ForeColor = Color.White;
+            drinkLabelCommment.Font = new Font(drinkLabelCommment.Font, FontStyle.Italic);
+            drinkLabelCommment.Width = 200;
+            drinkLabel.BackColor = Color.FromArgb(123, 123, 123);
+            drinkLabel.Width = 200;
+            drinkLabel.Height = 30;
+            drinkLabel.Margin = new Padding(0, 10, 0, 0);
+            drinksFlowLayoutPnl.Controls.Add(drinkLabel);
+            drinksFlowLayoutPnl.Controls.Add(drinkLabelCommment);
         }
 
         private void StartBtn_Click(object sender, EventArgs e)
         {
+            StartBtn.Enabled = false;
             CompleteBtn.Enabled = true;
-            DialogResult result = MessageBox.Show(
-                $"Weet u zeker dat u order nummer {Order.OrderID} wilt starten?",
-                $"Order : {Order.OrderID} Starten",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning);
-
-            if (result == DialogResult.Yes)
-            {
-                StartBtn.Enabled = false;
-                // changing status to preparing in database (DAO)
-                timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-                Order.Status = OrderStatus.Preparing;
-                orderService.UpdateToPreparingOrders(Order.OrderID, Order.Status);
-            }
-            else if (result == DialogResult.No)
-            {
-                CompleteBtn.Enabled = false;
-            }
+            timeLabel.BackColor = Color.FromArgb(23, 185, 8);
+            orderService.UpdateToPreparingOrders(Order.OrderID, OrderStatus.Preparing);
         }
 
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(
-                $"Weet u zeker dat u order nummer {Order.OrderID} wilt voltooien?",
-                $"Order : {Order.OrderID} Voltooien", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            StartBtn.Enabled = false;
+            timeLabel.BackColor = Color.FromArgb(23, 185, 8);
+            orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready);
+            OrderPanel.Parent.Parent.Controls.Remove(this);
+        }
 
-            if (result == DialogResult.Yes)
-            {
-                StartBtn.Enabled = false;
-                timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-                Order.Status = OrderStatus.Ready;
-                orderService.UpdateToReadyOrders(Order.OrderID, Order.Status);
-                int nrOfOrders = int.Parse(orderLabel.Text.Substring(6));
-                nrOfOrders--;
-                orderLabel.Text = $"Open: {nrOfOrders}";
-                OrderPanel.Parent.Parent.Controls.Remove(this);
-            }
+        private void remakeOrderBtn_Click(object sender, EventArgs e)
+        {
+            orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending);
+            OrderPanel.Parent.Parent.Controls.Remove(this);
         }
     }
 }

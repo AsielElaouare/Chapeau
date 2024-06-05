@@ -9,6 +9,7 @@ using System.Linq;
 using System.Media;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,18 +17,28 @@ namespace ChapeauUI
 {
     public partial class PreviousOrders : Form
     {
-        KitchenForm kitchenForm;
-        OrderService orderService;
+        private KitchenForm kitchenForm;
+        private BarForm barForm;
+        private OrderService orderService;
         public PreviousOrders(KitchenForm kitchenForm)
         {
             this.orderService = new OrderService();
             this.kitchenForm = kitchenForm;
             InitializeComponent();
-            DisplayOrders();
+            DisplayOrdersKitchen();
             madeOrdersLabel.Text = $"Vooltoide bestellingen: {flowLayoutPreviousOrdersPanel.Controls.Count}";
         }
 
-        private void DisplayOrders()
+        public PreviousOrders(BarForm barForm)
+        {
+            this.orderService = new OrderService();
+            this.barForm = barForm;
+            InitializeComponent();
+            DisplayOrdersBar();
+            madeOrdersLabel.Text = $"Vooltoide bestellingen: {flowLayoutPreviousOrdersPanel.Controls.Count}";
+        }
+
+        private void DisplayOrdersKitchen()
         {
             DateOnly dateToday = DateOnly.FromDateTime(DateTime.Now);
             List<Order> orders = orderService.GetReadyOrdersForKitchen(dateToday);
@@ -39,10 +50,29 @@ namespace ChapeauUI
             }
         }
 
+        private void DisplayOrdersBar()
+        {
+            DateOnly dateToday = DateOnly.FromDateTime(DateTime.Now);
+            List<Order> orders = orderService.GetReadyOrdersForBar(dateToday);
+
+            foreach (Order order in orders)
+            {
+                BarDisplayOrder kitchenDisplayOrder = new BarDisplayOrder(order, madeOrdersLabel);
+                flowLayoutPreviousOrdersPanel.Controls.Add(kitchenDisplayOrder);
+            }
+        }
+
         private void goBackBtn_Click(object sender, EventArgs e)
         {
             this.Close();
-            kitchenForm.Show();
+            if (kitchenForm != null)
+            {
+                kitchenForm.Show();
+            }
+            else
+            {
+                barForm.Show();
+            }
         }
 
     }

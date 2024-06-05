@@ -165,6 +165,48 @@ namespace ChapeauDAL
             return orders;
         }
 
+        public List<Order> GetPreviousOrdersForBar(DateOnly dateToday)
+        {
+            string query = @"
+            SELECT 
+                rk.tafelnr,
+                [order].orderid,
+                SUM(ol.aantal) AS aantal,
+                STRING_AGG([ol].opmerking, '; ') AS opmerking,
+                [order].[status],
+                STRING_AGG(ak.naam, '; ') AS Article, 
+                STRING_AGG(ak.categorie, ', ') AS categorie 
+            FROM 
+                [order]
+            JOIN 
+                orderline AS OL ON [order].[orderid] = OL.orderid
+            JOIN 
+                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                artikel AS ak ON ol.artikelid = ak.artikelid
+            WHERE [status] = 'Ready' AND (ak.categorie = 'bier' or ak.categorie = 'KoffieThee' or ak.categorie = 'Gedistilleerd' or ak.categorie = 'Frisdrank' or ak.categorie = 'wijn') 
+                              AND CAST([order].ordertime AS DATE) = @dateToday
+            GROUP BY 
+                rk.tafelnr, [order].orderid, [order].[status]
+            ORDER BY 
+                rk.tafelnr, [order].orderid";
+
+            SqlCommand command = new SqlCommand(query, OpenConnection());
+            command.Parameters.Add(new SqlParameter("@dateToday", dateToday.ToString("yyyy-MM-dd")));
+            SqlDataReader reader = command.ExecuteReader();
+            List<Order> orders = new List<Order>();
+
+            while (reader.Read())
+            {
+                Order order = ReadOrders(reader);
+                orders.Add(order);
+            }
+            reader.Close();
+            CloseConnection();
+            return orders;
+        }
+
+
         public Order ReadOrders(SqlDataReader reader)
         {
             Order currentOrder = null;

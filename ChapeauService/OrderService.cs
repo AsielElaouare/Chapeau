@@ -52,5 +52,12 @@ namespace ChapeauService
             List<Order> orders;
             return orders = orderdb.GetPreviousOrdersForKitchen(dateToday);
         }
+
+        public List<Order> GetReadyOrdersForBar(DateOnly dateToday)
+        {
+            List<Order> orders;
+            return orders = orderdb.GetPreviousOrdersForBar(dateToday);
+
+        }
     }
 }
