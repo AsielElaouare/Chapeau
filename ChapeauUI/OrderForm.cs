@@ -29,34 +29,12 @@ namespace ChapeauUI
 
         TableOverview tableOverview;
 
-        private List<IObserver> observers = new List<IObserver>();
-        public Order SubjectOrder
-        {
-            get { return SubjectOrder; }
-            set { SubjectOrder = value; }
-        }
-        public void Attach(IObserver observer)
-        {
-            observers.Add(observer);
-        }
-        public void Deattach(IObserver observer)
-        {
-            observers.Remove(observer);
-
-        }
-        public void NotifyOberservers()
-        {
-            foreach (IObserver observer in observers)
-            {
-                observer.Update();
-            }
-        }
+      
 
         public OrderForm()
         {
             InitializeComponent();
             products = GetProducts();
-            FillTableBox();
             orders = new List<Orderline>();
         }
         public OrderForm(Tafel table, Employee employee)
