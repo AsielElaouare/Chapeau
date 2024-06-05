@@ -41,7 +41,7 @@ namespace ChapeauUI
         private void DisplayOrdersKitchen()
         {
             DateOnly dateToday = DateOnly.FromDateTime(DateTime.Now);
-            List<Order> orders = orderService.GetReadyOrdersForKitchen(dateToday);
+            List<Order> orders = orderService.GetOrdersForKitchen(OrderStatus.Ready, dateToday);
 
             foreach (Order order in orders)
             {
@@ -53,7 +53,7 @@ namespace ChapeauUI
         private void DisplayOrdersBar()
         {
             DateOnly dateToday = DateOnly.FromDateTime(DateTime.Now);
-            List<Order> orders = orderService.GetReadyOrdersForBar(dateToday);
+            List<Order> orders = orderService.GetOrdersForKitchen(OrderStatus.Ready, dateToday);
 
             foreach (Order order in orders)
             {

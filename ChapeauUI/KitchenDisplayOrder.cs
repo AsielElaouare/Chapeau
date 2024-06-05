@@ -10,15 +10,26 @@ namespace ChapeauUI
 {
     public partial class KitchenDisplayOrder : UserControl
     {
-        Order Order;
-        Label orderLabel;
-        OrderService orderService;
+        private Order Order;
+        private Label orderLabel;
+        private OrderService orderService;
+        private List<Order> orders;
 
         public KitchenDisplayOrder(Order order, Label openOrdersLabel)
         {
             this.Order = order;
             this.orderService = new OrderService();
             this.orderLabel = openOrdersLabel;
+            InitializeComponent();
+            DisplayOrderData();
+            CheckTypeOfOrder();
+        }
+        public KitchenDisplayOrder(Order order, Label openOrdersLabel, List<Order> orders)
+        {
+            this.Order = order;
+            this.orderService = new OrderService();
+            this.orderLabel = openOrdersLabel;
+            this.orders = orders;
             InitializeComponent();
             DisplayOrderData();
             CheckTypeOfOrder();
@@ -58,6 +69,7 @@ namespace ChapeauUI
             timeLabel.BackColor = Color.FromArgb(23, 185, 8);
             orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready);
             orderLabel.Text = $"Open: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
+            orders.Remove(Order);
             flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
         }
 
@@ -98,15 +110,14 @@ namespace ChapeauUI
                 default:
                     break;
             }
-            if (!string.IsNullOrEmpty(Order.OrderLineComment.Commentary))
-                dishLabelComment.Text = "Opmerking: " + Order.OrderLineComment.Commentary;
+            if (!string.IsNullOrEmpty(Order.OrderLine.Commentary))
+                dishLabelComment.Text = "Opmerking: " + Order.OrderLine.Commentary;
         }
 
         private void remakeOrder_Click(object sender, EventArgs e)
         {
             orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending);
             flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
-
         }
     }
 }

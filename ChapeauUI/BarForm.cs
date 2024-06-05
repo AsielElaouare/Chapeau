@@ -18,10 +18,11 @@ namespace ChapeauUI
         Timer timer;
         private OrderService orderService;
         private List<Order> orders;
-
+        DateOnly dateToday;
         public BarForm()
         {
             this.orderService = new OrderService();
+            dateToday = DateOnly.FromDateTime(DateTime.Now);
             InitializeComponent();
             InitTimer();
             DisplayOrders();
@@ -32,7 +33,8 @@ namespace ChapeauUI
         public void Update()
         {
 
-            List<Order> latestOrders = orderService.GetAllPendingOrdersForBar();
+
+            List<Order> latestOrders = orderService.GetOrdersForBar(OrderStatus.Pending, dateToday);
 
             foreach (Order order in latestOrders)
             {
@@ -54,7 +56,7 @@ namespace ChapeauUI
         private List<Order> GetBarOrders()
         {
             OrderService orderService = new OrderService();
-            List<Order> orders = orderService.GetAllPendingOrdersForBar(); ;
+            List<Order> orders = orderService.GetOrdersForBar(OrderStatus.Pending, dateToday); ;
             return orders;
         }
 

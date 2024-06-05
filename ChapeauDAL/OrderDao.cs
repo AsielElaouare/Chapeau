@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,9 +14,8 @@ namespace ChapeauDAL
 {
     public class OrderDao : BaseDao
     {
-        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines)
+        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orderlines)
         {
-            //add order status to database!!!!!!
             int orderId = 0;
             string query = @"
                 DECLARE @currentrekeningnummer INT;
@@ -38,7 +38,7 @@ namespace ChapeauDAL
                 orderId = Convert.ToInt32((int)reader["newOrderID"]);
             }
             reader.Close();
-             foreach (Orderline line in orderlines)
+            foreach (Orderline line in orderlines)
             {
                 StoreOrderline(line, orderId);
                 AdjustStock(line);
@@ -71,11 +71,12 @@ namespace ChapeauDAL
                 command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
                 command.ExecuteNonQuery();
             }
-            
+
         }
-        public List<Order> GetOrdersForBar()
+        public List<Order> GetOrders(OrderStatus status, string[] categories, DateOnly dateToday)
         {
-            string query = @"
+            string categoryCondition = string.Join(" OR ", categories.Select(cat => $"ak.categorie = '{cat}'"));
+            string query = $@"
             SELECT 
                 rk.tafelnr,
                 [order].orderid,
@@ -92,15 +93,17 @@ namespace ChapeauDAL
                 rekening AS rk ON [order].rekeningnr = rk.rekeningnr
             JOIN 
                 artikel AS ak ON ol.artikelid = ak.artikelid
-            where [status] = 'Pending' AND (ak.categorie = 'bier' or ak.categorie = 'KoffieThee' or ak.categorie = 'Gedistilleerd' or ak.categorie = 'Frisdrank' or ak.categorie = 'wijn')
+            WHERE [status] = @status AND ({categoryCondition}) AND CAST([order].ordertime AS DATE) = @dateToday
             GROUP BY 
                 rk.tafelnr, [order].orderid, [order].[status]
             ORDER BY 
                 rk.tafelnr, [order].orderid";
-            SqlCommand command = new SqlCommand(query, OpenConnection());
 
-            SqlDataReader reader = command.ExecuteReader();
             List<Order> orders = new List<Order>();
+            SqlCommand command = new SqlCommand(query, OpenConnection());
+            command.Parameters.AddWithValue("@status", status.ToString());
+            command.Parameters.AddWithValue("@dateToday", dateToday.ToString("yyyy-MM-dd"));
+            SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
@@ -112,131 +115,6 @@ namespace ChapeauDAL
             CloseConnection();
             return orders;
         }
-        public List<Order> GetOrdersForKitchen()
-        {
-            string query = @"
-            SELECT 
-                rk.tafelnr,
-                [order].orderid,
-                SUM(ol.aantal) AS aantal,
-                STRING_AGG([ol].opmerking, '; ') AS opmerking,
-                [order].[status],
-                STRING_AGG(ak.naam, '; ') AS Article, 
-                STRING_AGG(ak.categorie, ', ') AS categorie 
-            FROM 
-                [order]
-            JOIN 
-                orderline AS OL ON [order].[orderid] = OL.orderid
-            JOIN 
-                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
-            JOIN 
-                artikel AS ak ON ol.artikelid = ak.artikelid
-            where [status] = 'Pending' AND (ak.categorie = 'Hoofdgerechten' or ak.categorie = 'Nagerechten' or ak.categorie = 'Tussengerechten' or ak.categorie = 'Voorgerechten')
-            GROUP BY 
-                rk.tafelnr, [order].orderid, [order].[status]
-            ORDER BY 
-                rk.tafelnr, [order].orderid";
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-
-            SqlDataReader reader = command.ExecuteReader();
-            List<Order> orders = new List<Order>();
-
-            while (reader.Read())
-            {
-
-                Order order = ReadOrders(reader);
-                orders.Add(order);
-            }
-            reader.Close();
-            CloseConnection();
-            return orders;
-        }
-
-        public List<Order> GetPreviousOrdersForKitchen(DateOnly dateToday)
-        {
-            string query = @"
-            SELECT 
-                rk.tafelnr,
-                [order].orderid,
-                SUM(ol.aantal) AS aantal,
-                STRING_AGG([ol].opmerking, '; ') AS opmerking,
-                [order].[status],
-                STRING_AGG(ak.naam, '; ') AS Article, 
-                STRING_AGG(ak.categorie, ', ') AS categorie 
-            FROM 
-                [order]
-            JOIN 
-                orderline AS OL ON [order].[orderid] = OL.orderid
-            JOIN 
-                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
-            JOIN 
-                artikel AS ak ON ol.artikelid = ak.artikelid
-            WHERE 
-                [status] = 'Ready' 
-                AND (ak.categorie = 'Hoofdgerechten' OR ak.categorie = 'Nagerechten' OR ak.categorie = 'Voorgerechten') 
-                AND CAST([order].ordertime AS DATE) = @dateToday
-            GROUP BY 
-                rk.tafelnr, [order].orderid, [order].[status]
-            ORDER BY 
-                rk.tafelnr, [order].orderid";
-
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-            command.Parameters.Add(new SqlParameter("@dateToday", dateToday.ToString("yyyy-MM-dd")));
-            SqlDataReader reader = command.ExecuteReader();
-            List<Order> orders = new List<Order>();
-
-            while (reader.Read())
-            {
-
-                Order order = ReadOrders(reader);
-                orders.Add(order);
-            }
-            reader.Close();
-            CloseConnection();
-            return orders;
-        }
-
-        public List<Order> GetPreviousOrdersForBar(DateOnly dateToday)
-        {
-            string query = @"
-            SELECT 
-                rk.tafelnr,
-                [order].orderid,
-                SUM(ol.aantal) AS aantal,
-                STRING_AGG([ol].opmerking, '; ') AS opmerking,
-                [order].[status],
-                STRING_AGG(ak.naam, '; ') AS Article, 
-                STRING_AGG(ak.categorie, ', ') AS categorie 
-            FROM 
-                [order]
-            JOIN 
-                orderline AS OL ON [order].[orderid] = OL.orderid
-            JOIN 
-                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
-            JOIN 
-                artikel AS ak ON ol.artikelid = ak.artikelid
-            WHERE [status] = 'Ready' AND (ak.categorie = 'bier' or ak.categorie = 'KoffieThee' or ak.categorie = 'Gedistilleerd' or ak.categorie = 'Frisdrank' or ak.categorie = 'wijn') 
-                              AND CAST([order].ordertime AS DATE) = @dateToday
-            GROUP BY 
-                rk.tafelnr, [order].orderid, [order].[status]
-            ORDER BY 
-                rk.tafelnr, [order].orderid";
-
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-            command.Parameters.Add(new SqlParameter("@dateToday", dateToday.ToString("yyyy-MM-dd")));
-            SqlDataReader reader = command.ExecuteReader();
-            List<Order> orders = new List<Order>();
-
-            while (reader.Read())
-            {
-                Order order = ReadOrders(reader);
-                orders.Add(order);
-            }
-            reader.Close();
-            CloseConnection();
-            return orders;
-        }
-
 
         public Order ReadOrders(SqlDataReader reader)
         {
@@ -359,7 +237,7 @@ namespace ChapeauDAL
             byte bar = SetBarByte(order);
             byte kitchen = SetKitchenByte(order);
             UpdateOrder(order, bar, kitchen);
-            
+
         }
         private byte SetBarByte(Order order)
         {

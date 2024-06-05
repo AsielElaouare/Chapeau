@@ -25,8 +25,10 @@ namespace ChapeauUI
             //TableOverview tableOverview = new TableOverview(new ChapeauModel.Employee(1,"Henk","test","Waitress"));
             //tableOverview.Show();
 
+            KitchenForm form = new KitchenForm();
             LoginForm loginForm = new LoginForm();
             loginForm.Show();
+            form.Show();
 
 
             Application.Run();

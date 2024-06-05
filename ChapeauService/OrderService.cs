@@ -16,21 +16,22 @@ namespace ChapeauService
         {
             orderdb = new OrderDao();
         }
-        public void StoreOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orders)
+        public void StoreOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orders)
         {
-             orderdb.StoreNewOrder(timeOfOrder, selectedtable, orders);
+            orderdb.StoreNewOrder(timeOfOrder, selectedtable, orders);
         }
 
-        public List<Order> GetAllPendingOrdersForBar()
+        public List<Order> GetOrdersForBar(OrderStatus status, DateOnly todayDate)
         {
+            string[] barCategories = { "bier", "KoffieThee", "Gedistilleerd", "Frisdrank", "wijn" };
             List<Order> orders;
-            return orders = orderdb.GetOrdersForBar();
+            return orders = orderdb.GetOrders(status, barCategories, todayDate);
         }
-
-        public List<Order> GetPendingOrdersForKitchen()
+        public List<Order> GetOrdersForKitchen(OrderStatus status, DateOnly dateToday)
         {
+            string[] kitchenCategories = { "Hoofdgerechten", "Nagerechten", "Tussengerechten", "Voorgerechten" };
             List<Order> orders;
-            return orders = orderdb.GetOrdersForKitchen();
+            return orders = orderdb.GetOrders(status, kitchenCategories, dateToday);
         }
 
         public void UpdateToReadyOrders(int orederID, OrderStatus orderStatus)
@@ -47,11 +48,6 @@ namespace ChapeauService
             orderdb.StartOrder(orederID, orderStatus);
         }
 
-        public List<Order> GetReadyOrdersForKitchen(DateOnly dateToday)
-        {
-            List<Order> orders;
-            return orders = orderdb.GetPreviousOrdersForKitchen(dateToday);
-        }
         public List<Order> GetOrdersByTable(Tafel table)
         {
             List<Order> orders;
@@ -61,13 +57,6 @@ namespace ChapeauService
         public void SetOrderDelivered(Order order)
         {
             orderdb.SetDelivered(order);
-        }
-
-        public List<Order> GetReadyOrdersForBar(DateOnly dateToday)
-        {
-            List<Order> orders;
-            return orders = orderdb.GetPreviousOrdersForBar(dateToday);
-
         }
     }
 }

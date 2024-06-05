@@ -15,15 +15,26 @@ namespace ChapeauUI
     public partial class BarDisplayOrder : UserControl
     {
 
-        Order Order;
-        Label orderLabel;
-        OrderService orderService;
+        private Order Order;
+        private Label orderLabel;
+        private OrderService orderService;
+        private List<Order> orders;
 
         public BarDisplayOrder(Order order, Label orderLabel)
         {
             this.Order = order;
             this.orderLabel = orderLabel;
             this.orderService = new OrderService();
+            InitializeComponent();
+            DisplayOrderData();
+            CheckTypeOfOrder();
+        }
+        public BarDisplayOrder(Order order, Label orderLabel, List<Order> orders)
+        {
+            this.Order = order;
+            this.orderLabel = orderLabel;
+            this.orderService = new OrderService();
+            this.orders = orders;
             InitializeComponent();
             DisplayOrderData();
             CheckTypeOfOrder();
@@ -53,7 +64,7 @@ namespace ChapeauUI
             Label drinkLabel = new Label();
             Label drinkLabelCommment = new Label();
 
-                drinkLabel.Text = product.Name;
+            drinkLabel.Text = product.Name;
 
             drinkLabelCommment.ForeColor = Color.White;
             drinkLabelCommment.Font = new Font(drinkLabelCommment.Font, FontStyle.Italic);
@@ -79,6 +90,8 @@ namespace ChapeauUI
             StartBtn.Enabled = false;
             timeLabel.BackColor = Color.FromArgb(23, 185, 8);
             orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready);
+            if (orders != null)
+                orders.Remove(Order);
             OrderPanel.Parent.Parent.Controls.Remove(this);
         }
 
