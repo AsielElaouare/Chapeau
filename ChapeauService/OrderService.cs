@@ -42,6 +42,16 @@ namespace ChapeauService
             orderdb.StartOrder(orederID, orderStatus);
         }
 
+        public void UpdateToRemakingOrder(int orederID, OrderStatus orderStatus)
+        {
+            orderdb.StartOrder(orederID, orderStatus);
+        }
+
+        public List<Order> GetReadyOrdersForKitchen(DateOnly dateToday)
+        {
+            List<Order> orders;
+            return orders = orderdb.GetPreviousOrdersForKitchen(dateToday);
+        }
         public List<Order> GetOrdersByTable(Tafel table)
         {
             List<Order> orders;
@@ -52,7 +62,5 @@ namespace ChapeauService
         {
             orderdb.SetDelivered(order);
         }
-
-       
     }
 }

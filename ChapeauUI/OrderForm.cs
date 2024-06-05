@@ -20,7 +20,6 @@ namespace ChapeauUI
         List<Orderline> orders;
 
         List<Tafel> tafel;
-
         
         Employee employee;
         Tafel table;
@@ -52,7 +51,6 @@ namespace ChapeauUI
                 observer.Update();
             }
         }
-
 
         public OrderForm()
         {
@@ -302,6 +300,7 @@ namespace ChapeauUI
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:")); break;
                 }
+
                 else if(order.ArticleID == (int)clickedButton.Tag)
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:", "", order.Commentary)); break;

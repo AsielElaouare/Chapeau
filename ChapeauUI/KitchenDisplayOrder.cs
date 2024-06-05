@@ -2,6 +2,7 @@
 using ChapeauService;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -9,98 +10,103 @@ namespace ChapeauUI
 {
     public partial class KitchenDisplayOrder : UserControl
     {
-        int nrOfOrders;
         Order Order;
         Label orderLabel;
         OrderService orderService;
 
-        public KitchenDisplayOrder(Order order, Label orderLabel)
+        public KitchenDisplayOrder(Order order, Label openOrdersLabel)
         {
             this.Order = order;
-            this.orderLabel = orderLabel;
             this.orderService = new OrderService();
+            this.orderLabel = openOrdersLabel;
             InitializeComponent();
             DisplayOrderData();
         }
-        public void DisplayOrderData()
+        private void DisplayOrderData()
         {
+            CheckTypeOfOrder();
             orderInfLabel.Text = $"Order: {Order.OrderID}                               Tafel: {Order.TafelNR}";
             foreach (Product product in Order.ProductList)
             {
-                Label dishlabel = new Label();
-                Label dishLabelComment = new Label();
-                CheckProductCategory(product, dishlabel, dishLabelComment);
-                dishLabelComment.ForeColor = Color.White;
-                dishLabelComment.Font = new Font(dishLabelComment.Font, FontStyle.Italic);
-                dishLabelComment.Width = 200;
-                dishlabel.BackColor = Color.FromArgb(123, 123, 123);
-                dishlabel.Width = 200;
-                dishlabel.Height = 30;
-                dishlabel.Margin = new Padding(0, 10, 0, 0);
+                DrawLabels(product);
             }
         }
 
+        private void CheckTypeOfOrder()
+        {
+            if (Order.Status == OrderStatus.Ready)
+            {
+                remakeOrder.Visible = true;
+                remakeOrder.Enabled = true;
+                StartBtn.Visible = false;
+                CompleteBtn.Visible = false;
+            }
+        }
         private void StartBtn_Click(object sender, EventArgs e)
         {
             CompleteBtn.Enabled = true;
-            DialogResult result = MessageBox.Show($"Weet u zeker dat u order nummer {Order.OrderID} wilt starten?", $"Order : {Order.OrderID} Starten", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-            if (result == DialogResult.Yes)
-            {
-                StartBtn.Enabled = false;
-                // changing status to preparing in database (DAO)
-                timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-                Order.Status = OrderStatus.Preparing;
-                orderService.UpdateToPreparingOrders(Order.OrderID, Order.Status);
-            }
-            else if (result == DialogResult.No)
-            {
-                CompleteBtn.Enabled = false;
-            }
+            StartBtn.Enabled = false;
+            // changing status to preparing in database (DAO)
+            timeLabel.BackColor = Color.FromArgb(23, 185, 8);
+            orderService.UpdateToPreparingOrders(Order.OrderID, OrderStatus.Preparing);
         }
 
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(
-                $"Weet u zeker dat u order nummer {Order.OrderID} wilt voltooien?", $"Order : {Order.OrderID} Voltooien", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-            if (result == DialogResult.Yes)
-            {
-                StartBtn.Enabled = false;
-                timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-                Order.Status = OrderStatus.Ready;
-                orderService.UpdateToReadyOrders(Order.OrderID, Order.Status);
-                int nrOfOrders = int.Parse(orderLabel.Text.Substring(6));
-                nrOfOrders--;
-                orderLabel.Text = $"Open: {nrOfOrders}";
-                flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
-            }
+            StartBtn.Enabled = false;
+            timeLabel.BackColor = Color.FromArgb(23, 185, 8);
+            orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready);
+            orderLabel.Text = $"Open: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
+            flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
         }
 
-        public void CheckProductCategory(Product product, Label dishlabel, Label dishLabelComment)
+        private void DrawLabels(Product product)
         {
-            if (product.Category == ProductCategorie.Hoofdgerechten)
+            Label dishlabel = new Label();
+            Label dishLabelComment = new Label();
+
+            CheckProductCategory(product, dishlabel, dishLabelComment);
+
+            dishLabelComment.ForeColor = Color.White;
+            dishLabelComment.Font = new Font(dishLabelComment.Font, FontStyle.Italic);
+            dishLabelComment.Width = 200;
+            dishlabel.BackColor = Color.FromArgb(123, 123, 123);
+            dishlabel.Width = 200;
+            dishlabel.Height = 30;
+            dishlabel.Margin = new Padding(0, 10, 0, 0);
+        }
+
+
+        private void CheckProductCategory(Product product, Label dishLabel, Label dishLabelComment)
+        {
+            dishLabel.Text = product.Naam;
+            switch (product.Categorie)
             {
-                dishlabel.Text = product.Name;
-                mainDishesLayoutPanel.Controls.Add(dishlabel);
-                mainDishesLayoutPanel.Controls.Add(dishLabelComment);
+                case ProductCategorie.Voorgerechten:
+                    sideDishesLayoutPanel.Controls.Add(dishLabel);
+                    sideDishesLayoutPanel.Controls.Add(dishLabelComment);
+                    break;
+                case ProductCategorie.Hoofdgerechten:
+                    mainDishesLayoutPanel.Controls.Add(dishLabel);
+                    mainDishesLayoutPanel.Controls.Add(dishLabelComment);
+                    break;
+                case ProductCategorie.Nagerechten:
+                    dessetsDishesLayoutPanel.Controls.Add(dishLabel);
+                    dessetsDishesLayoutPanel.Controls.Add(dishLabelComment);
+                    break;
+                default:
+                    break;
             }
-            else if (product.Category == ProductCategorie.Voorgerechten)
-            {
-                dishlabel.Text = product.Name;
-                sideDishesLayoutPanel.Controls.Add(dishlabel);
-                sideDishesLayoutPanel.Controls.Add(dishLabelComment);
-            }
-            else if (product.Category == ProductCategorie.Nagerechten)
-            {
-                dishlabel.Text = product.Name;
-                dessetsDishesLayoutPanel.Controls.Add(dishlabel);
-                dessetsDishesLayoutPanel.Controls.Add(dishLabelComment);
-            }
-            if (!Order.OrderLineComment.Commentary.IsNullOrEmpty())
-            {
-                dishLabelComment.Text = "Opmerking: " + Order.OrderLineComment.Commentary;
-            }
+            if (!string.IsNullOrEmpty(Order.OrderLineComment.Opmerking))
+                dishLabelComment.Text = "Opmerking: " + Order.OrderLineComment.Opmerking;
+        }
+
+        private void remakeOrder_Click(object sender, EventArgs e)
+        {
+            orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending);
+            flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
+
         }
     }
 }

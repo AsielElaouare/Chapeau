@@ -42,8 +42,9 @@
             historyOrders.Name = "historyOrders";
             historyOrders.Size = new System.Drawing.Size(136, 34);
             historyOrders.TabIndex = 0;
-            historyOrders.Text = "Geschidenis";
+            historyOrders.Text = "Geschiedenis";
             historyOrders.UseVisualStyleBackColor = false;
+            historyOrders.Click += historyOrders_Click;
             // 
             // openOrdersLabel
             // 
@@ -62,11 +63,14 @@
             // flowLayoutKitchenPnl
             // 
             flowLayoutKitchenPnl.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            flowLayoutKitchenPnl.AutoScroll = true;
             flowLayoutKitchenPnl.Location = new System.Drawing.Point(12, 65);
             flowLayoutKitchenPnl.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            flowLayoutKitchenPnl.MinimumSize = new System.Drawing.Size(100, 0);
             flowLayoutKitchenPnl.Name = "flowLayoutKitchenPnl";
             flowLayoutKitchenPnl.Size = new System.Drawing.Size(1436, 532);
             flowLayoutKitchenPnl.TabIndex = 2;
+            flowLayoutKitchenPnl.WrapContents = false;
             // 
             // KitchenForm
             // 

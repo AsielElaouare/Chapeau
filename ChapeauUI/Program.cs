@@ -19,11 +19,18 @@ namespace ChapeauUI
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            LoginForm loginForm = new LoginForm();
-            loginForm.Show();
+            //ApplicationConfiguration.Initialize();
+            //LoginForm loginForm = new LoginForm();
+            //loginForm.Show();
             //TableOverview tableOverview = new TableOverview(new ChapeauModel.Employee(1,"Henk","test","Waitress"));
             //tableOverview.Show();
+
+            KitchenForm form = new KitchenForm();
+            OrderForm orderForm = new OrderForm();
+            orderForm.Show();
+            form.Show();
+
+
             Application.Run();
 
         }
