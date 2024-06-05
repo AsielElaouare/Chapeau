@@ -30,125 +30,190 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PaymentForm));
             pictureBox1 = new System.Windows.Forms.PictureBox();
-            lbl_tijd = new System.Windows.Forms.Label();
-            listView1 = new System.Windows.Forms.ListView();
+            listview_Bestelling = new System.Windows.Forms.ListView();
+            column_Items = new System.Windows.Forms.ColumnHeader();
+            column_Aantal = new System.Windows.Forms.ColumnHeader();
+            column_Prijs = new System.Windows.Forms.ColumnHeader();
+            column_Openstaand = new System.Windows.Forms.ColumnHeader();
             lbl_Total = new System.Windows.Forms.Label();
             lbl_BTW = new System.Windows.Forms.Label();
             lbl_Waiter = new System.Windows.Forms.Label();
             lbl_Table = new System.Windows.Forms.Label();
             lbl_ReceiptNumber = new System.Windows.Forms.Label();
             bttn_payment = new System.Windows.Forms.Button();
-            bttn_Split = new System.Windows.Forms.Button();
+            button2 = new System.Windows.Forms.Button();
+            button3 = new System.Windows.Forms.Button();
+            button4 = new System.Windows.Forms.Button();
+            button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
             // 
             pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new System.Drawing.Point(800, 2);
+            pictureBox1.Location = new System.Drawing.Point(762, 540);
+            pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new System.Drawing.Size(310, 210);
+            pictureBox1.Size = new System.Drawing.Size(351, 189);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // lbl_tijd
+            // listview_Bestelling
             // 
-            lbl_tijd.AutoSize = true;
-            lbl_tijd.Location = new System.Drawing.Point(967, 654);
-            lbl_tijd.Name = "lbl_tijd";
-            lbl_tijd.Size = new System.Drawing.Size(123, 25);
-            lbl_tijd.TabIndex = 1;
-            lbl_tijd.Text = "xx/xx/xxx xx:xx";
-            lbl_tijd.Click += label1_Click;
+            listview_Bestelling.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { column_Items, column_Aantal, column_Prijs, column_Openstaand });
+            listview_Bestelling.Location = new System.Drawing.Point(35, 144);
+            listview_Bestelling.Margin = new System.Windows.Forms.Padding(2);
+            listview_Bestelling.Name = "listview_Bestelling";
+            listview_Bestelling.Size = new System.Drawing.Size(640, 315);
+            listview_Bestelling.TabIndex = 2;
+            listview_Bestelling.UseCompatibleStateImageBehavior = false;
+            listview_Bestelling.View = System.Windows.Forms.View.Details;
             // 
-            // listView1
+            // column_Items
             // 
-            listView1.Location = new System.Drawing.Point(30, 199);
-            listView1.Name = "listView1";
-            listView1.Size = new System.Drawing.Size(431, 215);
-            listView1.TabIndex = 2;
-            listView1.UseCompatibleStateImageBehavior = false;
+            column_Items.Text = "Items";
+            // 
+            // column_Aantal
+            // 
+            column_Aantal.Text = "Aantal";
+            // 
+            // column_Prijs
+            // 
+            column_Prijs.Text = "Prijs";
+            // 
+            // column_Openstaand
+            // 
+            column_Openstaand.Text = "Openstaand";
+            column_Openstaand.Width = 80;
             // 
             // lbl_Total
             // 
             lbl_Total.AutoSize = true;
-            lbl_Total.Location = new System.Drawing.Point(32, 434);
+            lbl_Total.Location = new System.Drawing.Point(36, 486);
+            lbl_Total.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_Total.Name = "lbl_Total";
-            lbl_Total.Size = new System.Drawing.Size(67, 25);
+            lbl_Total.Size = new System.Drawing.Size(44, 15);
             lbl_Total.TabIndex = 3;
             lbl_Total.Text = "Totaal: ";
             // 
             // lbl_BTW
             // 
             lbl_BTW.AutoSize = true;
-            lbl_BTW.Location = new System.Drawing.Point(32, 473);
+            lbl_BTW.Location = new System.Drawing.Point(36, 523);
+            lbl_BTW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_BTW.Name = "lbl_BTW";
-            lbl_BTW.Size = new System.Drawing.Size(56, 25);
+            lbl_BTW.Size = new System.Drawing.Size(36, 15);
             lbl_BTW.TabIndex = 4;
             lbl_BTW.Text = "BTW: ";
             // 
             // lbl_Waiter
             // 
             lbl_Waiter.AutoSize = true;
-            lbl_Waiter.Location = new System.Drawing.Point(50, 33);
+            lbl_Waiter.Location = new System.Drawing.Point(35, 127);
+            lbl_Waiter.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_Waiter.Name = "lbl_Waiter";
-            lbl_Waiter.Size = new System.Drawing.Size(146, 25);
+            lbl_Waiter.Size = new System.Drawing.Size(97, 15);
             lbl_Waiter.TabIndex = 5;
             lbl_Waiter.Text = "Gastheer/vrouw: ";
             // 
             // lbl_Table
             // 
             lbl_Table.AutoSize = true;
-            lbl_Table.Location = new System.Drawing.Point(50, 69);
+            lbl_Table.Location = new System.Drawing.Point(218, 127);
+            lbl_Table.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_Table.Name = "lbl_Table";
-            lbl_Table.Size = new System.Drawing.Size(56, 25);
+            lbl_Table.Size = new System.Drawing.Size(37, 15);
             lbl_Table.TabIndex = 6;
             lbl_Table.Text = "Tafel: ";
             // 
             // lbl_ReceiptNumber
             // 
             lbl_ReceiptNumber.AutoSize = true;
-            lbl_ReceiptNumber.Location = new System.Drawing.Point(50, 105);
+            lbl_ReceiptNumber.Location = new System.Drawing.Point(356, 127);
+            lbl_ReceiptNumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_ReceiptNumber.Name = "lbl_ReceiptNumber";
-            lbl_ReceiptNumber.Size = new System.Drawing.Size(96, 25);
+            lbl_ReceiptNumber.Size = new System.Drawing.Size(80, 15);
             lbl_ReceiptNumber.TabIndex = 7;
-            lbl_ReceiptNumber.Text = "Bestelling: ";
+            lbl_ReceiptNumber.Text = "Bon nummer:";
+            lbl_ReceiptNumber.Click += lbl_ReceiptNumber_Click;
             // 
             // bttn_payment
             // 
-            bttn_payment.Location = new System.Drawing.Point(164, 562);
+            bttn_payment.Location = new System.Drawing.Point(518, 473);
+            bttn_payment.Margin = new System.Windows.Forms.Padding(2);
             bttn_payment.Name = "bttn_payment";
-            bttn_payment.Size = new System.Drawing.Size(187, 66);
+            bttn_payment.Size = new System.Drawing.Size(131, 40);
             bttn_payment.TabIndex = 8;
             bttn_payment.Text = "Betalen";
             bttn_payment.UseVisualStyleBackColor = true;
             // 
-            // bttn_Split
+            // button2
             // 
-            bttn_Split.Location = new System.Drawing.Point(472, 562);
-            bttn_Split.Name = "bttn_Split";
-            bttn_Split.Size = new System.Drawing.Size(187, 66);
-            bttn_Split.TabIndex = 9;
-            bttn_Split.Text = "Splitten";
-            bttn_Split.UseVisualStyleBackColor = true;
+            button2.BackColor = System.Drawing.Color.Firebrick;
+            button2.Location = new System.Drawing.Point(924, 375);
+            button2.Margin = new System.Windows.Forms.Padding(2);
+            button2.Name = "button2";
+            button2.Size = new System.Drawing.Size(0, 0);
+            button2.TabIndex = 11;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            button3.BackColor = System.Drawing.Color.Firebrick;
+            button3.Location = new System.Drawing.Point(924, 469);
+            button3.Margin = new System.Windows.Forms.Padding(2);
+            button3.Name = "button3";
+            button3.Size = new System.Drawing.Size(0, 0);
+            button3.TabIndex = 12;
+            button3.Text = "button3";
+            button3.UseVisualStyleBackColor = false;
+            // 
+            // button4
+            // 
+            button4.BackColor = System.Drawing.Color.Gainsboro;
+            button4.Location = new System.Drawing.Point(679, 144);
+            button4.Margin = new System.Windows.Forms.Padding(2);
+            button4.Name = "button4";
+            button4.Size = new System.Drawing.Size(188, 110);
+            button4.TabIndex = 13;
+            button4.Text = "splitten";
+            button4.UseVisualStyleBackColor = false;
+            // 
+            // button5
+            // 
+            button5.BackColor = System.Drawing.Color.LightGray;
+            button5.Location = new System.Drawing.Point(679, 269);
+            button5.Margin = new System.Windows.Forms.Padding(2);
+            button5.Name = "button5";
+            button5.Size = new System.Drawing.Size(188, 110);
+            button5.TabIndex = 14;
+            button5.Text = "keer terug naar tafeloverzicht";
+            button5.UseVisualStyleBackColor = false;
             // 
             // PaymentForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1111, 688);
-            Controls.Add(bttn_Split);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.White;
+            ClientSize = new System.Drawing.Size(1133, 740);
+            ControlBox = false;
+            Controls.Add(button5);
+            Controls.Add(button4);
+            Controls.Add(button3);
+            Controls.Add(button2);
             Controls.Add(bttn_payment);
             Controls.Add(lbl_ReceiptNumber);
             Controls.Add(lbl_Table);
             Controls.Add(lbl_Waiter);
             Controls.Add(lbl_BTW);
             Controls.Add(lbl_Total);
-            Controls.Add(listView1);
-            Controls.Add(lbl_tijd);
+            Controls.Add(listview_Bestelling);
             Controls.Add(pictureBox1);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Margin = new System.Windows.Forms.Padding(2);
             Name = "PaymentForm";
-            Text = "PaymentForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Load += PaymentForm_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -157,14 +222,20 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label lbl_tijd;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView listview_Bestelling;
         private System.Windows.Forms.Label lbl_Total;
         private System.Windows.Forms.Label lbl_BTW;
         private System.Windows.Forms.Label lbl_Waiter;
         private System.Windows.Forms.Label lbl_Table;
         private System.Windows.Forms.Label lbl_ReceiptNumber;
         private System.Windows.Forms.Button bttn_payment;
-        private System.Windows.Forms.Button bttn_Split;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ColumnHeader column_Items;
+        private System.Windows.Forms.ColumnHeader column_Aantal;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.ColumnHeader column_Prijs;
+        private System.Windows.Forms.ColumnHeader column_Openstaand;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChapeauModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,14 @@ namespace ChapeauUI
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new PaymentForm());
+            //LoginForm loginForm = new LoginForm();
+            //loginForm.Show();
+          //  TableOverview tableOverview = new TableOverview(new ChapeauModel.Employee(1,"Henk","test","Waitress"));
+           // tableOverview.Show();
+            PaymentForm paymentForm = new PaymentForm();
+           paymentForm.Show();
+           Application.Run();
+
         }
     }
 }
