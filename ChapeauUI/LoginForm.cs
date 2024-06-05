@@ -63,7 +63,7 @@ namespace ChapeauUI
                 {
                     FileName = youtubeUrl,
                     UseShellExecute = true
-                }); ;
+                });
             }
         }
 

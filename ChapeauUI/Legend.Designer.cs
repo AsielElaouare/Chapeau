@@ -45,12 +45,13 @@
             OpenLegendTextLbl = new System.Windows.Forms.Label();
             OpenReservationMenuTextLbl = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
-            label7 = new System.Windows.Forms.Label();
-            label8 = new System.Windows.Forms.Label();
+            CheckMarkImage = new System.Windows.Forms.Label();
+            FoodImage = new System.Windows.Forms.Label();
             label6 = new System.Windows.Forms.Label();
             HasReservationLbl = new System.Windows.Forms.Label();
             HasOrderedTextLbl = new System.Windows.Forms.Label();
             IconsTextLbl = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
             // LegendTextLbl
@@ -119,7 +120,7 @@
             // 
             // OrderedTabelColorLbl
             // 
-            OrderedTabelColorLbl.BackColor = System.Drawing.Color.FromArgb(201, 126, 13);
+            OrderedTabelColorLbl.BackColor = System.Drawing.Color.FromArgb(255, 79, 0);
             OrderedTabelColorLbl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             OrderedTabelColorLbl.Location = new System.Drawing.Point(18, 299);
             OrderedTabelColorLbl.Name = "OrderedTabelColorLbl";
@@ -203,10 +204,10 @@
             // 
             // label5
             // 
-            label5.BackColor = System.Drawing.Color.FromArgb(201, 126, 13);
+            label5.BackColor = System.Drawing.Color.FromArgb(255, 79, 0);
             label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            label5.ForeColor = System.Drawing.Color.White;
-            label5.Image = (System.Drawing.Image)resources.GetObject("label5.Image");
+            label5.ForeColor = System.Drawing.Color.Black;
+            label5.Image = Properties.Resources.time24x24b;
             label5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             label5.Location = new System.Drawing.Point(217, 69);
             label5.Name = "label5";
@@ -215,25 +216,25 @@
             label5.Text = "2 minuten";
             label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label7
+            // CheckMarkImage
             // 
-            label7.BackColor = System.Drawing.Color.FromArgb(201, 126, 13);
-            label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            label7.Image = (System.Drawing.Image)resources.GetObject("label7.Image");
-            label7.Location = new System.Drawing.Point(217, 299);
-            label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(30, 30);
-            label7.TabIndex = 17;
+            CheckMarkImage.BackColor = System.Drawing.Color.Black;
+            CheckMarkImage.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            CheckMarkImage.Image = (System.Drawing.Image)resources.GetObject("CheckMarkImage.Image");
+            CheckMarkImage.Location = new System.Drawing.Point(217, 299);
+            CheckMarkImage.Name = "CheckMarkImage";
+            CheckMarkImage.Size = new System.Drawing.Size(30, 30);
+            CheckMarkImage.TabIndex = 17;
             // 
-            // label8
+            // FoodImage
             // 
-            label8.BackColor = System.Drawing.Color.FromArgb(201, 126, 13);
-            label8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            label8.Image = (System.Drawing.Image)resources.GetObject("label8.Image");
-            label8.Location = new System.Drawing.Point(348, 299);
-            label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(30, 30);
-            label8.TabIndex = 18;
+            FoodImage.BackColor = System.Drawing.Color.Black;
+            FoodImage.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            FoodImage.Image = (System.Drawing.Image)resources.GetObject("FoodImage.Image");
+            FoodImage.Location = new System.Drawing.Point(348, 299);
+            FoodImage.Name = "FoodImage";
+            FoodImage.Size = new System.Drawing.Size(30, 30);
+            FoodImage.TabIndex = 18;
             // 
             // label6
             // 
@@ -270,23 +271,34 @@
             // IconsTextLbl
             // 
             IconsTextLbl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            IconsTextLbl.Location = new System.Drawing.Point(217, 329);
+            IconsTextLbl.Location = new System.Drawing.Point(206, 329);
             IconsTextLbl.Name = "IconsTextLbl";
-            IconsTextLbl.Size = new System.Drawing.Size(161, 25);
+            IconsTextLbl.Size = new System.Drawing.Size(203, 55);
             IconsTextLbl.TabIndex = 22;
-            IconsTextLbl.Text = "Tafel is gereserveerd.";
+            IconsTextLbl.Text = "Tafel heeft een bestelling die geleverd kan worden.";
+            // 
+            // label1
+            // 
+            label1.BackColor = System.Drawing.Color.Black;
+            label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label1.Image = (System.Drawing.Image)resources.GetObject("label1.Image");
+            label1.Location = new System.Drawing.Point(283, 299);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(30, 30);
+            label1.TabIndex = 23;
             // 
             // Legend
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
             ClientSize = new System.Drawing.Size(595, 390);
+            Controls.Add(label1);
             Controls.Add(IconsTextLbl);
             Controls.Add(HasOrderedTextLbl);
             Controls.Add(HasReservationLbl);
             Controls.Add(label6);
-            Controls.Add(label8);
-            Controls.Add(label7);
+            Controls.Add(FoodImage);
+            Controls.Add(CheckMarkImage);
             Controls.Add(label5);
             Controls.Add(OpenReservationMenuTextLbl);
             Controls.Add(OpenLegendTextLbl);
@@ -329,11 +341,12 @@
         private System.Windows.Forms.Label OpenLegendTextLbl;
         private System.Windows.Forms.Label OpenReservationMenuTextLbl;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label CheckMarkImage;
+        private System.Windows.Forms.Label FoodImage;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label HasReservationLbl;
         private System.Windows.Forms.Label HasOrderedTextLbl;
         private System.Windows.Forms.Label IconsTextLbl;
+        private System.Windows.Forms.Label label1;
     }
 }

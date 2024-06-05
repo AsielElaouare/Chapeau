@@ -13,7 +13,7 @@ namespace ChapeauService
     public class LoginService
     {
         LoginDao loginDao;
-        Employee employee;
+        
 
         public LoginService()
         {

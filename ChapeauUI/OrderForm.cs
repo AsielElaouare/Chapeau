@@ -18,13 +18,55 @@ namespace ChapeauUI
     {
         List<Product> products;
         List<Orderline> orders;
+
+        List<Tafel> tafel;
+
+        
         Employee employee;
         Tafel table;
+
+        TafelService tafelService = new TafelService();
+        string besteldeTafelStatus = "Besteld";
+
+        TableOverview tableOverview;
+
+        private List<IObserver> observers = new List<IObserver>();
+        public Order SubjectOrder
+        {
+            get { return SubjectOrder; }
+            set { SubjectOrder = value; }
+        }
+        public void Attach(IObserver observer)
+        {
+            observers.Add(observer);
+        }
+        public void Deattach(IObserver observer)
+        {
+            observers.Remove(observer);
+
+        }
+        public void NotifyOberservers()
+        {
+            foreach (IObserver observer in observers)
+            {
+                observer.Update();
+            }
+        }
+
+
+        public OrderForm()
+        {
+            InitializeComponent();
+            products = GetProducts();
+            FillTableBox();
+            orders = new List<Orderline>();
+        }
         public OrderForm(Tafel table, Employee employee)
         {
             InitializeComponent();
             products = GetProducts();
             orders = new List<Orderline>();
+
             this.employee= employee;
             this.table = table;
             tafelNRText.Text = $"bestelling voor tafel {table.TafelNummer}.";
@@ -51,6 +93,7 @@ namespace ChapeauUI
             {
                 MessageBox.Show("Selecteer een producten");
             }
+
         }
         private void cancelButton_Click(object sender, EventArgs e)
         {
@@ -61,7 +104,9 @@ namespace ChapeauUI
             TableOverview tableOverview = new TableOverview(employee);
             tableOverview.Show();
             this.Close();
+            tableOverview.Show();
         }
+        
         private void drinksButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDarkDark(drinksButton);
@@ -296,5 +341,13 @@ namespace ChapeauUI
             }
             return "";
         }
+
+
+        private void ChangeTableStatus()
+        {
+            tafelService.UpdateTableStatus(table,besteldeTafelStatus);
+        }
+
+
     }
 }

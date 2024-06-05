@@ -34,6 +34,14 @@ namespace ChapeauUI
             this.subject = subject;
             this.orderService = new OrderService();
         }
+
+        public KitchenForm()
+        {
+            InitializeComponent();
+            DisplayOrders();
+            this.orderService = new OrderService();
+        }
+
         public void Update()
         {
 
