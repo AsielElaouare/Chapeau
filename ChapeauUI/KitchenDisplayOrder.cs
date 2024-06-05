@@ -80,8 +80,8 @@ namespace ChapeauUI
 
         private void CheckProductCategory(Product product, Label dishLabel, Label dishLabelComment)
         {
-            dishLabel.Text = product.Naam;
-            switch (product.Categorie)
+            dishLabel.Text = product.Name;
+            switch (product.Category)
             {
                 case ProductCategorie.Voorgerechten:
                     sideDishesLayoutPanel.Controls.Add(dishLabel);
@@ -98,14 +98,15 @@ namespace ChapeauUI
                 default:
                     break;
             }
-            if (!string.IsNullOrEmpty(Order.OrderLineComment.Opmerking))
-                dishLabelComment.Text = "Opmerking: " + Order.OrderLineComment.Opmerking;
+            if (!string.IsNullOrEmpty(Order.OrderLineComment.Commentary))
+                dishLabelComment.Text = "Opmerking: " + Order.OrderLineComment.Commentary;
         }
 
         private void remakeOrder_Click(object sender, EventArgs e)
         {
             orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending);
             flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
+
         }
     }
 }
