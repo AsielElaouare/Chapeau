@@ -33,10 +33,10 @@ namespace ChapeauService
             return orders = orderdb.GetOrdersForKitchen();
         }
 
-        public List <Order> GetNotPAidOrdersForBill(int rekeningnummer)
+        public List <Order> GetNotPAidOrdersForBill(int tafelnr)
         {
             List<Order> orders;
-            return orders =orderdb.GetOrdersForBill(rekeningnummer);
+            return orders =orderdb.GetOrdersForBill(tafelnr);
         }
 
         public void UpdateToReadyOrders(int orederID, OrderStatus orderStatus)

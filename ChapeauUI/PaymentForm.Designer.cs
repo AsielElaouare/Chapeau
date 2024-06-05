@@ -44,7 +44,9 @@
             button2 = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
             button4 = new System.Windows.Forms.Button();
-            button5 = new System.Windows.Forms.Button();
+            bttn_PauzeerBetaling = new System.Windows.Forms.Button();
+            textBox1 = new System.Windows.Forms.TextBox();
+            lbl_Review = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -64,7 +66,7 @@
             listview_Bestelling.Location = new System.Drawing.Point(35, 144);
             listview_Bestelling.Margin = new System.Windows.Forms.Padding(2);
             listview_Bestelling.Name = "listview_Bestelling";
-            listview_Bestelling.Size = new System.Drawing.Size(640, 315);
+            listview_Bestelling.Size = new System.Drawing.Size(802, 357);
             listview_Bestelling.TabIndex = 2;
             listview_Bestelling.UseCompatibleStateImageBehavior = false;
             listview_Bestelling.View = System.Windows.Forms.View.Details;
@@ -89,7 +91,7 @@
             // lbl_Total
             // 
             lbl_Total.AutoSize = true;
-            lbl_Total.Location = new System.Drawing.Point(36, 486);
+            lbl_Total.Location = new System.Drawing.Point(35, 540);
             lbl_Total.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_Total.Name = "lbl_Total";
             lbl_Total.Size = new System.Drawing.Size(44, 15);
@@ -99,7 +101,7 @@
             // lbl_BTW
             // 
             lbl_BTW.AutoSize = true;
-            lbl_BTW.Location = new System.Drawing.Point(36, 523);
+            lbl_BTW.Location = new System.Drawing.Point(35, 567);
             lbl_BTW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_BTW.Name = "lbl_BTW";
             lbl_BTW.Size = new System.Drawing.Size(36, 15);
@@ -109,7 +111,7 @@
             // lbl_Waiter
             // 
             lbl_Waiter.AutoSize = true;
-            lbl_Waiter.Location = new System.Drawing.Point(35, 127);
+            lbl_Waiter.Location = new System.Drawing.Point(35, 118);
             lbl_Waiter.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_Waiter.Name = "lbl_Waiter";
             lbl_Waiter.Size = new System.Drawing.Size(97, 15);
@@ -119,7 +121,7 @@
             // lbl_Table
             // 
             lbl_Table.AutoSize = true;
-            lbl_Table.Location = new System.Drawing.Point(218, 127);
+            lbl_Table.Location = new System.Drawing.Point(312, 118);
             lbl_Table.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_Table.Name = "lbl_Table";
             lbl_Table.Size = new System.Drawing.Size(37, 15);
@@ -129,7 +131,7 @@
             // lbl_ReceiptNumber
             // 
             lbl_ReceiptNumber.AutoSize = true;
-            lbl_ReceiptNumber.Location = new System.Drawing.Point(356, 127);
+            lbl_ReceiptNumber.Location = new System.Drawing.Point(563, 118);
             lbl_ReceiptNumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_ReceiptNumber.Name = "lbl_ReceiptNumber";
             lbl_ReceiptNumber.Size = new System.Drawing.Size(80, 15);
@@ -139,7 +141,7 @@
             // 
             // bttn_payment
             // 
-            bttn_payment.Location = new System.Drawing.Point(518, 473);
+            bttn_payment.Location = new System.Drawing.Point(886, 425);
             bttn_payment.Margin = new System.Windows.Forms.Padding(2);
             bttn_payment.Name = "bttn_payment";
             bttn_payment.Size = new System.Drawing.Size(131, 40);
@@ -172,7 +174,7 @@
             // button4
             // 
             button4.BackColor = System.Drawing.Color.Gainsboro;
-            button4.Location = new System.Drawing.Point(679, 144);
+            button4.Location = new System.Drawing.Point(855, 133);
             button4.Margin = new System.Windows.Forms.Padding(2);
             button4.Name = "button4";
             button4.Size = new System.Drawing.Size(188, 110);
@@ -180,16 +182,34 @@
             button4.Text = "splitten";
             button4.UseVisualStyleBackColor = false;
             // 
-            // button5
+            // bttn_PauzeerBetaling
             // 
-            button5.BackColor = System.Drawing.Color.LightGray;
-            button5.Location = new System.Drawing.Point(679, 269);
-            button5.Margin = new System.Windows.Forms.Padding(2);
-            button5.Name = "button5";
-            button5.Size = new System.Drawing.Size(188, 110);
-            button5.TabIndex = 14;
-            button5.Text = "keer terug naar tafeloverzicht";
-            button5.UseVisualStyleBackColor = false;
+            bttn_PauzeerBetaling.BackColor = System.Drawing.Color.LightGray;
+            bttn_PauzeerBetaling.Location = new System.Drawing.Point(855, 265);
+            bttn_PauzeerBetaling.Margin = new System.Windows.Forms.Padding(2);
+            bttn_PauzeerBetaling.Name = "bttn_PauzeerBetaling";
+            bttn_PauzeerBetaling.Size = new System.Drawing.Size(188, 110);
+            bttn_PauzeerBetaling.TabIndex = 14;
+            bttn_PauzeerBetaling.Text = "keer terug naar tafeloverzicht";
+            bttn_PauzeerBetaling.UseVisualStyleBackColor = false;
+            bttn_PauzeerBetaling.Click += bttn_PauzeerBetaling_Click;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new System.Drawing.Point(218, 564);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.Size = new System.Drawing.Size(492, 150);
+            textBox1.TabIndex = 15;
+            // 
+            // lbl_Review
+            // 
+            lbl_Review.AutoSize = true;
+            lbl_Review.Location = new System.Drawing.Point(218, 540);
+            lbl_Review.Name = "lbl_Review";
+            lbl_Review.Size = new System.Drawing.Size(47, 15);
+            lbl_Review.TabIndex = 16;
+            lbl_Review.Text = "Review:";
             // 
             // PaymentForm
             // 
@@ -197,7 +217,9 @@
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(1133, 740);
             ControlBox = false;
-            Controls.Add(button5);
+            Controls.Add(lbl_Review);
+            Controls.Add(textBox1);
+            Controls.Add(bttn_PauzeerBetaling);
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(button2);
@@ -234,8 +256,10 @@
         private System.Windows.Forms.ColumnHeader column_Items;
         private System.Windows.Forms.ColumnHeader column_Aantal;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button bttn_PauzeerBetaling;
         private System.Windows.Forms.ColumnHeader column_Prijs;
         private System.Windows.Forms.ColumnHeader column_Openstaand;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label lbl_Review;
     }
 }

@@ -18,6 +18,8 @@ namespace ChapeauUI
         Tafel table;
         OrderForm orderForm;
         TableOverview tableOverview;
+        PaymentForm paymentForm;
+
         private int cornerRadius = 30;
         public PopUpOrderedTable(Employee employee, Tafel table, TableOverview tableOverview)
         {
@@ -51,11 +53,17 @@ namespace ChapeauUI
             orderForm.Show();
             tableOverview.Close();
             this.Close();
+
         }
 
         private void BillBtn_Click(object sender, EventArgs e)
         {
-            //PaymentForm = new PaymentForm(bill)
+            paymentForm = new PaymentForm(table, employee);
+            paymentForm.Show();
+            tableOverview.Close();
+            this.Close();
+
+            this.Close();
         }
     }
 }

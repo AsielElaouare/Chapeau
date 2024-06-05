@@ -121,7 +121,7 @@ namespace ChapeauDAL
             CloseConnection();
             return orders;
         }
-        public List<Order> GetOrdersForBill(int rekeningnr)
+        public List<Order> GetOrdersForBill(int tafelnr)
         {
             string query = "select rekening.rekeningnr, [dbo].[order].orderid, tafelnr, opmerking, " +
                 "[order].[status], serveerderid, orderlinenr, aantal, naam, prijs, artikel.artikelid, categorie " +
@@ -129,11 +129,11 @@ namespace ChapeauDAL
                 "join rekening on rekening.rekeningnr = [dbo].[order].rekeningnr " +
                 "join orderline on orderline.orderid = [dbo].[order].orderid " +
                 "join artikel on artikel.artikelid = orderline.artikelid " +
-                "where rekening.rekeningnr=@rekeningnr and status != 'paid'"; ;
+                "where rekening.tafelnr=@tafelnr and status != 'paid'"; ;
 
 
             SqlCommand command = new SqlCommand(query, OpenConnection());
-            command.Parameters.AddWithValue("@rekeningnr", rekeningnr);
+            command.Parameters.AddWithValue("@tafelnr", tafelnr);
 
             SqlDataReader reader = command.ExecuteReader();
             List<Order> orders = new List<Order>();

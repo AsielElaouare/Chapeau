@@ -16,20 +16,67 @@ namespace ChapeauUI
     {
         private List<Order> orders;
         private OrderService orderService;
-        public PaymentForm()
+        Tafel table;
+        Employee employee;
+        TableOverview tableOverview;
+
+        public PaymentForm(Tafel table, Employee employee)
         {
             InitializeComponent();
-            ShowOrder(GetBillOrders());
+            this.table = table;
+            this.employee = employee;
+            ShowOrder(GetBillOrders(table));
+            UpdateTotal(listview_Bestelling);
+            UpdateBtw(listview_Bestelling);
+            lbl_Waiter.Text = $"Gastheer/gastvrouw: {employee.name}";
+            lbl_Table.Text = $"Tafel: {table.TafelNummer}";
+
 
         }
-        private List<Order> GetBillOrders()
+        private List<Order> GetBillOrders(Tafel table)
         {
             OrderService orderService = new OrderService();
-            List<Order> orders = orderService.GetNotPAidOrdersForBill(4);
+            List<Order> orders = orderService.GetNotPAidOrdersForBill(table.TafelNummer);
             return orders;
         }
 
+        private void UpdateTotal(ListView Bill)
+        { decimal total=0;
+            Order order;
+            foreach(ListViewItem item in Bill.Items) {
+                order = item.Tag as Order;
+              total += order.ProductList[0].Prijs; }
 
+            lbl_Total.Text = $"Totaal: {total:C}";
+        
+        }
+
+        private void UpdateBtw(ListView Bill)
+        { decimal totalbtw=0;
+            Order order;
+            foreach (ListViewItem item in Bill.Items)
+            {
+                order = item.Tag as Order;
+                switch (order.ProductList[0].Categorie)
+                {
+                    case ProductCategorie.Bier: totalbtw += order.ProductList[0].Prijs * 0.21m; break;
+                    case ProductCategorie.Frisdrank: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
+                    case ProductCategorie.Gedistilleerd: totalbtw += order.ProductList[0].Prijs * 0.21m; break;
+                    case ProductCategorie.Hoofdgerechten: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
+                    case ProductCategorie.KoffieThee: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
+                    case ProductCategorie.Nagerechten: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
+                    case ProductCategorie.Tussengerechten: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
+                    case ProductCategorie.Voorgerechten: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
+                    case ProductCategorie.Wijn: totalbtw += order.ProductList[0].Prijs * 0.21m; break;
+                    default: break;
+                }
+
+             
+                lbl_BTW.Text =  $"BTW: {totalbtw:C}";
+            }
+
+
+        }
         public void ShowOrder(List<Order> orders)
         {
             listview_Bestelling.Items.Clear();
@@ -62,6 +109,14 @@ namespace ChapeauUI
         private void lbl_ReceiptNumber_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void bttn_PauzeerBetaling_Click(object sender, EventArgs e)
+        {
+           // paymentForm.close();
+           tableOverview = new TableOverview(employee);
+            tableOverview.ReOpenForm();
+            this.Close();
         }
     }
 }

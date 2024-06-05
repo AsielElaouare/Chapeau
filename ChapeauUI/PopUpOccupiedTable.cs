@@ -53,7 +53,7 @@ namespace ChapeauUI
         private void RecieptBtn_Click(object sender, EventArgs e)
         {
             //////Open reciept form
-           // paymentForm = new PaymentForm(bill);
+            paymentForm = new PaymentForm(table, employee);
             paymentForm.Show();
             tableOverview.Close();
             this.Close();
