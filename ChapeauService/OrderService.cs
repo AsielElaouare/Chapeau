@@ -16,9 +16,9 @@ namespace ChapeauService
         {
             orderdb = new OrderDao();
         }
-        public int GetNewOrderID(DateTime timeOfOrder, int selectedtable)
+        public void StoreOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orders)
         {
-            return orderdb.MakeNewOrder(timeOfOrder, selectedtable);
+             orderdb.StoreNewOrder(timeOfOrder, selectedtable, orders);
         }
 
         public List<Order> GetAllPendingOrdersForBar()
