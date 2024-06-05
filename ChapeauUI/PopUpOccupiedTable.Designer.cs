@@ -32,6 +32,7 @@
             tableLbl = new System.Windows.Forms.Label();
             OrderBtn = new PillButton();
             RecieptBtn = new PillButton();
+            exitPopUpBtn = new BottomLeftRoundedButton();
             SuspendLayout();
             // 
             // tableLbl
@@ -79,11 +80,25 @@
             RecieptBtn.UseVisualStyleBackColor = false;
             RecieptBtn.Click += RecieptBtn_Click;
             // 
+            // exitPopUpBtn
+            // 
+            exitPopUpBtn.BackColor = System.Drawing.Color.FromArgb(255, 20, 20);
+            exitPopUpBtn.BackgroundImage = (System.Drawing.Image)resources.GetObject("exitPopUpBtn.BackgroundImage");
+            exitPopUpBtn.FlatAppearance.BorderSize = 0;
+            exitPopUpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            exitPopUpBtn.Location = new System.Drawing.Point(384, 0);
+            exitPopUpBtn.Name = "exitPopUpBtn";
+            exitPopUpBtn.Size = new System.Drawing.Size(48, 48);
+            exitPopUpBtn.TabIndex = 6;
+            exitPopUpBtn.UseVisualStyleBackColor = false;
+            exitPopUpBtn.Click += exitPopUpBtn_Click;
+            // 
             // PopUpOccupiedTable
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
             ClientSize = new System.Drawing.Size(432, 210);
+            Controls.Add(exitPopUpBtn);
             Controls.Add(RecieptBtn);
             Controls.Add(OrderBtn);
             Controls.Add(tableLbl);
@@ -100,5 +115,6 @@
         private System.Windows.Forms.Label tableLbl;
         private PillButton OrderBtn;
         private PillButton RecieptBtn;
+        private BottomLeftRoundedButton exitPopUpBtn;
     }
 }

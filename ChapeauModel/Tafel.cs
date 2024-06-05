@@ -34,5 +34,7 @@ namespace ChapeauModel
                 default: return TableStatusEnum.Free;
             }
         }
+
+        
     }
 }

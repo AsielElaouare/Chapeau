@@ -33,6 +33,12 @@ namespace ChapeauUI
             this.orderService = new OrderService();
         }
 
+        public BarForm()
+        {
+            InitializeComponent();
+            DisplayOrders();
+            this.orderService = new OrderService();
+        }
         public void Update()
         {
 

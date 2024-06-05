@@ -16,7 +16,7 @@ namespace ChapeauModel
             this.role=assignRole(role);
         }
 
-        private int employeeId { get; }
+        public int employeeId { get; }
         public string name { get; }
         public string password { get; }
         public EmployeeRoleEnum role { get; }
