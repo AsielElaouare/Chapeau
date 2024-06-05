@@ -80,7 +80,6 @@ namespace ChapeauUI
             TableOverview tableOverview = new TableOverview(employee);
             tableOverview.Show();
             this.Close();
-            tableOverview.Show();
         }
         
         private void drinksButton_Click(object sender, EventArgs e)
@@ -193,7 +192,7 @@ namespace ChapeauUI
             }
             else
             {
-                Orderline newProduct = new Orderline(0, 1, null, productID);
+                Orderline newProduct = new Orderline( 1, null, productID);
                 orders.Add(newProduct);
             }
             DislpayOrders();

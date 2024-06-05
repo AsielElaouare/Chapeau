@@ -131,7 +131,7 @@ namespace ChapeauUI
             orderLayoutPanel.Size = new Size(330, 510);
             orderLayoutPanel.TabIndex = 6;
             // 
-            // tafelNRTextBox
+            // tafelNRText
             // 
             tafelNRText.Location = new Point(763, 615);
             tafelNRText.Name = "tafelNRText";
@@ -156,7 +156,6 @@ namespace ChapeauUI
             Text = "OrderForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
