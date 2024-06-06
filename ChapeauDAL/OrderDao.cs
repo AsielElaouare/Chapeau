@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,26 +25,33 @@ namespace ChapeauDAL
                 WHERE [tafelnr] = @selectedTable 
                 ORDER BY [rekeningnr] DESC;
 
-                INSERT INTO [dbo].[order] (rekeningnr, ordertime, status) 
-                VALUES (@currentrekeningnummer, @timeOfOrder, 'Pending'); 
+                INSERT INTO [dbo].[order] (rekeningnr, ordertime) 
+                VALUES (@currentrekeningnummer, @timeOfOrder); 
 
                 SELECT CAST(SCOPE_IDENTITY() AS INT) AS newOrderID;";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, OpenConnection());
+                command.Parameters.AddWithValue("@timeOfOrder", timeOfOrder.ToString("yyyy-MM-dd HH:mm:ss"));
+                command.Parameters.AddWithValue("@selectedTable", $"{selectedtable}");
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    orderId = Convert.ToInt32((int)reader["newOrderID"]);
+                }
+                reader.Close();
+                foreach (Orderline line in orderlines)
+                {
+                    StoreOrderline(line, orderId);
+                    AdjustStock(line);
+                }
+                CloseConnection();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while executing database operations.", ex);
+            }
 
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-            command.Parameters.AddWithValue("@timeOfOrder", timeOfOrder.ToString("yyyy-MM-dd HH:mm:ss"));
-            command.Parameters.AddWithValue("@selectedTable", $"{selectedtable}");
-            SqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                orderId = Convert.ToInt32((int)reader["newOrderID"]);
-            }
-            reader.Close();
-            foreach (Orderline line in orderlines)
-            {
-                StoreOrderline(line, orderId);
-                AdjustStock(line);
-            }
-            CloseConnection();
         }
         private void AdjustStock(Orderline orderline)
         {
@@ -84,7 +92,8 @@ namespace ChapeauDAL
                 STRING_AGG([ol].opmerking, '; ') AS opmerking,
                 [order].[status],
                 STRING_AGG(ak.naam, '; ') AS Article, 
-                STRING_AGG(ak.categorie, ', ') AS categorie 
+                STRING_AGG(ak.categorie, ', ') AS categorie,
+	            [order].ordertime AS [orderTime] 
             FROM 
                 [order]
             JOIN 
@@ -95,25 +104,32 @@ namespace ChapeauDAL
                 artikel AS ak ON ol.artikelid = ak.artikelid
             WHERE [status] = @status AND ({categoryCondition}) AND CAST([order].ordertime AS DATE) = @dateToday
             GROUP BY 
-                rk.tafelnr, [order].orderid, [order].[status]
+                rk.tafelnr, [order].orderid, [order].[status], [order].orderTime
             ORDER BY 
                 rk.tafelnr, [order].orderid";
-
-            List<Order> orders = new List<Order>();
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-            command.Parameters.AddWithValue("@status", status.ToString());
-            command.Parameters.AddWithValue("@dateToday", dateToday.ToString("yyyy-MM-dd"));
-            SqlDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
+            try
             {
+                List<Order> orders = new List<Order>();
+                SqlCommand command = new SqlCommand(query, OpenConnection());
+                command.Parameters.AddWithValue("@status", status.ToString());
+                command.Parameters.AddWithValue("@dateToday", dateToday.ToString("yyyy-MM-dd"));
+                SqlDataReader reader = command.ExecuteReader();
 
-                Order order = ReadOrders(reader);
-                orders.Add(order);
+                while (reader.Read())
+                {
+
+                    Order order = ReadOrders(reader);
+                    orders.Add(order);
+                }
+                reader.Close();
+                CloseConnection();
+                return orders;
             }
-            reader.Close();
-            CloseConnection();
-            return orders;
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while executing database operations.", ex);
+            }
+
         }
 
         public Order ReadOrders(SqlDataReader reader)
@@ -126,7 +142,8 @@ namespace ChapeauDAL
                     (int)reader["orderid"],
                     (int)reader["tafelnr"],
                     (string)reader["status"],
-                    new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null)
+                    new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
+                    (DateTime)reader["orderTime"]
                 );
 
             string products = (string)reader["Article"];
@@ -140,9 +157,14 @@ namespace ChapeauDAL
             }
             return currentOrder;
         }
-        public void CompleteOrder(int orderId, OrderStatus orderStatus)
+        public void CompleteOrder(int orderId, OrderStatus orderStatus, OrderType barOrKitchen)
         {
-            string query = $"UPDATE [order] SET [status] = @orderStatus WHERE [orderId] = @OrderId";
+            string query;
+            if (barOrKitchen == OrderType.Bar)
+                query = $"UPDATE [order] SET [status] = @orderStatus, [bar] = 1 WHERE [orderId] = @OrderId";
+            else
+                query = $"UPDATE [order] SET [status] = @orderStatus, [keuken] = 1 WHERE [orderId] = @OrderId";
+
             SqlParameter[] parameters =
             {
                 new SqlParameter("@OrderId", orderId),
@@ -151,9 +173,14 @@ namespace ChapeauDAL
             ExecuteEditQuery(query, parameters);
 
         }
-        public void StartOrder(int orderId, OrderStatus orderStatus)
+        public void StartOrder(int orderId, OrderStatus orderStatus, OrderType barOrKitchen)
         {
-            string query = $"UPDATE [order] SET [status] = @orderStatus WHERE [orderId] = @OrderId";
+            string query;
+            if (barOrKitchen == OrderType.Bar)
+                query = $"UPDATE [order] SET [status] = @orderStatus, [bar] = 0 WHERE [orderId] = @OrderId";
+            else
+                query = $"UPDATE [order] SET [status] = @orderStatus, [keuken] = 0 WHERE [orderId] = @OrderId";
+
             SqlParameter[] parameters =
             {
                 new SqlParameter("@OrderId", orderId),
