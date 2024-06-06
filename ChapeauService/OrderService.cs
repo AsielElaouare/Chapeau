@@ -20,7 +20,6 @@ namespace ChapeauService
         {
              orderdb.StoreNewOrder(timeOfOrder, selectedtable, orders);
         }
-
         public List<Order> GetAllPendingOrdersForBar()
         {
             List<Order> orders;

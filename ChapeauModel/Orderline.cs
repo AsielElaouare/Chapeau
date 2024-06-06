@@ -21,7 +21,6 @@ namespace ChapeauModel
         }
         public Orderline( int aantal, string opmerking, int artikelID)
         {
-            
             Quantity = aantal;
             Commentary = opmerking;
             ArticleID = artikelID;
