@@ -34,18 +34,19 @@ namespace ChapeauService
             return orders = orderdb.GetOrders(status, kitchenCategories, dateToday);
         }
 
-        public void UpdateToReadyOrders(int orederID, OrderStatus orderStatus)
+        public void UpdateToReadyOrders(int orederID, OrderStatus orderStatus, OrderType orderType)
         {
-            orderdb.CompleteOrder(orederID, orderStatus);
+            orderdb.CompleteOrder(orederID, orderStatus, orderType);
+
         }
-        public void UpdateToPreparingOrders(int orederID, OrderStatus orderStatus)
+        public void UpdateToPreparingOrders(int orederID, OrderStatus orderStatus, OrderType orderType)
         {
-            orderdb.StartOrder(orederID, orderStatus);
+            orderdb.StartOrder(orederID, orderStatus, orderType);
         }
 
-        public void UpdateToRemakingOrder(int orederID, OrderStatus orderStatus)
+        public void UpdateToRemakingOrder(int orederID, OrderStatus orderStatus, OrderType orderType)
         {
-            orderdb.StartOrder(orederID, orderStatus);
+            orderdb.StartOrder(orederID, orderStatus, orderType);
         }
 
         public List<Order> GetOrdersByTable(Tafel table)
