@@ -53,6 +53,7 @@ namespace ChapeauUI
             if (orders.Count != 0)
             {
                 StoreThisOrder(DateTime.Now, table.TafelNummer);
+                ChangeTableStatus();
                 GoToTableOverview();
             }
             else 
