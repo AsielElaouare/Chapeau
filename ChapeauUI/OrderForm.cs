@@ -18,19 +18,10 @@ namespace ChapeauUI
     {
         List<Product> products;
         List<Orderline> orders;
-
-        List<Tafel> tafel;
-        
         Employee employee;
         Tafel table;
-
         TafelService tafelService = new TafelService();
         string besteldeTafelStatus = "Besteld";
-
-        TableOverview tableOverview;
-
-      
-
         public OrderForm()
         {
             InitializeComponent();
@@ -42,7 +33,6 @@ namespace ChapeauUI
             InitializeComponent();
             products = GetProducts();
             orders = new List<Orderline>();
-
             this.employee= employee;
             this.table = table;
             tafelNRText.Text = $"bestelling voor tafel {table.TafelNummer}.";
@@ -69,7 +59,6 @@ namespace ChapeauUI
             {
                 MessageBox.Show("Selecteer een producten");
             }
-
         }
         private void cancelButton_Click(object sender, EventArgs e)
         {
@@ -80,9 +69,7 @@ namespace ChapeauUI
             TableOverview tableOverview = new TableOverview(employee);
             tableOverview.Show();
             this.Close();
-            tableOverview.Show();
         }
-        
         private void drinksButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDarkDark(drinksButton);
@@ -193,7 +180,7 @@ namespace ChapeauUI
             }
             else
             {
-                Orderline newProduct = new Orderline(0, 1, null, productID);
+                Orderline newProduct = new Orderline( 1, null, productID);
                 orders.Add(newProduct);
             }
             DislpayOrders();
@@ -229,40 +216,62 @@ namespace ChapeauUI
             orderLayoutPanel.Controls.Clear();
             foreach (Orderline order in orders)
             {
-                Label procductNaamLabel = new Label();
-                procductNaamLabel.Text = ProductIDToProductName(order.ArticleID);
-                procductNaamLabel.Size = new Size(280, 40);
-                orderLayoutPanel.Controls.Add(procductNaamLabel);
-                //hier moet nog een aantal selcter komen
-                Label procductAantalmLabel = new Label();
-                procductAantalmLabel.Text = order.Quantity.ToString();
-                procductAantalmLabel.Size = new Size(25, 40);
-                orderLayoutPanel.Controls.Add(procductAantalmLabel);
+                //productnaam in lijst
+                MakeProductNameInOrderlist(order);
+                //Aantal producten
+                ShowQuantityInOrderList(order);
                 //verwijder button
-                Button verwijderBtn = new Button();
-                verwijderBtn.Text = "-1";
-                verwijderBtn.Size = new Size(150, 35);
-                verwijderBtn.Tag = order.ArticleID;
-                verwijderBtn.Click += Verwijder_Button_Click;
-                verwijderBtn.BackColor = Color.Red;
-                orderLayoutPanel.Controls.Add(verwijderBtn);
+                AddDeleteButton(order);
                 //opmerking button
-                Button opmerkingBtn = new Button();
-                opmerkingBtn.Text = "opmerking";
-                opmerkingBtn.Size = new Size(150, 35);
-                opmerkingBtn.Tag = order.ArticleID;
-                opmerkingBtn.Click += Opmerking_Button_Click;
-                opmerkingBtn.BackColor = Color.DodgerBlue;
-                orderLayoutPanel.Controls.Add(opmerkingBtn);
+                AddComentarryButton(order);
                 //laat opmerking zien
                 if (order.Commentary != null)
                 {
-                    Label commentLabel = new Label();
-                    commentLabel.Text = order.Commentary;
-                    commentLabel.Size = new Size(280, 20);
-                    orderLayoutPanel.Controls.Add(commentLabel);
+                    ShowComment(order);
                 }
             }
+        }
+        private void ShowComment(Orderline order)
+        {
+            Label commentLabel = new Label();
+            commentLabel.Text = order.Commentary;
+            commentLabel.Size = new Size(280, 20);
+            commentLabel.BackColor = Color.DarkGray;
+            orderLayoutPanel.Controls.Add(commentLabel);
+        }
+        private void AddComentarryButton(Orderline order)
+        {
+            Button opmerkingBtn = new Button();
+            opmerkingBtn.Text = "opmerking";
+            opmerkingBtn.Size = new Size(135, 35);
+            opmerkingBtn.Tag = order.ArticleID;
+            opmerkingBtn.Click += Opmerking_Button_Click;
+            opmerkingBtn.BackColor = Color.DodgerBlue;
+            orderLayoutPanel.Controls.Add(opmerkingBtn);
+        }
+        private void AddDeleteButton(Orderline order)
+        {
+            Button verwijderBtn = new Button();
+            verwijderBtn.Text = "-1";
+            verwijderBtn.Size = new Size(135, 35);
+            verwijderBtn.Tag = order.ArticleID;
+            verwijderBtn.Click += Verwijder_Button_Click;
+            verwijderBtn.BackColor = Color.Red;
+            orderLayoutPanel.Controls.Add(verwijderBtn);
+        }
+        private void ShowQuantityInOrderList(Orderline order)
+        {
+            Label procductAantalmLabel = new Label();
+            procductAantalmLabel.Text = order.Quantity.ToString();
+            procductAantalmLabel.Size = new Size(20, 35);
+            orderLayoutPanel.Controls.Add(procductAantalmLabel);
+        }
+        private void MakeProductNameInOrderlist(Orderline order)
+        {
+            Label procductNaamLabel = new Label();
+            procductNaamLabel.Text = ProductIDToProductName(order.ArticleID);
+            procductNaamLabel.Size = new Size(250, 35);
+            orderLayoutPanel.Controls.Add(procductNaamLabel);
         }
         private void Opmerking_Button_Click(object sender, EventArgs e)
         {
@@ -271,14 +280,12 @@ namespace ChapeauUI
         }
         private void AddCommentToList(Button clickedButton)
         {
-
             foreach (Orderline order in orders)
             {
                 if (order.ArticleID == (int)clickedButton.Tag && order.Commentary == null)
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:")); break;
                 }
-
                 else if(order.ArticleID == (int)clickedButton.Tag)
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:", "", order.Commentary)); break;
@@ -318,13 +325,9 @@ namespace ChapeauUI
             }
             return "";
         }
-
-
         private void ChangeTableStatus()
         {
             tafelService.UpdateTableStatus(table,besteldeTafelStatus);
         }
-
-
     }
 }

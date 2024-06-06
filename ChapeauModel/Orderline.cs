@@ -19,9 +19,8 @@ namespace ChapeauModel
             Quantity = aantal;
             Commentary = opmerking;
         }
-        public Orderline(int orderID, int aantal, string opmerking, int artikelID)
+        public Orderline( int aantal, string opmerking, int artikelID)
         {
-            OrderID = orderID;
             Quantity = aantal;
             Commentary = opmerking;
             ArticleID = artikelID;
