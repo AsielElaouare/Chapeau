@@ -99,9 +99,9 @@ namespace ChapeauUI
 
         private void OpenRelevantForm(Employee employee)
         {
-           // if (employee.role == EmployeeRoleEnum.Chef) { KitchenForm kitchenform = new KitchenForm(); kitchenform.Show(); this.Close(); }
-          //  else if (employee.role == EmployeeRoleEnum.Barista) { BarForm barform = new BarForm(); barform.Show(); this.Close(); }
-           /* else*/ if (employee.role == EmployeeRoleEnum.Waiter) { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
+            if (employee.role == EmployeeRoleEnum.Chef) { KitchenForm kitchenform = new KitchenForm(); kitchenform.Show(); this.Close(); }
+            else if (employee.role == EmployeeRoleEnum.Barista) { BarForm barform = new BarForm(); barform.Show(); this.Close(); }
+            else if (employee.role == EmployeeRoleEnum.Waiter) { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
             else if (employee.role == EmployeeRoleEnum.Manager) { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
         }
 
