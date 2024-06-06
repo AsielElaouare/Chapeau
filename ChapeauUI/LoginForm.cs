@@ -27,9 +27,20 @@ namespace ChapeauUI
         {
             InitializeComponent();
             loginService = new LoginService();
+            DisableConfirmButton();
         }
 
+        private void DisableConfirmButton()
+        {
+            ConfirmBtn.Enabled = false;
+            ConfirmBtn.BackgroundImage = Properties.Resources.cannot_loggin_50x50;
+        }
 
+        private void EnableConfirmButton()
+        {
+            ConfirmBtn.Enabled = true;
+            ConfirmBtn.BackgroundImage = Properties.Resources.sign_in_50x50;
+        }
 
         private void ClearPassword()
         {
@@ -104,6 +115,11 @@ namespace ChapeauUI
             enteredUsername = UsernameTextBox.Text.ToString();
             enteredPassword = PasswordTextBox.Text.ToString();
             CheckLogin();
+        }
+
+        private void PasswordTextBox_TextChanged(object sender, EventArgs e)
+        {
+            EnableConfirmButton();
         }
     }
 }

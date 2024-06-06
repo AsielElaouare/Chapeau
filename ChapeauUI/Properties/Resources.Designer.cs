@@ -63,6 +63,16 @@ namespace ChapeauUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cannot_loggin_50x50 {
+            get {
+                object obj = ResourceManager.GetObject("cannot_loggin_50x50", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Chapeau_logo_outline_v2 {
             get {
                 object obj = ResourceManager.GetObject("Chapeau_logo_outline_v2", resourceCulture);
@@ -106,6 +116,16 @@ namespace ChapeauUI.Properties {
         internal static System.Drawing.Bitmap rick_astley50x50TheBestOne {
             get {
                 object obj = ResourceManager.GetObject("rick_astley50x50TheBestOne", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sign_in_50x50 {
+            get {
+                object obj = ResourceManager.GetObject("sign_in_50x50", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

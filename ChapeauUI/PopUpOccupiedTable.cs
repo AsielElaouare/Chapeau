@@ -60,13 +60,13 @@ namespace ChapeauUI
         private void PopUpOccupiedTable_Deactivate(object sender, EventArgs e)
         {
             this.Close();
-            tableOverview.ReOpenForm();
+            tableOverview.RefreshTableButtons();
         }
 
         private void exitPopUpBtn_Click(object sender, EventArgs e)
         {
             this.Close();
-            tableOverview.ReOpenForm();
+            tableOverview.RefreshTableButtons();
         }
     }
 }

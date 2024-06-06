@@ -43,5 +43,10 @@ namespace ChapeauUI
         {
             this.Close();
         }
+
+        private void exitPopUpBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
