@@ -50,7 +50,7 @@ namespace ChapeauUI
         private void PopUpOrderedTable_Deactivate(object sender, EventArgs e)
         {
             this.Close();
-            tableOverview.ReOpenForm();
+            tableOverview.RefreshTableButtons();
         }
 
         private void OrderBtn_Click(object sender, EventArgs e)
@@ -64,7 +64,7 @@ namespace ChapeauUI
         private void exitPopUpBtn_Click(object sender, EventArgs e)
         {
             this.Close();
-            tableOverview.ReOpenForm();
+            tableOverview.RefreshTableButtons();
         }
 
         private void BarBtn_Click(object sender, EventArgs e)

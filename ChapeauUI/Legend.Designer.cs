@@ -52,6 +52,7 @@
             HasOrderedTextLbl = new System.Windows.Forms.Label();
             IconsTextLbl = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
+            exitPopUpBtn = new BottomLeftRoundedButton();
             SuspendLayout();
             // 
             // LegendTextLbl
@@ -287,11 +288,25 @@
             label1.Size = new System.Drawing.Size(30, 30);
             label1.TabIndex = 23;
             // 
+            // exitPopUpBtn
+            // 
+            exitPopUpBtn.BackColor = System.Drawing.Color.FromArgb(255, 20, 20);
+            exitPopUpBtn.BackgroundImage = (System.Drawing.Image)resources.GetObject("exitPopUpBtn.BackgroundImage");
+            exitPopUpBtn.FlatAppearance.BorderSize = 0;
+            exitPopUpBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            exitPopUpBtn.Location = new System.Drawing.Point(547, 0);
+            exitPopUpBtn.Name = "exitPopUpBtn";
+            exitPopUpBtn.Size = new System.Drawing.Size(48, 48);
+            exitPopUpBtn.TabIndex = 24;
+            exitPopUpBtn.UseVisualStyleBackColor = false;
+            exitPopUpBtn.Click += exitPopUpBtn_Click;
+            // 
             // Legend
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(217, 217, 217);
             ClientSize = new System.Drawing.Size(595, 390);
+            Controls.Add(exitPopUpBtn);
             Controls.Add(label1);
             Controls.Add(IconsTextLbl);
             Controls.Add(HasOrderedTextLbl);
@@ -348,5 +363,6 @@
         private System.Windows.Forms.Label HasOrderedTextLbl;
         private System.Windows.Forms.Label IconsTextLbl;
         private System.Windows.Forms.Label label1;
+        private BottomLeftRoundedButton exitPopUpBtn;
     }
 }
