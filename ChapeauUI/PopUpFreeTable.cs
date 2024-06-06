@@ -47,6 +47,7 @@ namespace ChapeauUI
 
         private void StartOrderBtn_Click(object sender, EventArgs e)
         {
+
             MakeNewInvoice();
             tableService.UpdateTableStatus(table, status);
             orderForm = new OrderForm(table, employee);

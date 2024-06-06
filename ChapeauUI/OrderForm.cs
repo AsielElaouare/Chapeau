@@ -14,12 +14,12 @@ using System.Windows.Forms;
 
 namespace ChapeauUI
 {
-    public partial class OrderForm : Form, ISubject
+    public partial class OrderForm : Form
     {
         List<Product> products;
         List<Orderline> orders;
-        List<Tafel> tafel;
 
+        List<Tafel> tafel;
         
         Employee employee;
         Tafel table;
@@ -29,45 +29,23 @@ namespace ChapeauUI
 
         TableOverview tableOverview;
 
-        private List<IObserver> observers = new List<IObserver>();
-        public Order SubjectOrder
-        {
-            get { return SubjectOrder; }
-            set { SubjectOrder = value; }
-        }
-        public void Attach(IObserver observer)
-        {
-            observers.Add(observer);
-        }
-        public void Deattach(IObserver observer)
-        {
-            observers.Remove(observer);
-
-        }
-        public void NotifyOberservers()
-        {
-            foreach (IObserver observer in observers)
-            {
-                observer.Update();
-            }
-        }
-
+      
 
         public OrderForm()
         {
             InitializeComponent();
             products = GetProducts();
-            FillTableBox();
             orders = new List<Orderline>();
         }
         public OrderForm(Tafel table, Employee employee)
         {
             InitializeComponent();
             products = GetProducts();
-            FillTableBox();
             orders = new List<Orderline>();
+
+            this.employee= employee;
             this.table = table;
-            this.tableOverview = new TableOverview(employee);
+            tafelNRText.Text = $"bestelling voor tafel {table.TafelNummer}.";
         }
         private List<Product> GetProducts()
         {
@@ -75,51 +53,36 @@ namespace ChapeauUI
             List<Product> products = productService.GetProducts();
             return products;
         }
-        private List<Tafel> GetTafels()
-        {
-            TafelService tafelService = new TafelService();
-            List<Tafel> tafels = tafelService.GetTafel();
-            return tafels;
-        }
-        private void PlaceOrderIDInOrderline(int orderID)
-        {
-            foreach (Orderline order in orders)
-            {
-                order.SetOrderID(orderID);
-            }
-        }
-        private int GetNewOrderID(DateTime timeOfOrde, int selectedTable)
+        private void StoreThisOrder(DateTime timeOfOrde, int selectedTable)
         {
             OrderService orderService = new OrderService();
-            return orderService.GetNewOrderID(timeOfOrde, selectedTable);
-        }
-        private void StoreOrdersInDB(List<Orderline> ordersList)
-        {
-            OrderlineService orderlineService = new OrderlineService();
-            orderlineService.StoreOrder(ordersList);
+            orderService.StoreOrder(timeOfOrde, selectedTable,orders);
         }
         private void confirmButton_Click(object sender, EventArgs e)
         {
-            if (tableSelectbox.SelectedItem != null)
+            if (orders.Count != 0)
             {
-                DateTime timeOfOrder = DateTime.Now;
-                int selectedTable = (int)tableSelectbox.SelectedItem;
-                int orderID = GetNewOrderID(timeOfOrder, selectedTable);
-                PlaceOrderIDInOrderline(orderID);
-                StoreOrdersInDB(orders);
-                NotifyOberservers();
-                ChangeTableStatus();
+                StoreThisOrder(DateTime.Now, table.TafelNummer);
+                GoToTableOverview();
             }
-            else
+            else 
             {
-                MessageBox.Show("Selecteer een tafel uit de lijst.");
+                MessageBox.Show("Selecteer een producten");
             }
-            tableOverview.Show();
+
         }
         private void cancelButton_Click(object sender, EventArgs e)
         {
+            GoToTableOverview();
+        }
+        private void GoToTableOverview()
+        {
+            TableOverview tableOverview = new TableOverview(employee);
+            tableOverview.Show();
+            this.Close();
             tableOverview.Show();
         }
+        
         private void drinksButton_Click(object sender, EventArgs e)
         {
             MakeSelectedButtonDarkDark(drinksButton);
@@ -142,15 +105,6 @@ namespace ChapeauUI
             drinksButton.BackColor = SystemColors.ControlDark;
             selectedButton.BackColor = SystemColors.ControlDarkDark;
         }
-        private void FillTableBox()
-        {
-            tafel = GetTafels();
-
-            foreach (Tafel table in tafel)
-            {
-                tableSelectbox.Items.Add(table.TafelNummer);
-            }
-        }
         private void FillProductLayoutPanel(ProductKaart kaart)
         {
             productLayoutPanel.Controls.Clear();
@@ -158,14 +112,14 @@ namespace ChapeauUI
 
             foreach (Product item in products)
             {
-                if (kaart == item.Kaart && !categories.Contains(item.Categorie))
+                if (kaart == item.Menu && !categories.Contains(item.Category))
                 {
                     Label categoryLabel = new Label();
-                    categoryLabel.Text = item.Categorie.ToString() + ":";
+                    categoryLabel.Text = item.Category.ToString() + ":";
                     categoryLabel.Size = new Size(690, 20);
                     productLayoutPanel.Controls.Add(categoryLabel);
-                    MakePruductForCategorie(item.Kaart, item.Categorie);
-                    categories.Add(item.Categorie);
+                    MakePruductForCategorie(item.Menu, item.Category);
+                    categories.Add(item.Category);
                 }
             }
         }
@@ -173,43 +127,64 @@ namespace ChapeauUI
         {
             foreach (Product product in products)
             {
-                if (kaart == product.Kaart && categorie == product.Categorie)
+                if (kaart == product.Menu && categorie == product.Category)
                 {
                     Button productBtn = new Button();
-                    productBtn.Text = product.Naam;
+                    productBtn.Text = product.Name;
                     productBtn.Size = new Size(165, 55);
                     productBtn.Click += Product_Button_Click;
-                    productBtn.BackColor = SystemColors.ControlDark;
+                    productBtn.Tag = product.Stock;
+                    productBtn.BackColor = SelectProductBtnColor(product);
                     productLayoutPanel.Controls.Add(productBtn);
                 }
             }
         }
+        private Color SelectProductBtnColor(Product product)
+        {
+            if (product.Stock > 10)
+            {
+                return SystemColors.ControlDark;
+            }
+            else if (product.Stock > 0)
+            {
+                return Color.Yellow; 
+            }
+            else
+            {
+                return Color.Red; 
+            }
+        }
+
         private void Product_Button_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
-            if (clickedButton != null)
+            if (clickedButton != null&&(int)clickedButton.Tag!=0)
             {
                 Clickedproduct(clickedButton.Text);
+            }
+            else
+            {
+                MessageBox.Show($"{clickedButton.Text} is op");
             }
         }
         private void Clickedproduct(string productnaam)
         {
             foreach (Product product in products)
             {
-                if (productnaam == product.Naam)
+                if (productnaam == product.Name)
                 {
                     AddProductToList(product.Artikelid);
                     break;
                 }
             }
         }
-        private void AddProductToList(int ProductID)
+        private void AddProductToList(int productID)
         {
-            if (CheckIfProductIsInList(ProductID))
+            if (CheckIfProductIsInList(productID))
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArtikelID == ProductID)
+                    if (order.ArticleID == productID&&EnoughStock(productID,order.Quantity))
                     {
                         order.IncreaseQuantity();
                         break;
@@ -218,10 +193,22 @@ namespace ChapeauUI
             }
             else
             {
-                Orderline newProduct = new Orderline(0, 1, null, ProductID);
+                Orderline newProduct = new Orderline(0, 1, null, productID);
                 orders.Add(newProduct);
             }
             DislpayOrders();
+        }
+        private bool EnoughStock(int productID, int amountOfOrderdProduct)
+        {
+            foreach(Product product in products) 
+            {
+                if (product.Artikelid == productID && product.Stock > amountOfOrderdProduct)
+                {
+                    return true;
+                }
+            }
+            MessageBox.Show($"niet genoeg meer op voorraad van {ProductIDToProductName(productID)}");
+            return false;
         }
         private bool CheckIfProductIsInList(int ProductID)
         {
@@ -229,7 +216,7 @@ namespace ChapeauUI
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArtikelID == ProductID)
+                    if (order.ArticleID == ProductID)
                     {
                         return true;
                     }
@@ -243,19 +230,19 @@ namespace ChapeauUI
             foreach (Orderline order in orders)
             {
                 Label procductNaamLabel = new Label();
-                procductNaamLabel.Text = ProductIDToProductName(order.ArtikelID);
+                procductNaamLabel.Text = ProductIDToProductName(order.ArticleID);
                 procductNaamLabel.Size = new Size(280, 40);
                 orderLayoutPanel.Controls.Add(procductNaamLabel);
                 //hier moet nog een aantal selcter komen
                 Label procductAantalmLabel = new Label();
-                procductAantalmLabel.Text = order.Aantal.ToString();
+                procductAantalmLabel.Text = order.Quantity.ToString();
                 procductAantalmLabel.Size = new Size(25, 40);
                 orderLayoutPanel.Controls.Add(procductAantalmLabel);
                 //verwijder button
                 Button verwijderBtn = new Button();
                 verwijderBtn.Text = "-1";
                 verwijderBtn.Size = new Size(150, 35);
-                verwijderBtn.Tag = order.ArtikelID;
+                verwijderBtn.Tag = order.ArticleID;
                 verwijderBtn.Click += Verwijder_Button_Click;
                 verwijderBtn.BackColor = Color.Red;
                 orderLayoutPanel.Controls.Add(verwijderBtn);
@@ -263,15 +250,15 @@ namespace ChapeauUI
                 Button opmerkingBtn = new Button();
                 opmerkingBtn.Text = "opmerking";
                 opmerkingBtn.Size = new Size(150, 35);
-                opmerkingBtn.Tag = order.ArtikelID;
+                opmerkingBtn.Tag = order.ArticleID;
                 opmerkingBtn.Click += Opmerking_Button_Click;
                 opmerkingBtn.BackColor = Color.DodgerBlue;
                 orderLayoutPanel.Controls.Add(opmerkingBtn);
                 //laat opmerking zien
-                if (order.Opmerking != null)
+                if (order.Commentary != null)
                 {
                     Label commentLabel = new Label();
-                    commentLabel.Text = order.Opmerking;
+                    commentLabel.Text = order.Commentary;
                     commentLabel.Size = new Size(280, 20);
                     orderLayoutPanel.Controls.Add(commentLabel);
                 }
@@ -287,13 +274,14 @@ namespace ChapeauUI
 
             foreach (Orderline order in orders)
             {
-                if (order.ArtikelID == (int)clickedButton.Tag && order.Opmerking == null)
+                if (order.ArticleID == (int)clickedButton.Tag && order.Commentary == null)
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:")); break;
                 }
-                else if(order.ArtikelID == (int)clickedButton.Tag)
+
+                else if(order.ArticleID == (int)clickedButton.Tag)
                 {
-                    order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:", "", order.Opmerking)); break;
+                    order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:", "", order.Commentary)); break;
                 }
             }
             DislpayOrders();
@@ -306,12 +294,12 @@ namespace ChapeauUI
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArtikelID == (int)clickedButton.Tag && order.Aantal == 1)
+                    if (order.ArticleID == (int)clickedButton.Tag && order.Quantity == 1)
                     {
                         orders.Remove(order);
                         break;
                     }
-                    else if (order.ArtikelID == (int)clickedButton.Tag)
+                    else if (order.ArticleID == (int)clickedButton.Tag)
                     {
                         order.DecreaseQuantity();
                     }
@@ -325,16 +313,18 @@ namespace ChapeauUI
             {
                 if (productID == product.Artikelid)
                 {
-                    return product.Naam;
+                    return product.Name;
                 }
             }
             return "";
         }
 
+
         private void ChangeTableStatus()
         {
             tafelService.UpdateTableStatus(table,besteldeTafelStatus);
         }
+
 
     }
 }

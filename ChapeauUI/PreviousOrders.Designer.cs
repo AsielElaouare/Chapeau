@@ -31,6 +31,7 @@
             flowLayoutPreviousOrdersPanel = new System.Windows.Forms.FlowLayoutPanel();
             goBackBtn = new System.Windows.Forms.Button();
             PreviousOrdersLabel = new System.Windows.Forms.Label();
+            madeOrdersLabel = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
             // flowLayoutPreviousOrdersPanel
@@ -43,12 +44,14 @@
             // 
             // goBackBtn
             // 
+            goBackBtn.BackColor = System.Drawing.Color.IndianRed;
+            goBackBtn.ForeColor = System.Drawing.Color.Transparent;
             goBackBtn.Location = new System.Drawing.Point(12, 12);
             goBackBtn.Name = "goBackBtn";
             goBackBtn.Size = new System.Drawing.Size(117, 28);
             goBackBtn.TabIndex = 1;
             goBackBtn.Text = "Huidige Orders";
-            goBackBtn.UseVisualStyleBackColor = true;
+            goBackBtn.UseVisualStyleBackColor = false;
             goBackBtn.Click += goBackBtn_Click;
             // 
             // PreviousOrdersLabel
@@ -56,15 +59,29 @@
             PreviousOrdersLabel.AutoSize = true;
             PreviousOrdersLabel.Location = new System.Drawing.Point(642, 19);
             PreviousOrdersLabel.Name = "PreviousOrdersLabel";
-            PreviousOrdersLabel.Size = new System.Drawing.Size(130, 15);
+            PreviousOrdersLabel.Size = new System.Drawing.Size(0, 15);
             PreviousOrdersLabel.TabIndex = 2;
-            PreviousOrdersLabel.Text = "Voltooide Bestellingen: ";
+            // 
+            // madeOrdersLabel
+            // 
+            madeOrdersLabel.AutoSize = true;
+            madeOrdersLabel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            madeOrdersLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            madeOrdersLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            madeOrdersLabel.Location = new System.Drawing.Point(642, 13);
+            madeOrdersLabel.Name = "madeOrdersLabel";
+            madeOrdersLabel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 2);
+            madeOrdersLabel.Size = new System.Drawing.Size(220, 27);
+            madeOrdersLabel.TabIndex = 3;
+            madeOrdersLabel.Text = "Vooltoide bestellingen: ";
+            madeOrdersLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // PreviousOrders
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1460, 614);
+            Controls.Add(madeOrdersLabel);
             Controls.Add(PreviousOrdersLabel);
             Controls.Add(goBackBtn);
             Controls.Add(flowLayoutPreviousOrdersPanel);
@@ -79,5 +96,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPreviousOrdersPanel;
         private System.Windows.Forms.Button goBackBtn;
         private System.Windows.Forms.Label PreviousOrdersLabel;
+        private System.Windows.Forms.Label madeOrdersLabel;
     }
 }

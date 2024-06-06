@@ -14,37 +14,23 @@ using System.Media;
 
 namespace ChapeauUI
 {
-    public partial class KitchenForm : Form, IObserver
+    public partial class KitchenForm : Form
     {
+        private Timer timer;
         private List<Order> orders;
         private OrderService orderService;
-        private string name;
-        private ISubject subject;
-        public ISubject Subject
-        {
-            get { return subject; }
-            set { subject = value; }
-        }
-
-        public KitchenForm(ISubject subject)
-        {
-            InitializeComponent();
-            subject.Attach(this);
-            DisplayOrders();
-            this.subject = subject;
-            this.orderService = new OrderService();
-        }
 
         public KitchenForm()
         {
+            InitTimer();
             InitializeComponent();
             DisplayOrders();
+            openOrdersLabel.Text = $"Open: {flowLayoutKitchenPnl.Controls.Count}";
             this.orderService = new OrderService();
         }
 
         public void Update()
         {
-
             List<Order> latestOrders = orderService.GetPendingOrdersForKitchen();
 
             foreach (Order order in latestOrders)
@@ -54,11 +40,10 @@ namespace ChapeauUI
                     orders.Add(order);
                     KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel);
                     flowLayoutKitchenPnl.Controls.Add(kitchenDisplayOrder);
-                    openOrdersLabel.Text = $"Open: {orders.Count}";
+
                     playNotificationSound();
                 }
             }
-
         }
         private List<Order> GetKitchenOrders()
         {
@@ -74,8 +59,8 @@ namespace ChapeauUI
             {
                 KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel);
                 flowLayoutKitchenPnl.Controls.Add(kitchenDisplayOrder);
+
             }
-            openOrdersLabel.Text = $"Open: {orders.Count}";
         }
 
         //private void historyOrders_Click(object sender, EventArgs e)
@@ -88,6 +73,32 @@ namespace ChapeauUI
         {
             SoundPlayer sound = new SoundPlayer("NewOrder.wav");
             sound.Play();
+        }
+
+        private void UpdateOpenOrderLabel()
+        {
+            flowLayoutKitchenPnl.Refresh();
+            openOrdersLabel.Text = $"Open: {flowLayoutKitchenPnl.Controls.Count}";
+        }
+
+        public void InitTimer()
+        {
+            timer = new Timer();
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = 5000;
+            timer.Start();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            Update();
+        }
+
+        private void historyOrders_Click(object sender, EventArgs e)
+        {
+            PreviousOrders previousOrders = new PreviousOrders(this);
+            this.Hide();
+            previousOrders.Show();
         }
     }
 }
