@@ -82,14 +82,14 @@ namespace ChapeauUI
             StartBtn.Enabled = false;
             CompleteBtn.Enabled = true;
             timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-            orderService.UpdateToPreparingOrders(Order.OrderID, OrderStatus.Preparing);
+            orderService.UpdateToPreparingOrders(Order.OrderID, OrderStatus.Preparing, OrderType.Bar);
         }
 
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
             StartBtn.Enabled = false;
             timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-            orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready);
+            orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready, OrderType.Bar);
             if (orders != null)
                 orders.Remove(Order);
             OrderPanel.Parent.Parent.Controls.Remove(this);
@@ -97,7 +97,7 @@ namespace ChapeauUI
 
         private void remakeOrderBtn_Click(object sender, EventArgs e)
         {
-            orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending);
+            orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending, OrderType.Bar);
             OrderPanel.Parent.Parent.Controls.Remove(this);
         }
     }

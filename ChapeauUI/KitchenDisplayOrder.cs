@@ -14,6 +14,8 @@ namespace ChapeauUI
         private Label orderLabel;
         private OrderService orderService;
         private List<Order> orders;
+        private Timer orderTimer = new Timer();
+
 
         public KitchenDisplayOrder(Order order, Label openOrdersLabel)
         {
@@ -36,11 +38,14 @@ namespace ChapeauUI
         }
         private void DisplayOrderData()
         {
+            orderTimer.Interval = 1000;
             orderInfLabel.Text = $"Order: {Order.OrderID}                               Tafel: {Order.TafelNR}";
             foreach (Product product in Order.ProductList)
             {
                 DrawLabels(product);
             }
+            orderTimer.Tick += new EventHandler(UpdateOrderTime);
+            orderTimer.Start();
         }
 
         private void CheckTypeOfOrder()
@@ -60,14 +65,14 @@ namespace ChapeauUI
             StartBtn.Enabled = false;
             // changing status to preparing in database (DAO)
             timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-            orderService.UpdateToPreparingOrders(Order.OrderID, OrderStatus.Preparing);
+            orderService.UpdateToPreparingOrders(Order.OrderID, OrderStatus.Preparing, OrderType.Kitchen);
         }
 
         private void CompleteBtn_Click(object sender, EventArgs e)
         {
             StartBtn.Enabled = false;
             timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-            orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready);
+            orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready, OrderType.Kitchen);
             orderLabel.Text = $"Open: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
             orders.Remove(Order);
             flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
@@ -116,8 +121,14 @@ namespace ChapeauUI
 
         private void remakeOrder_Click(object sender, EventArgs e)
         {
-            orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending);
+            orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending, OrderType.Kitchen);
             flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
+        }
+        private void UpdateOrderTime(object sender, EventArgs e)
+        {
+            TimeSpan elapsedTime = DateTime.Now - Order.OrderTime;
+            string formatString = elapsedTime.ToString(@"hh\:mm\:ss");
+            timeLabel.Text = $"{formatString}";
         }
     }
 }

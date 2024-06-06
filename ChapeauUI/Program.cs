@@ -31,6 +31,7 @@ namespace ChapeauUI
             form.Show();
 
 
+
             Application.Run();
 
         }
