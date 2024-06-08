@@ -14,14 +14,14 @@ namespace ChapeauUI
 {
     public partial class PopUpOccupiedTable : Form
     {
-        Employee employee;
-        Tafel table;
-        Bill bill;
-        OrderForm orderForm;
-        TableOverview tableOverview;
-        PaymentForm paymentForm;
-
+        private Employee employee;
+        private Tafel table;
+        private Bill bill;
+        private OrderForm orderForm;
+        private TableOverview tableOverview;
+        private PaymentForm paymentForm;
         private int cornerRadius = 30;
+        
         public PopUpOccupiedTable(Employee employee, Tafel table, TableOverview tableOverview)
         {
             InitializeComponent();
@@ -30,6 +30,7 @@ namespace ChapeauUI
             this.employee = employee;
             //bill moet nog meegegeven worden
             this.bill = new Bill(table, employee);
+
             tableLbl.Text = $"Tafel {table.TafelNummer.ToString()}";
             this.tableOverview = tableOverview;
         }

@@ -25,8 +25,5 @@ namespace ChapeauService
             List<Orderline> orderlines;
             return orderlines = invoiceDAO.GetOrdersForBill(bill);
         }
-
-
-
     }
 }

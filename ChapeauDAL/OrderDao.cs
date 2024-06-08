@@ -195,7 +195,6 @@ namespace ChapeauDAL
             CloseConnection();
             return orders;
         }
-        
 
         public Order ReadOrders(SqlDataReader reader)
         {

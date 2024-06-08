@@ -46,7 +46,6 @@ namespace ChapeauService
             orderdb.StartOrder(orederID, orderStatus);
         }
 
-      
         public List<Order> GetReadyOrdersForKitchen(DateOnly dateToday)
         {
             List<Order> orders;

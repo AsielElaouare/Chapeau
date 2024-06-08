@@ -13,14 +13,14 @@ namespace ChapeauModel
         public OrderStatus Status { get; set; }
         public DateTime OrderTime { get; private set; }
         public Orderline OrderLineComment { get; private set; }
-       
+
         public int TafelNR { get; private set; }
         public OrderStatus barStatus { get; set; }
         public OrderStatus kitchenStatus { get; set; }
 
         public List<Orderline> orderlines { get; private set; }
         public List<Product> ProductList { get; set; }
-        //eruit en vervangen met orderline denk ik
+
         public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment)
         {
             this.OrderID = OrderID;

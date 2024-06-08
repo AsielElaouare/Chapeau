@@ -15,17 +15,18 @@ namespace ChapeauUI
 {
     public partial class PopUpOrderedTable : Form
     {
-        Employee employee;
-        Tafel table;
-        Bill bill;
-        OrderForm orderForm;
-        PaymentForm paymentForm;
-        TableOverview tableOverview;
-        Order order;
-        OrderService orderService;
-        TafelService tafelService = new TafelService();
+        private Employee employee;
+        private Tafel table;
+        private Bill bill;
+        private OrderForm orderForm;
+        private PaymentForm paymentForm;
+        private TableOverview tableOverview;
+        private Order order;
+        private OrderService orderService;
+        private TafelService tafelService = new TafelService();
         private string bezetStatus = "Bezet";
         private int cornerRadius = 30;
+        
         public PopUpOrderedTable(Employee employee, Tafel table, TableOverview tableOverview, Order order)
         {
             InitializeComponent();
