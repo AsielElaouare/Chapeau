@@ -20,7 +20,10 @@ namespace ChapeauService
         {
             invoiceDAO.CreateInvoice(table, employee);
         }
-
-
+        public List<Orderline> GetNotPaidOrderlinesForBill(Bill bill)
+        {
+            List<Orderline> orderlines;
+            return orderlines = invoiceDAO.GetOrdersForBill(bill);
+        }
     }
 }

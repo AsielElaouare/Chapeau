@@ -46,6 +46,13 @@ namespace ChapeauUI
             this.tables = GetTables();
             CheckLayOut();
             InitializeTimer();
+            DisableReserveButton();
+        }
+
+        private void DisableReserveButton()
+        {
+            ReservationBtn.Enabled = false;
+            ReservationBtn.Visible = false;
         }
 
         //again this is to refresh the form every 30 seconds
@@ -62,7 +69,7 @@ namespace ChapeauUI
             RefreshTableButtons();
         }
 
-        private void RefreshTableButtons()
+        public void RefreshTableButtons()
         {
             var tableButtons = this.Controls.OfType<Button>().Where(button => button.Tag is Tafel).ToList();
             foreach (var tableButton in tableButtons)
@@ -182,7 +189,7 @@ namespace ChapeauUI
             if (orders.Count == 0)
             {
                 tableService = new TafelService(); tableService.UpdateTableStatus(table, "Bezet");
-                ReOpenForm();
+                RefreshTableButtons();
             }
             Order mostRecentOrder = orders.OrderByDescending(order => order.OrderTime).FirstOrDefault();
             TimeSpan timeDifference = DateTime.Now - mostRecentOrder.OrderTime;
@@ -197,7 +204,7 @@ namespace ChapeauUI
             if (orders.Count == 0)
             {
                 tableService = new TafelService(); tableService.UpdateTableStatus(table, "Bezet");
-                ReOpenForm();
+                RefreshTableButtons();
             }
             return orders.OrderByDescending(o => o.OrderTime).FirstOrDefault();
         }
@@ -256,13 +263,7 @@ namespace ChapeauUI
             else { return false; }
         }
 
-        public void ReOpenForm()
-        {
-            this.Hide();
-            TableOverview tableOverview = new TableOverview(employee);
-            tableOverview.Show();
-            this.Close();
-        }
+        
 
 
         private void TableButton_Click(object sender, EventArgs e)

@@ -15,15 +15,18 @@ namespace ChapeauUI
 {
     public partial class PopUpOrderedTable : Form
     {
-        Employee employee;
-        Tafel table;
-        OrderForm orderForm;
-        TableOverview tableOverview;
-        Order order;
-        OrderService orderService;
-        TafelService tafelService = new TafelService();
+        private Employee employee;
+        private Tafel table;
+        private Bill bill;
+        private OrderForm orderForm;
+        private PaymentForm paymentForm;
+        private TableOverview tableOverview;
+        private Order order;
+        private OrderService orderService;
+        private TafelService tafelService = new TafelService();
         private string bezetStatus = "Bezet";
         private int cornerRadius = 30;
+        
         public PopUpOrderedTable(Employee employee, Tafel table, TableOverview tableOverview, Order order)
         {
             InitializeComponent();
@@ -33,6 +36,8 @@ namespace ChapeauUI
             tableLbl.Text = $"Tafel {table.TafelNummer.ToString()}";
             this.tableOverview = tableOverview;
             this.order = order;
+            //bill moet nog meegegeven worden
+            this.bill = new Bill(table, employee) ;
             SetButtons();
         }
         private void SetRoundedRegion()
@@ -50,7 +55,7 @@ namespace ChapeauUI
         private void PopUpOrderedTable_Deactivate(object sender, EventArgs e)
         {
             this.Close();
-            tableOverview.ReOpenForm();
+            tableOverview.RefreshTableButtons();
         }
 
         private void OrderBtn_Click(object sender, EventArgs e)
@@ -64,7 +69,7 @@ namespace ChapeauUI
         private void exitPopUpBtn_Click(object sender, EventArgs e)
         {
             this.Close();
-            tableOverview.ReOpenForm();
+            tableOverview.RefreshTableButtons();
         }
 
         private void BarBtn_Click(object sender, EventArgs e)
@@ -87,7 +92,11 @@ namespace ChapeauUI
 
         private void BillBtn_Click(object sender, EventArgs e)
         {
-            //////Open reciept form
+            ///als het goed is kan table, employee vervangen worden met bill.
+            
+            paymentForm = new PaymentForm(table, employee, bill);
+            paymentForm.Show();
+
             this.Close();
             tableOverview.Close();
         }

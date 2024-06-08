@@ -49,7 +49,7 @@ namespace ChapeauUI
         {
 
             MakeNewInvoice();
-
+            tableService.UpdateTableStatus(table, status);
             orderForm = new OrderForm(table, employee);
             orderForm.Show();
             tableOverview.Close();
@@ -66,7 +66,7 @@ namespace ChapeauUI
             MakeNewInvoice();
             tableService.UpdateTableStatus(table, status);
             this.Close();
-            tableOverview.ReOpenForm();
+            tableOverview.RefreshTableButtons();
         }
 
 
@@ -79,7 +79,7 @@ namespace ChapeauUI
         private void exitPopUpBtn_Click(object sender, EventArgs e)
         {
             this.Close();
-            tableOverview.ReOpenForm();
+            tableOverview.RefreshTableButtons();
         }
     }
 }

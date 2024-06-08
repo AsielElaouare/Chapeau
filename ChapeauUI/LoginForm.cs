@@ -27,9 +27,20 @@ namespace ChapeauUI
         {
             InitializeComponent();
             loginService = new LoginService();
+            DisableConfirmButton();
         }
 
+        private void DisableConfirmButton()
+        {
+            ConfirmBtn.Enabled = false;
+            ConfirmBtn.BackgroundImage = Properties.Resources.cannot_loggin_50x50;
+        }
 
+        private void EnableConfirmButton()
+        {
+            ConfirmBtn.Enabled = true;
+            ConfirmBtn.BackgroundImage = Properties.Resources.sign_in_50x50;
+        }
 
         private void ClearPassword()
         {
@@ -88,9 +99,9 @@ namespace ChapeauUI
 
         private void OpenRelevantForm(Employee employee)
         {
-           // if (employee.role == EmployeeRoleEnum.Chef) { KitchenForm kitchenform = new KitchenForm(); kitchenform.Show(); this.Close(); }
-          //  else if (employee.role == EmployeeRoleEnum.Barista) { BarForm barform = new BarForm(); barform.Show(); this.Close(); }
-           /* else*/ if (employee.role == EmployeeRoleEnum.Waiter) { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
+            if (employee.role == EmployeeRoleEnum.Chef) { KitchenForm kitchenform = new KitchenForm(); kitchenform.Show(); this.Close(); }
+            else if (employee.role == EmployeeRoleEnum.Barista) { BarForm barform = new BarForm(); barform.Show(); this.Close(); }
+            else if (employee.role == EmployeeRoleEnum.Waiter) { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
             else if (employee.role == EmployeeRoleEnum.Manager) { TableOverview tableOverview = new TableOverview(employee); tableOverview.Show(); this.Close(); }
         }
 
@@ -104,6 +115,11 @@ namespace ChapeauUI
             enteredUsername = UsernameTextBox.Text.ToString();
             enteredPassword = PasswordTextBox.Text.ToString();
             CheckLogin();
+        }
+
+        private void PasswordTextBox_TextChanged(object sender, EventArgs e)
+        {
+            EnableConfirmButton();
         }
     }
 }

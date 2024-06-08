@@ -106,6 +106,7 @@
             PasswordTextBox.PasswordChar = '*';
             PasswordTextBox.Size = new System.Drawing.Size(367, 45);
             PasswordTextBox.TabIndex = 22;
+            PasswordTextBox.TextChanged += PasswordTextBox_TextChanged;
             // 
             // ConfirmBtn
             // 
