@@ -15,38 +15,48 @@ namespace ChapeauUI
 {
     public partial class BarForm : Form
     {
+        Timer timer;
         private OrderService orderService;
         private List<Order> orders;
-
+        DateOnly dateToday;
         public BarForm()
         {
-            InitializeComponent();
-            DisplayOrders();
             this.orderService = new OrderService();
+            dateToday = DateOnly.FromDateTime(DateTime.Now);
+            InitializeComponent();
+            InitTimer();
+            DisplayOrders();
+            UpdateLabelOpenOrders();
         }
 
 
         public void Update()
         {
 
-            List<Order> latestOrders = orderService.GetAllPendingOrdersForBar();
+
+            List<Order> latestOrders = orderService.GetOrdersForBar(OrderStatus.Pending, dateToday);
 
             foreach (Order order in latestOrders)
             {
                 if (!orders.Any(o => o.OrderID == order.OrderID))
                 {
                     orders.Add(order);
-                    BarDisplayOrder kitchenDisplayOrder = new BarDisplayOrder(order, OpenOrdersBarLabel);
-                    barFlowLayoutPanel.Controls.Add(kitchenDisplayOrder);
-                    OpenOrdersBarLabel.Text = $"Open: {orders.Count}";
+                    BarDisplayOrder barDisplayOrder = new BarDisplayOrder(order, OpenOrdersBarLabel);
+                    barFlowLayoutPanel.Controls.Add(barDisplayOrder);
                     playNotificationSound();
                 }
             }
+            UpdateLabelOpenOrders();
         }
+        private void UpdateLabelOpenOrders()
+        {
+            OpenOrdersBarLabel.Text = $"Open: {barFlowLayoutPanel.Controls.Count}";
+        }
+
         private List<Order> GetBarOrders()
         {
             OrderService orderService = new OrderService();
-            List<Order> orders = orderService.GetAllPendingOrdersForBar(); ;
+            List<Order> orders = orderService.GetOrdersForBar(OrderStatus.Pending, dateToday); ;
             return orders;
         }
 
@@ -55,16 +65,34 @@ namespace ChapeauUI
             orders = GetBarOrders();
             foreach (Order order in orders)
             {
-                BarDisplayOrder kitchenDisplayOrder = new BarDisplayOrder(order, OpenOrdersBarLabel);
-                barFlowLayoutPanel.Controls.Add(kitchenDisplayOrder);
+                BarDisplayOrder barDisplayOrder = new BarDisplayOrder(order, OpenOrdersBarLabel);
+                barFlowLayoutPanel.Controls.Add(barDisplayOrder);
             }
-            OpenOrdersBarLabel.Text = $"Open: {orders.Count}";
         }
 
         private void playNotificationSound()
         {
             SoundPlayer sound = new SoundPlayer("NewOrder.wav");
             sound.Play();
+        }
+        public void InitTimer()
+        {
+            timer = new Timer();
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = 5000;
+            timer.Start();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            Update();
+        }
+
+        private void previousOrdersBar_Click(object sender, EventArgs e)
+        {
+            PreviousOrders previousOrders = new PreviousOrders(this);
+            this.Hide();
+            previousOrders.Show();
         }
     }
 }

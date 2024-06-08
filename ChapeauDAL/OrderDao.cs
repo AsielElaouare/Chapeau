@@ -3,9 +3,11 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,9 +15,8 @@ namespace ChapeauDAL
 {
     public class OrderDao : BaseDao
     {
-        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines)
+        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orderlines)
         {
-            //add order status to database!!!!!!
             int orderId = 0;
             string query = @"
                 DECLARE @currentrekeningnummer INT;
@@ -24,26 +25,33 @@ namespace ChapeauDAL
                 WHERE [tafelnr] = @selectedTable 
                 ORDER BY [rekeningnr] DESC;
 
-                INSERT INTO [dbo].[order] (rekeningnr, ordertime, status) 
-                VALUES (@currentrekeningnummer, @timeOfOrder, 'Pending'); 
+                INSERT INTO [dbo].[order] (rekeningnr, ordertime) 
+                VALUES (@currentrekeningnummer, @timeOfOrder); 
 
                 SELECT CAST(SCOPE_IDENTITY() AS INT) AS newOrderID;";
+            try
+            {
+                SqlCommand command = new SqlCommand(query, OpenConnection());
+                command.Parameters.AddWithValue("@timeOfOrder", timeOfOrder.ToString("yyyy-MM-dd HH:mm:ss"));
+                command.Parameters.AddWithValue("@selectedTable", $"{selectedtable}");
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    orderId = Convert.ToInt32((int)reader["newOrderID"]);
+                }
+                reader.Close();
+                foreach (Orderline line in orderlines)
+                {
+                    StoreOrderline(line, orderId);
+                    AdjustStock(line);
+                }
+                CloseConnection();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while executing database operations.", ex);
+            }
 
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-            command.Parameters.AddWithValue("@timeOfOrder", timeOfOrder.ToString("yyyy-MM-dd HH:mm:ss"));
-            command.Parameters.AddWithValue("@selectedTable", $"{selectedtable}");
-            SqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                orderId = Convert.ToInt32((int)reader["newOrderID"]);
-            }
-            reader.Close();
-             foreach (Orderline line in orderlines)
-            {
-                StoreOrderline(line, orderId);
-                AdjustStock(line);
-            }
-            CloseConnection();
         }
         private void AdjustStock(Orderline orderline)
         {
@@ -71,11 +79,12 @@ namespace ChapeauDAL
                 command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
                 command.ExecuteNonQuery();
             }
-            
+
         }
-        public List<Order> GetOrdersForBar()
+        public List<Order> GetOrders(OrderStatus status, string[] categories, DateOnly dateToday)
         {
-            string query = @"
+            string categoryCondition = string.Join(" OR ", categories.Select(cat => $"ak.categorie = '{cat}'"));
+            string query = $@"
             SELECT 
                 rk.tafelnr,
                 [order].orderid,
@@ -83,7 +92,8 @@ namespace ChapeauDAL
                 STRING_AGG([ol].opmerking, '; ') AS opmerking,
                 [order].[status],
                 STRING_AGG(ak.naam, '; ') AS Article, 
-                STRING_AGG(ak.categorie, ', ') AS categorie 
+                STRING_AGG(ak.categorie, ', ') AS categorie,
+	            [order].ordertime AS [orderTime] 
             FROM 
                 [order]
             JOIN 
@@ -92,108 +102,34 @@ namespace ChapeauDAL
                 rekening AS rk ON [order].rekeningnr = rk.rekeningnr
             JOIN 
                 artikel AS ak ON ol.artikelid = ak.artikelid
-            where [status] = 'Pending' AND (ak.categorie = 'bier' or ak.categorie = 'KoffieThee' or ak.categorie = 'Gedistilleerd' or ak.categorie = 'Frisdrank' or ak.categorie = 'wijn')
+            WHERE [status] = @status AND ({categoryCondition}) AND CAST([order].ordertime AS DATE) = @dateToday
             GROUP BY 
-                rk.tafelnr, [order].orderid, [order].[status]
+                rk.tafelnr, [order].orderid, [order].[status], [order].orderTime
             ORDER BY 
                 rk.tafelnr, [order].orderid";
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-
-            SqlDataReader reader = command.ExecuteReader();
-            List<Order> orders = new List<Order>();
-
-            while (reader.Read())
+            try
             {
+                List<Order> orders = new List<Order>();
+                SqlCommand command = new SqlCommand(query, OpenConnection());
+                command.Parameters.AddWithValue("@status", status.ToString());
+                command.Parameters.AddWithValue("@dateToday", dateToday.ToString("yyyy-MM-dd"));
+                SqlDataReader reader = command.ExecuteReader();
 
-                Order order = ReadOrders(reader);
-                orders.Add(order);
+                while (reader.Read())
+                {
+
+                    Order order = ReadOrders(reader);
+                    orders.Add(order);
+                }
+                reader.Close();
+                CloseConnection();
+                return orders;
             }
-            reader.Close();
-            CloseConnection();
-            return orders;
-        }
-        public List<Order> GetOrdersForKitchen()
-        {
-            string query = @"
-            SELECT 
-                rk.tafelnr,
-                [order].orderid,
-                SUM(ol.aantal) AS aantal,
-                STRING_AGG([ol].opmerking, '; ') AS opmerking,
-                [order].[status],
-                STRING_AGG(ak.naam, '; ') AS Article, 
-                STRING_AGG(ak.categorie, ', ') AS categorie 
-            FROM 
-                [order]
-            JOIN 
-                orderline AS OL ON [order].[orderid] = OL.orderid
-            JOIN 
-                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
-            JOIN 
-                artikel AS ak ON ol.artikelid = ak.artikelid
-            where [status] = 'Pending' AND (ak.categorie = 'Hoofdgerechten' or ak.categorie = 'Nagerechten' or ak.categorie = 'Tussengerechten' or ak.categorie = 'Voorgerechten')
-            GROUP BY 
-                rk.tafelnr, [order].orderid, [order].[status]
-            ORDER BY 
-                rk.tafelnr, [order].orderid";
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-
-            SqlDataReader reader = command.ExecuteReader();
-            List<Order> orders = new List<Order>();
-
-            while (reader.Read())
+            catch (Exception ex)
             {
-
-                Order order = ReadOrders(reader);
-                orders.Add(order);
+                throw new Exception("Error occurred while executing database operations.", ex);
             }
-            reader.Close();
-            CloseConnection();
-            return orders;
-        }
 
-        public List<Order> GetPreviousOrdersForKitchen(DateOnly dateToday)
-        {
-            string query = @"
-            SELECT 
-                rk.tafelnr,
-                [order].orderid,
-                SUM(ol.aantal) AS aantal,
-                STRING_AGG([ol].opmerking, '; ') AS opmerking,
-                [order].[status],
-                STRING_AGG(ak.naam, '; ') AS Article, 
-                STRING_AGG(ak.categorie, ', ') AS categorie 
-            FROM 
-                [order]
-            JOIN 
-                orderline AS OL ON [order].[orderid] = OL.orderid
-            JOIN 
-                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
-            JOIN 
-                artikel AS ak ON ol.artikelid = ak.artikelid
-            WHERE 
-                [status] = 'Ready' 
-                AND (ak.categorie = 'Hoofdgerechten' OR ak.categorie = 'Nagerechten' OR ak.categorie = 'Voorgerechten') 
-                AND CAST([order].ordertime AS DATE) = @dateToday
-            GROUP BY 
-                rk.tafelnr, [order].orderid, [order].[status]
-            ORDER BY 
-                rk.tafelnr, [order].orderid";
-
-            SqlCommand command = new SqlCommand(query, OpenConnection());
-            command.Parameters.Add(new SqlParameter("@dateToday", dateToday.ToString("yyyy-MM-dd")));
-            SqlDataReader reader = command.ExecuteReader();
-            List<Order> orders = new List<Order>();
-
-            while (reader.Read())
-            {
-
-                Order order = ReadOrders(reader);
-                orders.Add(order);
-            }
-            reader.Close();
-            CloseConnection();
-            return orders;
         }
 
         public Order ReadOrders(SqlDataReader reader)
@@ -206,7 +142,8 @@ namespace ChapeauDAL
                     (int)reader["orderid"],
                     (int)reader["tafelnr"],
                     (string)reader["status"],
-                    new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null)
+                    new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
+                    (DateTime)reader["orderTime"]
                 );
 
             string products = (string)reader["Article"];
@@ -220,9 +157,14 @@ namespace ChapeauDAL
             }
             return currentOrder;
         }
-        public void CompleteOrder(int orderId, OrderStatus orderStatus)
+        public void CompleteOrder(int orderId, OrderStatus orderStatus, OrderType barOrKitchen)
         {
-            string query = $"UPDATE [order] SET [status] = @orderStatus WHERE [orderId] = @OrderId";
+            string query;
+            if (barOrKitchen == OrderType.Bar)
+                query = $"UPDATE [order] SET [status] = @orderStatus, [bar] = 1 WHERE [orderId] = @OrderId";
+            else
+                query = $"UPDATE [order] SET [status] = @orderStatus, [keuken] = 1 WHERE [orderId] = @OrderId";
+
             SqlParameter[] parameters =
             {
                 new SqlParameter("@OrderId", orderId),
@@ -231,9 +173,14 @@ namespace ChapeauDAL
             ExecuteEditQuery(query, parameters);
 
         }
-        public void StartOrder(int orderId, OrderStatus orderStatus)
+        public void StartOrder(int orderId, OrderStatus orderStatus, OrderType barOrKitchen)
         {
-            string query = $"UPDATE [order] SET [status] = @orderStatus WHERE [orderId] = @OrderId";
+            string query;
+            if (barOrKitchen == OrderType.Bar)
+                query = $"UPDATE [order] SET [status] = @orderStatus, [bar] = 0 WHERE [orderId] = @OrderId";
+            else
+                query = $"UPDATE [order] SET [status] = @orderStatus, [keuken] = 0 WHERE [orderId] = @OrderId";
+
             SqlParameter[] parameters =
             {
                 new SqlParameter("@OrderId", orderId),
@@ -317,7 +264,7 @@ namespace ChapeauDAL
             byte bar = SetBarByte(order);
             byte kitchen = SetKitchenByte(order);
             UpdateOrder(order, bar, kitchen);
-            
+
         }
         private byte SetBarByte(Order order)
         {
