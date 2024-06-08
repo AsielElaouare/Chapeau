@@ -16,9 +16,11 @@ namespace ChapeauUI
     {
         Employee employee;
         Tafel table;
+        Bill bill;
         OrderForm orderForm;
-        PaymentForm paymentForm;
         TableOverview tableOverview;
+        PaymentForm paymentForm;
+
         private int cornerRadius = 30;
         public PopUpOccupiedTable(Employee employee, Tafel table, TableOverview tableOverview)
         {
@@ -26,10 +28,12 @@ namespace ChapeauUI
             SetRoundedRegion();
             this.table = table;
             this.employee = employee;
+            //bill moet nog meegegeven worden
+            this.bill = new Bill(table, employee);
             tableLbl.Text = $"Tafel {table.TafelNummer.ToString()}";
             this.tableOverview = tableOverview;
         }
-        
+
         private void SetRoundedRegion()
         {
             GraphicsPath path = new GraphicsPath();
@@ -44,28 +48,32 @@ namespace ChapeauUI
 
         private void OrderBtn_Click(object sender, EventArgs e)
         {
-            orderForm = new OrderForm(table);
+
+            orderForm = new OrderForm(table,employee);
             orderForm.Show();
             tableOverview.Close();
             this.Close();
         }
 
         private void RecieptBtn_Click(object sender, EventArgs e)
-        {
-            //////Open reciept form
-            paymentForm = new PaymentForm(table, employee);
+        { ///als het goed is kan table, employee vervangen worden met bill.
+           
+            paymentForm = new PaymentForm(table, employee,bill);
             paymentForm.Show();
+            this.Close();
             tableOverview.Close();
-            this.Close();
-
-            this.Close();
         }
 
         private void PopUpOccupiedTable_Deactivate(object sender, EventArgs e)
         {
             this.Close();
+            tableOverview.RefreshTableButtons();
         }
 
-        
+        private void exitPopUpBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            tableOverview.RefreshTableButtons();
+        }
     }
 }

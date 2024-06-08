@@ -10,20 +10,31 @@ namespace ChapeauModel
     {
      
         public int billNumber { get; set; }
-        public int tablenr { get;  set; }
-        public int employeenr { get; set; }
+        public Tafel table { get;  set; }
+        public Employee employee { get; set; }
         public string review { get; set; }
-        public decimal totalPrice { get; set; }
-        public List <Order> orders { get; set; }
+        public decimal totalPrice
+        {
+            get
+            {
+                decimal total = 0;
+                foreach (Orderline line in orderlines)
+                {
+                    total += (line.product.Prijs * line.Quantity);
+                }
+                return total;
+            }
+        }
+        public List <Orderline> orderlines { get; set; }
 
-        public Bill(int billNumber, int table, int employee)
+        public Bill( Tafel table, Employee employee)
         {
             this.billNumber = billNumber;
-            this.tablenr = table;
-            this.employeenr = employee;
+            this.table = table;
+            this.employee = employee;
            
-            orders =new List<Order>();
-            totalPrice = 0;
+            this.orderlines =new List<Orderline>();
+           
         }
     }
 }

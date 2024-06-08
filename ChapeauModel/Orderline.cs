@@ -10,36 +10,40 @@ namespace ChapeauModel
     {
       
         public int OrderID { get; private set; }
-        public int Aantal { get;  set; }
-        public string Opmerking { get; private set; }
-        public int ArtikelID { get; private set; }
+    //orderid moet eruit gehaald worden
+        public Order order { get; private set; }
+        
+        public int Quantity { get;  set; }
+        public string Commentary { get; private set; }
+        public int ArticleID { get; private set; }
+        //articleid moet eruit
+        public Product product { get; private set; }
         public Orderline(int orderID, int aantal, string opmerking)
         {
             OrderID = orderID;
-            Aantal = aantal;
-            Opmerking = opmerking;
+            Quantity = aantal;
+            Commentary = opmerking;
         }
-        public Orderline(int orderID, int aantal, int artikelID)
+        public Orderline( int aantal, string opmerking, int artikelID)
         {
-            OrderID = orderID;
-            Aantal = aantal;
-            artikelID = artikelID;
+            Quantity = aantal;
+            Commentary = opmerking;
+            ArticleID = artikelID;
         }
-        public Orderline(int orderID, int aantal, string opmerking, int artikelID)
+        public Orderline(Order order, int aantal, Product product)
         {
-            OrderID = orderID;
-            Aantal = aantal;
-            Opmerking = opmerking;
-            ArtikelID = artikelID;
+            this.order = order;
+            this.Quantity = aantal;
+            this.product = product;
         }
         public void IncreaseQuantity()
         {
-            Aantal ++;
+            Quantity ++;
         }
 
         public void DecreaseQuantity()
         {
-            Aantal --;
+            Quantity --;
         }
         public void SetOrderID(int orderID)
         {
@@ -47,7 +51,7 @@ namespace ChapeauModel
         }
         public void AddComment(string comment)
         {
-            Opmerking = comment;
+            Commentary = comment;
         }
     }
 }

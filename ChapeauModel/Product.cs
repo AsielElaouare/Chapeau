@@ -10,32 +10,31 @@ namespace ChapeauModel
     public class Product
     {
         public int Artikelid { get; private set; }
-        public string Naam { get; private set; }
-        public int Voorraad { get; private set; }
+        public string Name { get; private set; }
+        public int Stock { get; private set; }
         public decimal Prijs { get; private set; }
-        public ProductCategorie Categorie { get; private set; }
-        public ProductKaart Kaart { get; private set; }
+        public ProductCategorie Category { get; private set; }
+        public ProductKaart Menu { get; private set; }
 
         public Product(int artikelid, string naam, int voorraad, decimal prijs, string categorie, string kaart)
         {
             Artikelid = artikelid;
-            Naam = naam;
-            Voorraad = voorraad;
+            Name = naam;
+            Stock = voorraad;
             Prijs = prijs;
-            Categorie = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
-            Kaart = (ProductKaart)Enum.Parse(typeof(ProductKaart), kaart);
-        }
-        public Product(string naam, string categorie, decimal prijs)
-        {
-            this.Naam = naam;
-            this.Categorie = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
-            this.Prijs = prijs;
+            Category = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
+            Menu = (ProductKaart)Enum.Parse(typeof(ProductKaart), kaart);
         }
         public Product(string naam, string categorie)
         {
-            Naam = naam;
-            Categorie = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
-
+            Name = naam;
+            Category = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
+        }
+        public Product(string naam, string categorie, decimal prijs)
+        {
+            this.Name = naam;
+            this.Category = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
+            this.Prijs = prijs;
         }
     }
 }

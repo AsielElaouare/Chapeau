@@ -13,25 +13,18 @@ using System.Windows.Forms;
 
 namespace ChapeauUI
 {
-    public partial class BarForm : Form, IObserver
+    public partial class BarForm : Form
     {
         private OrderService orderService;
         private List<Order> orders;
-        private string name;
-        private ISubject subject;
-        public ISubject Subject
-        {
-            get { return subject; }
-            set { subject = value; }
-        }
-        public BarForm(ISubject subject)
+
+        public BarForm()
         {
             InitializeComponent();
-            subject.Attach(this);
             DisplayOrders();
-            this.subject = subject;
             this.orderService = new OrderService();
         }
+
 
         public void Update()
         {

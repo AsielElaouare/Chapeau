@@ -20,12 +20,12 @@ namespace ChapeauUI
         Employee employee;
         TableOverview tableOverview;
 
-        public PaymentForm(Tafel table, Employee employee)
+        public PaymentForm(Tafel table, Employee employee, Bill bill)
         {
             InitializeComponent();
             this.table = table;
             this.employee = employee;
-            ShowOrder(GetBillOrders(table));
+            ShowOrder(GetBillOrders(bill));
             UpdateTotal(listview_Bestelling);
             UpdateBtw(listview_Bestelling);
             lbl_Waiter.Text = $"Gastheer/gastvrouw: {employee.name}";
@@ -33,19 +33,19 @@ namespace ChapeauUI
 
 
         }
-        private List<Order> GetBillOrders(Tafel table)
+        private List<Orderline> GetBillOrders(Bill bill)
         {
-            OrderService orderService = new OrderService();
-            List<Order> orders = orderService.GetNotPAidOrdersForBill(table.TafelNummer);
-            return orders;
+            InvoiceService invoiceService = new InvoiceService();
+            List<Orderline> orderlines = invoiceService.GetNotPaidOrderlinesForBill(bill);
+            return orderlines;
         }
 
         private void UpdateTotal(ListView Bill)
         { decimal total=0;
-            Order order;
+            Orderline orderline;
             foreach(ListViewItem item in Bill.Items) {
-                order = item.Tag as Order;
-              total += order.ProductList[0].Prijs; }
+                orderline = item.Tag as Orderline;
+              total += orderline.product.Prijs; }
 
             lbl_Total.Text = $"Totaal: {total:C}";
         
@@ -53,21 +53,21 @@ namespace ChapeauUI
 
         private void UpdateBtw(ListView Bill)
         { decimal totalbtw=0;
-            Order order;
+            Orderline orderline;
             foreach (ListViewItem item in Bill.Items)
             {
-                order = item.Tag as Order;
-                switch (order.ProductList[0].Categorie)
+                orderline = item.Tag as Orderline;
+                switch (orderline.product.Category)
                 {
-                    case ProductCategorie.Bier: totalbtw += order.ProductList[0].Prijs * 0.21m; break;
-                    case ProductCategorie.Frisdrank: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
-                    case ProductCategorie.Gedistilleerd: totalbtw += order.ProductList[0].Prijs * 0.21m; break;
-                    case ProductCategorie.Hoofdgerechten: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
-                    case ProductCategorie.KoffieThee: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
-                    case ProductCategorie.Nagerechten: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
-                    case ProductCategorie.Tussengerechten: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
-                    case ProductCategorie.Voorgerechten: totalbtw += order.ProductList[0].Prijs * 0.09m; break;
-                    case ProductCategorie.Wijn: totalbtw += order.ProductList[0].Prijs * 0.21m; break;
+                    case ProductCategorie.Bier: totalbtw += orderline.product.Prijs * 0.21m; break;
+                    case ProductCategorie.Frisdrank: totalbtw += orderline.product.Prijs * 0.09m; break;
+                    case ProductCategorie.Gedistilleerd: totalbtw += orderline.product.Prijs * 0.21m; break;
+                    case ProductCategorie.Hoofdgerechten: totalbtw += orderline.product.Prijs * 0.09m; break;
+                    case ProductCategorie.KoffieThee: totalbtw += orderline.product.Prijs * 0.09m; break;
+                    case ProductCategorie.Nagerechten: totalbtw += orderline.product.Prijs * 0.09m; break;
+                    case ProductCategorie.Tussengerechten: totalbtw += orderline.product.Prijs * 0.09m; break;
+                    case ProductCategorie.Voorgerechten: totalbtw += orderline.product.Prijs * 0.09m; break;
+                    case ProductCategorie.Wijn: totalbtw += orderline.product.Prijs * 0.21m; break;
                     default: break;
                 }
 
@@ -77,20 +77,20 @@ namespace ChapeauUI
 
 
         }
-        public void ShowOrder(List<Order> orders)
+        public void ShowOrder(List<Orderline> orders)
         {
             listview_Bestelling.Items.Clear();
-            foreach (Order ord in orders)
+            foreach (Orderline ol in orders)
             {
-                ListViewItem order = new ListViewItem(ord.ProductList[0].Naam);
-                order.SubItems.Add(ord.orders[0].Aantal.ToString());
-                order.SubItems.Add(ord.ProductList[0].Prijs.ToString());
+                ListViewItem orderline = new ListViewItem(ol.product.Name);
+                orderline.SubItems.Add(ol.Quantity.ToString());
+                orderline.SubItems.Add(ol.product.Prijs.ToString());
                 //order.SubItems.Add(ord.OrderID.ToString());
 
 
 
-                order.Tag = ord;
-                listview_Bestelling.Items.Add(order);
+                orderline.Tag = ol;
+                listview_Bestelling.Items.Add(orderline);
 
             }
 
@@ -115,7 +115,7 @@ namespace ChapeauUI
         {
            // paymentForm.close();
            tableOverview = new TableOverview(employee);
-            tableOverview.ReOpenForm();
+            tableOverview.Show();
             this.Close();
         }
     }

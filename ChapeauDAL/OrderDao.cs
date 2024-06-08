@@ -1,6 +1,9 @@
 ﻿using ChapeauModel;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -10,7 +13,7 @@ namespace ChapeauDAL
 {
     public class OrderDao : BaseDao
     {
-        public int MakeNewOrder(DateTime timeOfOrder, int selectedtable)
+        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines)
         {
             //add order status to database!!!!!!
             int orderId = 0;
@@ -21,8 +24,8 @@ namespace ChapeauDAL
                 WHERE [tafelnr] = @selectedTable 
                 ORDER BY [rekeningnr] DESC;
 
-                INSERT INTO [dbo].[order] (rekeningnr, ordertime) 
-                VALUES (@currentrekeningnummer, @timeOfOrder); 
+                INSERT INTO [dbo].[order] (rekeningnr, ordertime, status) 
+                VALUES (@currentrekeningnummer, @timeOfOrder, 'Pending'); 
 
                 SELECT CAST(SCOPE_IDENTITY() AS INT) AS newOrderID;";
 
@@ -35,10 +38,41 @@ namespace ChapeauDAL
                 orderId = Convert.ToInt32((int)reader["newOrderID"]);
             }
             reader.Close();
+             foreach (Orderline line in orderlines)
+            {
+                StoreOrderline(line, orderId);
+                AdjustStock(line);
+            }
             CloseConnection();
-            return orderId;
         }
-
+        private void AdjustStock(Orderline orderline)
+        {
+            SqlCommand command = new SqlCommand("UPDATE [dbo].[artikel] SET [voorraad] = [voorraad] - @aantal WHERE [artikelid] = @artikelid;", OpenConnection());
+            command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
+            command.Parameters.AddWithValue("@aantal", orderline.Quantity);
+            command.ExecuteNonQuery();
+        }
+        private void StoreOrderline(Orderline orderline, int orderid)
+        {
+            if (orderline.Commentary != null)
+            {
+                SqlCommand command = new SqlCommand("INSERT INTO [orderline] (orderid, aantal, opmerking, artikelid) VALUES (@orderId, @aantal, @opmerking, @artikelid)", OpenConnection());
+                command.Parameters.AddWithValue("@orderId", orderid);
+                command.Parameters.AddWithValue("@aantal", orderline.Quantity);
+                command.Parameters.AddWithValue("@opmerking", orderline.Commentary);
+                command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
+                command.ExecuteNonQuery();
+            }
+            else
+            {
+                SqlCommand command = new SqlCommand("INSERT INTO [orderline] (orderid, aantal, artikelid) VALUES (@orderId, @aantal, @artikelid)", OpenConnection());
+                command.Parameters.AddWithValue("@orderId", orderid);
+                command.Parameters.AddWithValue("@aantal", orderline.Quantity);
+                command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
+                command.ExecuteNonQuery();
+            }
+            
+        }
         public List<Order> GetOrdersForBar()
         {
             string query = @"
@@ -78,8 +112,6 @@ namespace ChapeauDAL
             CloseConnection();
             return orders;
         }
-
-
         public List<Order> GetOrdersForKitchen()
         {
             string query = @"
@@ -104,8 +136,6 @@ namespace ChapeauDAL
                 rk.tafelnr, [order].orderid, [order].[status]
             ORDER BY 
                 rk.tafelnr, [order].orderid";
-
-
             SqlCommand command = new SqlCommand(query, OpenConnection());
 
             SqlDataReader reader = command.ExecuteReader();
@@ -121,65 +151,51 @@ namespace ChapeauDAL
             CloseConnection();
             return orders;
         }
-        public List<Order> GetOrdersForBill(int tafelnr)
-        {
-            string query = "select rekening.rekeningnr, [dbo].[order].orderid, tafelnr, opmerking, " +
-                "[order].[status], serveerderid, orderlinenr, aantal, naam, prijs, artikel.artikelid, categorie " +
-                "from [dbo].[order] " +
-                "join rekening on rekening.rekeningnr = [dbo].[order].rekeningnr " +
-                "join orderline on orderline.orderid = [dbo].[order].orderid " +
-                "join artikel on artikel.artikelid = orderline.artikelid " +
-                "where rekening.tafelnr=@tafelnr and status != 'paid'"; ;
 
+        public List<Order> GetPreviousOrdersForKitchen(DateOnly dateToday)
+        {
+            string query = @"
+            SELECT 
+                rk.tafelnr,
+                [order].orderid,
+                SUM(ol.aantal) AS aantal,
+                STRING_AGG([ol].opmerking, '; ') AS opmerking,
+                [order].[status],
+                STRING_AGG(ak.naam, '; ') AS Article, 
+                STRING_AGG(ak.categorie, ', ') AS categorie 
+            FROM 
+                [order]
+            JOIN 
+                orderline AS OL ON [order].[orderid] = OL.orderid
+            JOIN 
+                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                artikel AS ak ON ol.artikelid = ak.artikelid
+            WHERE 
+                [status] = 'Ready' 
+                AND (ak.categorie = 'Hoofdgerechten' OR ak.categorie = 'Nagerechten' OR ak.categorie = 'Voorgerechten') 
+                AND CAST([order].ordertime AS DATE) = @dateToday
+            GROUP BY 
+                rk.tafelnr, [order].orderid, [order].[status]
+            ORDER BY 
+                rk.tafelnr, [order].orderid";
 
             SqlCommand command = new SqlCommand(query, OpenConnection());
-            command.Parameters.AddWithValue("@tafelnr", tafelnr);
-
+            command.Parameters.Add(new SqlParameter("@dateToday", dateToday.ToString("yyyy-MM-dd")));
             SqlDataReader reader = command.ExecuteReader();
             List<Order> orders = new List<Order>();
 
             while (reader.Read())
             {
-                Order order = ReadOrdersBill(reader);
+
+                Order order = ReadOrders(reader);
                 orders.Add(order);
             }
             reader.Close();
             CloseConnection();
             return orders;
         }
-
-        public Order ReadOrdersBill(SqlDataReader reader)
-        {
-            Order currentOrder = null;
-           
-            
-            Orderline orderline = new Orderline(
-                (int)reader["orderId"], (int)reader["aantal"], (int)reader["artikelid"]);
-
-            currentOrder = new Order
-                (
-                    (int)reader["orderid"],
-                    (int)reader["tafelnr"],
-                    (string)reader["status"],
-                    orderline
-                   
-                );
-
-           
-
-
-           Product product = new Product
-                (reader["naam"] as string,
-                reader["categorie"] as string,
-                (decimal)reader["prijs"]
-                );
-  
-            currentOrder.ProductList.Add(product);
-            currentOrder.orders.Add(orderline);
-            
-            
-            return currentOrder;
-        }
+        
 
         public Order ReadOrders(SqlDataReader reader)
         {
@@ -205,7 +221,6 @@ namespace ChapeauDAL
             }
             return currentOrder;
         }
-
         public void CompleteOrder(int orderId, OrderStatus orderStatus)
         {
             string query = $"UPDATE [order] SET [status] = @orderStatus WHERE [orderId] = @OrderId";
@@ -227,5 +242,107 @@ namespace ChapeauDAL
             };
             ExecuteEditQuery(query, parameters);
         }
+
+        public List<Order> GetOrdersForTable(Tafel table)
+        {
+            string query = @"
+            SELECT 
+                  rk.tafelnr,
+                  [order].orderid AS OrderID,
+                   ol.aantal AS Aantal,
+                   ol.opmerking AS Opmerking,
+                  [order].[status] AS Status,
+                   ak.naam AS Article, 
+                   ak.categorie AS Categorie,
+                  [order].ordertime AS OrderTime,
+                  [order].bar,
+                  [order].keuken
+            FROM 
+                  [order]
+            JOIN 
+                  orderline AS ol ON [order].[orderid] = ol.orderid
+            JOIN 
+                  rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                  artikel AS ak ON ol.artikelid = ak.artikelid
+            WHERE 
+                  rk.tafelnr = @tableNumber AND [status] IS NOT NULL AND [bar] IS NOT NULL AND [keuken] IS NOT NULL
+            ORDER BY 
+                  [order].ordertime DESC";
+            SqlCommand command = new SqlCommand(query, OpenConnection());
+            command.Parameters.AddWithValue("@tableNumber", table.TafelNummer);
+            SqlDataReader reader = command.ExecuteReader();
+            List<Order> orders = new List<Order>();
+
+            while (reader.Read())
+            {
+
+                Order order = ReadOrderForTable(reader);
+                orders.Add(order);
+            }
+            reader.Close();
+            CloseConnection();
+            return orders;
+        }
+
+        public Order ReadOrderForTable(SqlDataReader reader)
+        {
+            Order currentOrder = null;
+            Product currentProduct = null;
+
+            currentOrder = new Order
+                (
+                    (int)reader["orderid"],
+                    (int)reader["tafelnr"],
+                    (string)reader["status"],
+                    new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
+                    (DateTime)reader["ordertime"],
+                    (byte)reader["bar"],
+                    (byte)reader["keuken"]
+                );
+
+            string products = (string)reader["Article"];
+            string[] productsArray = products.Split(';');
+
+            foreach (string product in productsArray)
+            {
+                currentProduct = new Product(product, (string)reader["categorie"]);
+                currentOrder.ProductList.Add(currentProduct);
+
+            }
+            return currentOrder;
+        }
+
+        public void SetDelivered(Order order)
+        {
+            byte bar = SetBarByte(order);
+            byte kitchen = SetKitchenByte(order);
+            UpdateOrder(order, bar, kitchen);
+            
+        }
+        private byte SetBarByte(Order order)
+        {
+            if (order.barStatus == OrderStatus.Delivered || order.barStatus != OrderStatus.Ready) { return 0; }
+            return 1;
+        }
+        private byte SetKitchenByte(Order order)
+        {
+            if (order.kitchenStatus == OrderStatus.Delivered && order.kitchenStatus != OrderStatus.Ready) { return 0; }
+            return 1;
+        }
+
+        private void UpdateOrder(Order order, byte bar, byte kitchen)
+        {
+            string query = $"UPDATE [order] SET [status] = @orderStatus, [bar] = @bar, [keuken] = @kitchen WHERE [orderId] = @OrderId";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@OrderId", order.OrderID),
+                new SqlParameter("@orderStatus", order.Status.ToString()),
+                new SqlParameter("@bar",bar),
+                new SqlParameter("@kitchen", kitchen)
+            };
+            ExecuteEditQuery(query, parameters);
+        }
+
     }
 }

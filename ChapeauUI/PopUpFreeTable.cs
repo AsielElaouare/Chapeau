@@ -20,6 +20,7 @@ namespace ChapeauUI
         OrderForm orderForm;
         TableOverview tableOverview;
         TafelService tableService;
+        InvoiceService invoiceService;
         string status = "Bezet";
         private int cornerRadius = 30;
         public PopUpFreeTable(Employee employee, Tafel table, TableOverview tableOverview)
@@ -46,7 +47,10 @@ namespace ChapeauUI
 
         private void StartOrderBtn_Click(object sender, EventArgs e)
         {
-            orderForm = new OrderForm(table);
+
+            MakeNewInvoice();
+            tableService.UpdateTableStatus(table, status);
+            orderForm = new OrderForm(table, employee);
             orderForm.Show();
             tableOverview.Close();
             this.Close();
@@ -59,11 +63,23 @@ namespace ChapeauUI
 
         private void MarkTableOccupiedBtn_Click(object sender, EventArgs e)
         {
+            MakeNewInvoice();
             tableService.UpdateTableStatus(table, status);
             this.Close();
-            tableOverview.ReOpenForm();
-            //make a bill when merged
+            tableOverview.RefreshTableButtons();
+        }
 
+
+        private void MakeNewInvoice()
+        {
+            invoiceService = new InvoiceService();
+            invoiceService.CreateInvoice(table, employee);
+        }
+
+        private void exitPopUpBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            tableOverview.RefreshTableButtons();
         }
     }
 }

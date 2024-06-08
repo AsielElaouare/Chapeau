@@ -118,7 +118,34 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cannot_loggin_50x50" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\cannot-loggin-50x50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Chapeau_logo_outline_v2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Chapeau_logo_outline_v2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="check50x50y" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\check50x50y.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="drink50x50y" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\drink50x50y.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="food50x50y" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\food50x50y.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rick_astley50x50TheBestOne" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\rick_astley50x50TheBestOne.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sign_in_50x50" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\sign-in-50x50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="time24x24b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\time24x24b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="time24x24y" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\time24x24y.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="time_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\time_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
