@@ -37,9 +37,10 @@ namespace ChapeauModel
             this.OrderTime = orderTime;
             this.ProductList = new List<Product>();
         }
-        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment, DateTime orderTime, byte barStatus, byte kitchenStatus) : this(OrderID, TafelNR, Status, OrderLineComment)
+        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment, DateTime orderTime, List<Product> products, byte barStatus, byte kitchenStatus) : this(OrderID, TafelNR, Status, OrderLineComment)
         {
             this.OrderTime = orderTime;
+            this.ProductList = products;
             setBarStatus(barStatus);
             setKitchenStatus(kitchenStatus);
         }

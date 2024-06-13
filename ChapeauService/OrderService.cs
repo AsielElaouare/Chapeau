@@ -34,6 +34,12 @@ namespace ChapeauService
             return orders = orderdb.GetOrders(status, kitchenCategories, dateToday);
         }
 
+        public void UpdateToCompleteOrders(int orederID, OrderStatus orderStatus)
+        {
+            orderdb.CompleteDeliveredOrder(orederID, orderStatus);
+
+        }
+
         public void UpdateToReadyOrders(int orederID, OrderStatus orderStatus, OrderType orderType)
         {
             orderdb.CompleteOrder(orederID, orderStatus, orderType);

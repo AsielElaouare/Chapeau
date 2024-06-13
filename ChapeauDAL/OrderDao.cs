@@ -157,6 +157,17 @@ namespace ChapeauDAL
             }
             return currentOrder;
         }
+        public void CompleteDeliveredOrder(int orderId, OrderStatus orderStatus)
+        {
+            string query = $"UPDATE [order] SET [status] = @orderStatus, [bar] = 1 WHERE [orderId] = @OrderId";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@OrderId", orderId),
+                new SqlParameter("@orderStatus", orderStatus.ToString())
+            };
+            ExecuteEditQuery(query, parameters);
+
+        }
         public void CompleteOrder(int orderId, OrderStatus orderStatus, OrderType barOrKitchen)
         {
             string query;
@@ -212,11 +223,12 @@ namespace ChapeauDAL
             JOIN 
                   artikel AS ak ON ol.artikelid = ak.artikelid
             WHERE 
-                  rk.tafelnr = @tableNumber AND [status] IS NOT NULL AND [bar] IS NOT NULL AND [keuken] IS NOT NULL
+                  rk.tafelnr = @tableNumber AND [status] IS NOT NULL AND [status] <> @deliveredStatus AND [bar] IS NOT NULL AND [keuken] IS NOT NULL 
             ORDER BY 
                   [order].ordertime DESC";
             SqlCommand command = new SqlCommand(query, OpenConnection());
             command.Parameters.AddWithValue("@tableNumber", table.TafelNummer);
+            command.Parameters.AddWithValue("@deliveredStatus", "Delivered");
             SqlDataReader reader = command.ExecuteReader();
             List<Order> orders = new List<Order>();
 
@@ -234,8 +246,8 @@ namespace ChapeauDAL
         public Order ReadOrderForTable(SqlDataReader reader)
         {
             Order currentOrder = null;
-            Product currentProduct = null;
 
+            List<Product> productList = ProductList(reader);
             currentOrder = new Order
                 (
                     (int)reader["orderid"],
@@ -243,20 +255,29 @@ namespace ChapeauDAL
                     (string)reader["status"],
                     new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
                     (DateTime)reader["ordertime"],
+                    productList,
                     (byte)reader["bar"],
                     (byte)reader["keuken"]
                 );
 
+           
+            
+            return currentOrder;
+        }
+
+        private List<Product> ProductList(SqlDataReader reader)
+        {
+            Product currentProduct = null;
+            List <Product> productsList = new List<Product>();
             string products = (string)reader["Article"];
             string[] productsArray = products.Split(';');
 
             foreach (string product in productsArray)
             {
-                currentProduct = new Product(product, (string)reader["categorie"]);
-                currentOrder.ProductList.Add(currentProduct);
-
+                currentProduct = new Product(product, (string)reader["Categorie"]);
+                productsList.Add(currentProduct);
             }
-            return currentOrder;
+            return productsList;
         }
 
         public void SetDelivered(Order order)

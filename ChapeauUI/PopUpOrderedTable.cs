@@ -76,7 +76,7 @@ namespace ChapeauUI
             orderService = new OrderService();
             order.barStatus = OrderStatus.Delivered;
             orderService.SetOrderDelivered(order);
-            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); }
+            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); orderService.UpdateToCompleteOrders(order.OrderID, OrderStatus.Delivered); }
             this.Close();
         }
 
@@ -85,7 +85,7 @@ namespace ChapeauUI
             orderService = new OrderService();
             order.kitchenStatus = OrderStatus.Delivered;
             orderService.SetOrderDelivered(order);
-            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); }
+            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); orderService.UpdateToCompleteOrders(order.OrderID, OrderStatus.Delivered); }
             this.Close();
         }
 
