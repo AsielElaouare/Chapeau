@@ -21,7 +21,7 @@ namespace ChapeauUI
         Employee employee;
         Tafel table;
         TafelService tafelService = new TafelService();
-        string besteldeTafelStatus = "Besteld";
+        
         public OrderForm()
         {
             InitializeComponent();
@@ -328,7 +328,8 @@ namespace ChapeauUI
         }
         private void ChangeTableStatus()
         {
-            tafelService.UpdateTableStatus(table,besteldeTafelStatus);
+            table.Status = TableStatusEnum.Ordered;
+            tafelService.UpdateTableStatus(table);
         }
     }
 }

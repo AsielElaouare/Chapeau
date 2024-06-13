@@ -25,9 +25,21 @@ namespace ChapeauService
             return tafeldb.GetAllTablesAndStatus();
         }
 
-        public void UpdateTableStatus(Tafel table, string status)
+        public void UpdateTableStatus(Tafel table)
         {
-            tafeldb.UpdateTableStatus(table, status);
+            tafeldb.UpdateTableStatus(table, ConvertTableStatus(table));
+        }
+
+        private string ConvertTableStatus(Tafel table)
+        {
+            switch(table.Status)
+            {
+                case TableStatusEnum.Free: return "Vrij";
+                case TableStatusEnum.Reserved: return "Gereserveerd";
+                case TableStatusEnum.Occupied: return "Bezet";
+                case TableStatusEnum.Ordered: return "Besteld";
+                default: return "Vrij";
+            }
         }
     }
 }

@@ -174,9 +174,9 @@ namespace ChapeauUI
         {
             orderService = new OrderService();
             List<Order> orders = orderService.GetOrdersByTable(table);
-            if (orders.Count == 0) { tableService = new TafelService(); tableService.UpdateTableStatus(table, "Bezet"); }
+            if (orders.Count == 0) { tableService = new TafelService(); table.Status = TableStatusEnum.Occupied; tableService.UpdateTableStatus(table); }
             Order mostRecentOrder = orders.OrderByDescending(order => order.OrderTime).FirstOrDefault();
-            if (mostRecentOrder.barStatus == OrderStatus.Ready && mostRecentOrder.barStatus == OrderStatus.Ready) { return Properties.Resources.check50x50y; }
+            if (mostRecentOrder.barStatus == OrderStatus.Ready && mostRecentOrder.kitchenStatus == OrderStatus.Ready) { return Properties.Resources.check50x50y; }
             else if (mostRecentOrder.barStatus == OrderStatus.Ready) { return Properties.Resources.drink50x50y; }
             else if (mostRecentOrder.kitchenStatus == OrderStatus.Ready) { return Properties.Resources.food50x50y; }
             return Properties.Resources.rick_astley50x50TheBestOne;
@@ -188,7 +188,7 @@ namespace ChapeauUI
             List<Order> orders = orderService.GetOrdersByTable(table);
             if (orders.Count == 0)
             {
-                tableService = new TafelService(); tableService.UpdateTableStatus(table, "Bezet");
+                tableService = new TafelService(); table.Status = TableStatusEnum.Occupied; tableService.UpdateTableStatus(table);
                 RefreshTableButtons();
             }
             Order mostRecentOrder = orders.OrderByDescending(order => order.OrderTime).FirstOrDefault();
@@ -203,7 +203,7 @@ namespace ChapeauUI
             List<Order> orders = orderService.GetOrdersByTable(table);
             if (orders.Count == 0)
             {
-                tableService = new TafelService(); tableService.UpdateTableStatus(table, "Bezet");
+                tableService = new TafelService(); table.Status = TableStatusEnum.Occupied; tableService.UpdateTableStatus(table);
                 RefreshTableButtons();
             }
             return orders.OrderByDescending(o => o.OrderTime).FirstOrDefault();
@@ -257,9 +257,9 @@ namespace ChapeauUI
         {
             orderService = new OrderService();
             List<Order> orders = orderService.GetOrdersByTable(table);
-            if (orders.Count == 0) { tableService = new TafelService(); tableService.UpdateTableStatus(table, "Bezet"); return false; }
+            if (orders.Count == 0) { tableService = new TafelService(); table.Status = TableStatusEnum.Occupied; tableService.UpdateTableStatus(table); return false; }
             Order mostRecentOrder = orders.OrderByDescending(order => order.OrderTime).FirstOrDefault();
-            if (mostRecentOrder.Status == OrderStatus.Ready || mostRecentOrder.barStatus == OrderStatus.Ready || mostRecentOrder.kitchenStatus == OrderStatus.Ready) { return true; }
+            if (mostRecentOrder.barStatus == OrderStatus.Ready || mostRecentOrder.kitchenStatus == OrderStatus.Ready) { return true; }
             else { return false; }
         }
 
