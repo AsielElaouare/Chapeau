@@ -94,7 +94,7 @@ namespace ChapeauUI
         {
             UsernameTextBox.Enabled = false;
             PasswordTextBox.Enabled = false;
-            ConfirmBtn.Enabled = false;
+            DisableConfirmButton();
         }
 
         private void OpenRelevantForm(Employee employee)

@@ -10,28 +10,35 @@ namespace ChapeauModel
     {
         public int OrderID { get; private set; }
         public int RekeningNR { get; private set; }
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; private set; }
         public DateTime OrderTime { get; private set; }
-        public Orderline OrderLineComment { get; private set; }
-
+        public Orderline OrderLine { get; private set; }
         public int TafelNR { get; private set; }
         public OrderStatus barStatus { get; set; }
         public OrderStatus kitchenStatus { get; set; }
 
         public List<Orderline> orderlines { get; private set; }
         public List<Product> ProductList { get; set; }
-
-        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment)
+      
+        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLine)
         {
             this.OrderID = OrderID;
             this.TafelNR = TafelNR;
             this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status); ;
-            this.OrderLineComment = OrderLineComment;
+            this.OrderLine = OrderLine;
             this.ProductList = new List<Product>();
         }
-
-        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment, DateTime orderTime, byte barStatus, byte kitchenStatus):this(OrderID, TafelNR, Status, OrderLineComment) 
-        { 
+        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLine, DateTime orderTime)
+        {
+            this.OrderID = OrderID;
+            this.TafelNR = TafelNR;
+            this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status); ;
+            this.OrderLine = OrderLine;
+            this.OrderTime = orderTime;
+            this.ProductList = new List<Product>();
+        }
+        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment, DateTime orderTime, byte barStatus, byte kitchenStatus) : this(OrderID, TafelNR, Status, OrderLineComment)
+        {
             this.OrderTime = orderTime;
             setBarStatus(barStatus);
             setKitchenStatus(kitchenStatus);
@@ -50,7 +57,7 @@ namespace ChapeauModel
         public void setBarStatus(byte barStatus)
         {
             if (barStatus == 1) { this.barStatus = OrderStatus.Ready; }
-            else { this.barStatus = OrderStatus.Pending;}
+            else { this.barStatus = OrderStatus.Pending; }
         }
         public void setKitchenStatus(byte kitchenStatus)
         {

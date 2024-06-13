@@ -22,7 +22,6 @@ namespace ChapeauUI
         TableOverview tableOverview;
         TafelService tableService;
         InvoiceService invoiceService;
-        string status = "Bezet";
         private int cornerRadius = 30;
         public PopUpFreeTable(Employee employee, Tafel table, TableOverview tableOverview)
         {
@@ -49,10 +48,13 @@ namespace ChapeauUI
 
         private void StartOrderBtn_Click(object sender, EventArgs e)
         {
-
             MakeNewInvoice();
+
             tableService.UpdateTableStatus(table, status);
            
+            table.Status = TableStatusEnum.Occupied;
+            tableService.UpdateTableStatus(table);
+
             orderForm = new OrderForm(table, employee);
             orderForm.Show();
             tableOverview.Close();
@@ -67,7 +69,8 @@ namespace ChapeauUI
         private void MarkTableOccupiedBtn_Click(object sender, EventArgs e)
         {
             MakeNewInvoice();
-            tableService.UpdateTableStatus(table, status);
+            table.Status = TableStatusEnum.Occupied;
+            tableService.UpdateTableStatus(table);
             this.Close();
             tableOverview.RefreshTableButtons();
         }

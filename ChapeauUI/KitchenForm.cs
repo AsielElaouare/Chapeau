@@ -19,36 +19,43 @@ namespace ChapeauUI
         private Timer timer;
         private List<Order> orders;
         private OrderService orderService;
+        private DateOnly dateToday;
 
         public KitchenForm()
         {
+            this.orderService = new OrderService();
+            dateToday = DateOnly.FromDateTime(DateTime.Now);
             InitTimer();
             InitializeComponent();
             DisplayOrders();
-            openOrdersLabel.Text = $"Open: {flowLayoutKitchenPnl.Controls.Count}";
-            this.orderService = new OrderService();
+            UpdateLabelOpenOrders();
         }
 
         public void Update()
         {
-            List<Order> latestOrders = orderService.GetPendingOrdersForKitchen();
+            List<Order> latestOrders = orderService.GetOrdersForKitchen(OrderStatus.Pending, dateToday);
 
             foreach (Order order in latestOrders)
             {
                 if (!orders.Any(o => o.OrderID == order.OrderID))
                 {
                     orders.Add(order);
-                    KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel);
+                    KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel, orders);
                     flowLayoutKitchenPnl.Controls.Add(kitchenDisplayOrder);
 
                     playNotificationSound();
                 }
             }
+            UpdateLabelOpenOrders();
+        }
+        private void UpdateLabelOpenOrders()
+        {
+            openOrdersLabel.Text = $"Open: {flowLayoutKitchenPnl.Controls.Count}";
         }
         private List<Order> GetKitchenOrders()
         {
             OrderService orderService = new OrderService();
-            List<Order> orders = orderService.GetPendingOrdersForKitchen(); ;
+            List<Order> orders = orderService.GetOrdersForKitchen(OrderStatus.Pending, dateToday); ;
             return orders;
         }
 
@@ -57,7 +64,7 @@ namespace ChapeauUI
             orders = GetKitchenOrders();
             foreach (Order order in orders)
             {
-                KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel);
+                KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel, orders);
                 flowLayoutKitchenPnl.Controls.Add(kitchenDisplayOrder);
 
             }

@@ -45,21 +45,30 @@
             // 
             // previousOrdersBar
             // 
-            previousOrdersBar.Location = new System.Drawing.Point(12, 22);
+            previousOrdersBar.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            previousOrdersBar.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            previousOrdersBar.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            previousOrdersBar.Location = new System.Drawing.Point(12, 16);
             previousOrdersBar.Name = "previousOrdersBar";
-            previousOrdersBar.Size = new System.Drawing.Size(108, 29);
-            previousOrdersBar.TabIndex = 1;
-            previousOrdersBar.Text = "Geschiedenis ";
-            previousOrdersBar.UseVisualStyleBackColor = true;
+            previousOrdersBar.Size = new System.Drawing.Size(136, 34);
+            previousOrdersBar.TabIndex = 3;
+            previousOrdersBar.Text = "Geschiedenis";
+            previousOrdersBar.UseVisualStyleBackColor = false;
+            previousOrdersBar.Click += previousOrdersBar_Click;
             // 
             // OpenOrdersBarLabel
             // 
             OpenOrdersBarLabel.AutoSize = true;
-            OpenOrdersBarLabel.Location = new System.Drawing.Point(595, 29);
+            OpenOrdersBarLabel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            OpenOrdersBarLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            OpenOrdersBarLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            OpenOrdersBarLabel.Location = new System.Drawing.Point(611, 23);
             OpenOrdersBarLabel.Name = "OpenOrdersBarLabel";
-            OpenOrdersBarLabel.Size = new System.Drawing.Size(42, 15);
-            OpenOrdersBarLabel.TabIndex = 2;
+            OpenOrdersBarLabel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 2);
+            OpenOrdersBarLabel.Size = new System.Drawing.Size(77, 27);
+            OpenOrdersBarLabel.TabIndex = 4;
             OpenOrdersBarLabel.Text = "Open: ";
+            OpenOrdersBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // BarForm
             // 
@@ -79,6 +88,7 @@
 
         private System.Windows.Forms.FlowLayoutPanel barFlowLayoutPanel;
         private System.Windows.Forms.Button previousOrdersBar;
+        private System.Windows.Forms.Button historyOrders;
         private System.Windows.Forms.Label OpenOrdersBarLabel;
     }
 }

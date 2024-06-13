@@ -36,6 +36,7 @@
             drinksFlowLayoutPnl = new System.Windows.Forms.FlowLayoutPanel();
             StartBtn = new System.Windows.Forms.Button();
             CompleteBtn = new System.Windows.Forms.Button();
+            remakeOrderBtn = new System.Windows.Forms.Button();
             OrderPanel.SuspendLayout();
             flowLayoutPanel.SuspendLayout();
             SuspendLayout();
@@ -47,6 +48,7 @@
             OrderPanel.Controls.Add(flowLayoutPanel);
             OrderPanel.Controls.Add(StartBtn);
             OrderPanel.Controls.Add(CompleteBtn);
+            OrderPanel.Controls.Add(remakeOrderBtn);
             OrderPanel.Location = new System.Drawing.Point(0, 0);
             OrderPanel.Name = "OrderPanel";
             OrderPanel.Size = new System.Drawing.Size(200, 427);
@@ -72,7 +74,7 @@
             flowLayoutPanel.Location = new System.Drawing.Point(0, 23);
             flowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             flowLayoutPanel.Name = "flowLayoutPanel";
-            flowLayoutPanel.Size = new System.Drawing.Size(200, 376);
+            flowLayoutPanel.Size = new System.Drawing.Size(200, 372);
             flowLayoutPanel.TabIndex = 4;
             // 
             // orderInfLabel
@@ -108,7 +110,7 @@
             StartBtn.BackColor = System.Drawing.Color.FromArgb(0, 132, 255);
             StartBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             StartBtn.ForeColor = System.Drawing.Color.MintCream;
-            StartBtn.Location = new System.Drawing.Point(0, 399);
+            StartBtn.Location = new System.Drawing.Point(0, 395);
             StartBtn.Margin = new System.Windows.Forms.Padding(0);
             StartBtn.Name = "StartBtn";
             StartBtn.Size = new System.Drawing.Size(75, 27);
@@ -123,7 +125,7 @@
             CompleteBtn.Enabled = false;
             CompleteBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             CompleteBtn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            CompleteBtn.Location = new System.Drawing.Point(125, 399);
+            CompleteBtn.Location = new System.Drawing.Point(125, 395);
             CompleteBtn.Margin = new System.Windows.Forms.Padding(50, 0, 0, 0);
             CompleteBtn.Name = "CompleteBtn";
             CompleteBtn.Size = new System.Drawing.Size(75, 27);
@@ -131,6 +133,21 @@
             CompleteBtn.Text = "Compleet";
             CompleteBtn.UseVisualStyleBackColor = false;
             CompleteBtn.Click += CompleteBtn_Click;
+            // 
+            // remakeOrderBtn
+            // 
+            remakeOrderBtn.BackColor = System.Drawing.Color.FromArgb(0, 132, 255);
+            remakeOrderBtn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            remakeOrderBtn.ForeColor = System.Drawing.Color.MintCream;
+            remakeOrderBtn.Location = new System.Drawing.Point(0, 422);
+            remakeOrderBtn.Margin = new System.Windows.Forms.Padding(0);
+            remakeOrderBtn.Name = "remakeOrderBtn";
+            remakeOrderBtn.Size = new System.Drawing.Size(200, 27);
+            remakeOrderBtn.TabIndex = 7;
+            remakeOrderBtn.Text = "Maak Opnieuw";
+            remakeOrderBtn.UseVisualStyleBackColor = false;
+            remakeOrderBtn.Visible = false;
+            remakeOrderBtn.Click += remakeOrderBtn_Click;
             // 
             // BarDisplayOrder
             // 
@@ -155,5 +172,6 @@
         private System.Windows.Forms.Label drinksHeaderLabel;
         private System.Windows.Forms.Label orderInfLabel;
         private System.Windows.Forms.FlowLayoutPanel drinksFlowLayoutPnl;
+        private System.Windows.Forms.Button remakeOrderBtn;
     }
 }
