@@ -15,8 +15,6 @@ namespace ChapeauModel
         public string Commentary { get; private set; }
         public int ArticleID { get; private set; }
         public Product product { get; private set; }
-        public int Quantity { get;  set; }
-        public string Commentary { get; private set; }
         
         public Orderline(int orderID, int aantal, string opmerking)
         {

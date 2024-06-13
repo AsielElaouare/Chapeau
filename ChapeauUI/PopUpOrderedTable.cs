@@ -24,7 +24,6 @@ namespace ChapeauUI
         private Order order;
         private OrderService orderService;
         private TafelService tafelService = new TafelService();
-        private string bezetStatus = "Bezet";
         private int cornerRadius = 30;
         
         public PopUpOrderedTable(Employee employee, Tafel table, TableOverview tableOverview, Order order)
@@ -77,7 +76,7 @@ namespace ChapeauUI
             orderService = new OrderService();
             order.barStatus = OrderStatus.Delivered;
             orderService.SetOrderDelivered(order);
-            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { tafelService.UpdateTableStatus(table, bezetStatus); }
+            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); }
             this.Close();
         }
 
@@ -86,7 +85,7 @@ namespace ChapeauUI
             orderService = new OrderService();
             order.kitchenStatus = OrderStatus.Delivered;
             orderService.SetOrderDelivered(order);
-            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { tafelService.UpdateTableStatus(table, bezetStatus); }
+            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); }
             this.Close();
         }
 
@@ -103,7 +102,7 @@ namespace ChapeauUI
 
         private void SetButtons()
         {
-            if (order.barStatus != OrderStatus.Ready && order.kitchenStatus != OrderStatus.Ready)
+            if (order.barStatus != OrderStatus.Ready || order.kitchenStatus != OrderStatus.Ready)
             {
                 if (order.barStatus == OrderStatus.Ready) { KitchenBtn.Enabled = false; KitchenBtn.BackColor = Color.FromArgb(224, 224, 224); }
                 else if (order.kitchenStatus == OrderStatus.Ready) { BarBtn.Enabled = false; BarBtn.BackColor = Color.FromArgb(224, 224, 224); }

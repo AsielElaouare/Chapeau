@@ -273,7 +273,7 @@ namespace ChapeauDAL
         }
         private byte SetKitchenByte(Order order)
         {
-            if (order.kitchenStatus == OrderStatus.Delivered && order.kitchenStatus != OrderStatus.Ready) { return 0; }
+            if (order.kitchenStatus == OrderStatus.Delivered || order.kitchenStatus != OrderStatus.Ready) { return 0; }
             return 1;
         }
 
