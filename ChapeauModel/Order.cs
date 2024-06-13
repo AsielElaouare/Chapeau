@@ -37,12 +37,6 @@ namespace ChapeauModel
             this.OrderTime = orderTime;
             this.ProductList = new List<Product>();
         }
-        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment, DateTime orderTime, byte barStatus, byte kitchenStatus) : this(OrderID, TafelNR, Status, OrderLineComment)
-        {
-            this.OrderTime = orderTime;
-            setBarStatus(barStatus);
-            setKitchenStatus(kitchenStatus);
-        }
 
         public Order(int rekeningNR, int orderID, int tafelNR, OrderStatus status)
         {
@@ -57,14 +51,33 @@ namespace ChapeauModel
         public void setBarStatus(byte barStatus)
         {
             if (barStatus == 1) { this.barStatus = OrderStatus.Ready; }
+            else if( barStatus == 2 || !CheckBarOrder()) { this.barStatus = OrderStatus.Delivered; }
             else { this.barStatus = OrderStatus.Pending; }
         }
         public void setKitchenStatus(byte kitchenStatus)
         {
             if (kitchenStatus == 1) { this.kitchenStatus = OrderStatus.Ready; }
+            else if(kitchenStatus == 2 || !CheckKitchenOrder()) { this.kitchenStatus = OrderStatus.Delivered; }
             else { this.kitchenStatus = OrderStatus.Pending; }
         }
 
-
+        private bool CheckKitchenOrder()
+        {
+            bool hasOrdered = false;
+            foreach (Product product in ProductList)
+            {
+                if (product.Category == ProductCategorie.Voorgerechten || product.Category == ProductCategorie.Hoofdgerechten || product.Category == ProductCategorie.Tussengerechten || product.Category == ProductCategorie.Nagerechten) { hasOrdered = true; break; }
+            }
+            return hasOrdered;
+        }
+        private bool CheckBarOrder()
+        {
+            bool hasOrdered = false;
+            foreach (Product product in ProductList)
+            {
+                if (product.Category == ProductCategorie.Bier|| product.Category == ProductCategorie.Wijn || product.Category == ProductCategorie.Gedistilleerd|| product.Category == ProductCategorie.KoffieThee || product.Category == ProductCategorie.Frisdrank) { hasOrdered = true; break; }
+            }
+            return hasOrdered;
+        }
     }
 }

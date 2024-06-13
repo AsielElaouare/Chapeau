@@ -158,6 +158,17 @@ namespace ChapeauDAL
             }
             return currentOrder;
         }
+        public void CompleteDeliveredOrder(int orderId, OrderStatus orderStatus)
+        {
+            string query = $"UPDATE [order] SET [status] = @orderStatus, [bar] = 1 WHERE [orderId] = @OrderId";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@OrderId", orderId),
+                new SqlParameter("@orderStatus", orderStatus.ToString())
+            };
+            ExecuteEditQuery(query, parameters);
+
+        }
         public void CompleteOrder(int orderId, OrderStatus orderStatus, OrderType barOrKitchen)
         {
             string query;
@@ -213,11 +224,12 @@ namespace ChapeauDAL
             JOIN 
                   artikel AS ak ON ol.artikelid = ak.artikelid
             WHERE 
-                  rk.tafelnr = @tableNumber AND [status] IS NOT NULL AND [bar] IS NOT NULL AND [keuken] IS NOT NULL
+                  rk.tafelnr = @tableNumber AND [status] IS NOT NULL AND [status] <> @deliveredStatus AND [bar] IS NOT NULL AND [keuken] IS NOT NULL 
             ORDER BY 
                   [order].ordertime DESC";
             SqlCommand command = new SqlCommand(query, OpenConnection());
             command.Parameters.AddWithValue("@tableNumber", table.TafelNummer);
+            command.Parameters.AddWithValue("@deliveredStatus", "Delivered");
             SqlDataReader reader = command.ExecuteReader();
             List<Order> orders = new List<Order>();
 
@@ -236,29 +248,28 @@ namespace ChapeauDAL
         {
             Order currentOrder = null;
             Product currentProduct = null;
-
             currentOrder = new Order
                 (
                     (int)reader["orderid"],
                     (int)reader["tafelnr"],
                     (string)reader["status"],
                     new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
-                    (DateTime)reader["ordertime"],
-                    (byte)reader["bar"],
-                    (byte)reader["keuken"]
+                    (DateTime)reader["ordertime"]
                 );
-
             string products = (string)reader["Article"];
             string[] productsArray = products.Split(';');
-
             foreach (string product in productsArray)
             {
                 currentProduct = new Product(product, (string)reader["categorie"]);
                 currentOrder.ProductList.Add(currentProduct);
-
             }
+            currentOrder.setBarStatus((byte)reader["bar"]);
+            currentOrder.setKitchenStatus((byte)reader["keuken"]);
             return currentOrder;
         }
+
+
+        
 
         public void SetDelivered(Order order)
         {
@@ -269,13 +280,17 @@ namespace ChapeauDAL
         }
         private byte SetBarByte(Order order)
         {
-            if (order.barStatus == OrderStatus.Delivered || order.barStatus != OrderStatus.Ready) { return 0; }
-            return 1;
+            if (order.barStatus == OrderStatus.Delivered) { return 2; }
+            else if (order.barStatus == OrderStatus.Ready) { return 1; }
+            else if (order.barStatus == OrderStatus.Pending) { return 0; }
+            return 0;
         }
         private byte SetKitchenByte(Order order)
         {
-            if (order.kitchenStatus == OrderStatus.Delivered || order.kitchenStatus != OrderStatus.Ready) { return 0; }
-            return 1;
+            if (order.kitchenStatus == OrderStatus.Delivered) { return 2; }
+            else if (order.kitchenStatus == OrderStatus.Ready) { return 1; }
+            else if (order.barStatus == OrderStatus.Pending) { return 0; }
+            return 0;
         }
 
         private void UpdateOrder(Order order, byte bar, byte kitchen)
