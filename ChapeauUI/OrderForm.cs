@@ -20,35 +20,25 @@ namespace ChapeauUI
         List<Orderline> orders;
         Employee employee;
         Tafel table;
-        Bill bill;
         TafelService tafelService = new TafelService();
-        
-        public OrderForm()
-        {
-            InitializeComponent();
-            products = GetProducts();
-            orders = new List<Orderline>();
-        }
         public OrderForm(Tafel table, Employee employee)
         {
             InitializeComponent();
-            products = GetProducts();
+            GetProducts();
             orders = new List<Orderline>();
             this.employee= employee;
             this.table = table;
-         
             tafelNRText.Text = $"bestelling voor tafel {table.TafelNummer}.";
         }
-        private List<Product> GetProducts()
+        private void GetProducts()
         {
             ProductService productService = new ProductService();
-            List<Product> products = productService.GetProducts();
-            return products;
+            products = productService.GetProducts(); 
         }
         private void StoreThisOrder(DateTime timeOfOrde, int selectedTable)
         {
             OrderService orderService = new OrderService();
-            orderService.StoreOrder(timeOfOrde, selectedTable,orders, bill);
+            orderService.StoreOrder(timeOfOrde, selectedTable,orders);
         }
         private void confirmButton_Click(object sender, EventArgs e)
         {
@@ -238,7 +228,7 @@ namespace ChapeauUI
         {
             Label commentLabel = new Label();
             commentLabel.Text = order.Commentary;
-            commentLabel.Size = new Size(280, 20);
+            commentLabel.Size = new Size(300, 20);
             commentLabel.BackColor = Color.DarkGray;
             orderLayoutPanel.Controls.Add(commentLabel);
         }
@@ -246,7 +236,7 @@ namespace ChapeauUI
         {
             Button opmerkingBtn = new Button();
             opmerkingBtn.Text = "opmerking";
-            opmerkingBtn.Size = new Size(135, 35);
+            opmerkingBtn.Size = new Size(150, 35);
             opmerkingBtn.Tag = order.ArticleID;
             opmerkingBtn.Click += Opmerking_Button_Click;
             opmerkingBtn.BackColor = Color.DodgerBlue;
@@ -256,7 +246,7 @@ namespace ChapeauUI
         {
             Button verwijderBtn = new Button();
             verwijderBtn.Text = "-1";
-            verwijderBtn.Size = new Size(135, 35);
+            verwijderBtn.Size = new Size(150, 35);
             verwijderBtn.Tag = order.ArticleID;
             verwijderBtn.Click += Verwijder_Button_Click;
             verwijderBtn.BackColor = Color.Red;
@@ -266,14 +256,14 @@ namespace ChapeauUI
         {
             Label procductAantalmLabel = new Label();
             procductAantalmLabel.Text = order.Quantity.ToString();
-            procductAantalmLabel.Size = new Size(20, 35);
+            procductAantalmLabel.Size = new Size(30, 35);
             orderLayoutPanel.Controls.Add(procductAantalmLabel);
         }
         private void MakeProductNameInOrderlist(Orderline order)
         {
             Label procductNaamLabel = new Label();
             procductNaamLabel.Text = ProductIDToProductName(order.ArticleID);
-            procductNaamLabel.Size = new Size(250, 35);
+            procductNaamLabel.Size = new Size(280, 35);
             orderLayoutPanel.Controls.Add(procductNaamLabel);
         }
         private void Opmerking_Button_Click(object sender, EventArgs e)
@@ -330,6 +320,7 @@ namespace ChapeauUI
         }
         private void ChangeTableStatus()
         {
+           
             table.Status = TableStatusEnum.Ordered;
             tafelService.UpdateTableStatus(table);
         }
