@@ -13,9 +13,8 @@ namespace ChapeauDAL
 {
     public class OrderDao : BaseDao
     {
-        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines)
+        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines, Bill bill)
         {
-            //add order status to database!!!!!!
             int orderId = 0;
             string query = @"
                 DECLARE @currentrekeningnummer INT;
@@ -36,6 +35,7 @@ namespace ChapeauDAL
             if (reader.Read())
             {
                 orderId = Convert.ToInt32((int)reader["newOrderID"]);
+              
             }
             reader.Close();
              foreach (Orderline line in orderlines)

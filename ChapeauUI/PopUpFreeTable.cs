@@ -17,6 +17,7 @@ namespace ChapeauUI
     {
         Employee employee;
         Tafel table;
+        Bill bill;
         OrderForm orderForm;
         TableOverview tableOverview;
         TafelService tableService;
@@ -32,6 +33,7 @@ namespace ChapeauUI
             tableLbl.Text = $"Tafel {table.TafelNummer.ToString()}";
             this.tableOverview = tableOverview;
             tableService = new TafelService();
+            
         }
         private void SetRoundedRegion()
         {
@@ -50,6 +52,7 @@ namespace ChapeauUI
 
             MakeNewInvoice();
             tableService.UpdateTableStatus(table, status);
+           
             orderForm = new OrderForm(table, employee);
             orderForm.Show();
             tableOverview.Close();
@@ -73,7 +76,9 @@ namespace ChapeauUI
         private void MakeNewInvoice()
         {
             invoiceService = new InvoiceService();
-            invoiceService.CreateInvoice(table, employee);
+            bill= new Bill(table,employee);
+            invoiceService.CreateInvoice(bill);
+            //return bill;
         }
 
         private void exitPopUpBtn_Click(object sender, EventArgs e)

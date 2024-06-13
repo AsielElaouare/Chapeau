@@ -33,11 +33,12 @@ namespace ChapeauUI
             SetRoundedRegion();
             this.table = table;
             this.employee = employee;
+            bill = new Bill(table, employee);
             tableLbl.Text = $"Tafel {table.TafelNummer.ToString()}";
             this.tableOverview = tableOverview;
             this.order = order;
-            //bill moet nog meegegeven worden
-            this.bill = new Bill(table, employee) ;
+           
+          
             SetButtons();
         }
         private void SetRoundedRegion()
@@ -92,9 +93,8 @@ namespace ChapeauUI
 
         private void BillBtn_Click(object sender, EventArgs e)
         {
-            ///als het goed is kan table, employee vervangen worden met bill.
             
-            paymentForm = new PaymentForm(table, employee, bill);
+            paymentForm = new PaymentForm(bill);
             paymentForm.Show();
 
             this.Close();
