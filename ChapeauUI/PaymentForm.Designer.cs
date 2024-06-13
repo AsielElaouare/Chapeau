@@ -39,14 +39,13 @@
             lbl_Waiter = new System.Windows.Forms.Label();
             lbl_Table = new System.Windows.Forms.Label();
             lbl_ReceiptNumber = new System.Windows.Forms.Label();
-            bttn_payment = new System.Windows.Forms.Button();
             button2 = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
-            bttn_splitpayment = new System.Windows.Forms.Button();
             bttn_PausePayment = new System.Windows.Forms.Button();
             textBox1 = new System.Windows.Forms.TextBox();
             lbl_Review = new System.Windows.Forms.Label();
             lbl_Openstaand = new System.Windows.Forms.Label();
+            bttn_Pay = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -134,17 +133,6 @@
             lbl_ReceiptNumber.Text = "Bon nummer:";
             lbl_ReceiptNumber.Click += lbl_ReceiptNumber_Click;
             // 
-            // bttn_payment
-            // 
-            bttn_payment.Location = new System.Drawing.Point(886, 425);
-            bttn_payment.Margin = new System.Windows.Forms.Padding(2);
-            bttn_payment.Name = "bttn_payment";
-            bttn_payment.Size = new System.Drawing.Size(131, 40);
-            bttn_payment.TabIndex = 8;
-            bttn_payment.Text = "Betalen";
-            bttn_payment.UseVisualStyleBackColor = true;
-            bttn_payment.Click += bttn_payment_Click;
-            // 
             // button2
             // 
             button2.BackColor = System.Drawing.Color.Firebrick;
@@ -167,22 +155,10 @@
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = false;
             // 
-            // bttn_splitpayment
-            // 
-            bttn_splitpayment.BackColor = System.Drawing.Color.Gainsboro;
-            bttn_splitpayment.Location = new System.Drawing.Point(855, 133);
-            bttn_splitpayment.Margin = new System.Windows.Forms.Padding(2);
-            bttn_splitpayment.Name = "bttn_splitpayment";
-            bttn_splitpayment.Size = new System.Drawing.Size(188, 110);
-            bttn_splitpayment.TabIndex = 13;
-            bttn_splitpayment.Text = "splitten";
-            bttn_splitpayment.UseVisualStyleBackColor = false;
-            bttn_splitpayment.Click += bttn_splitpayment_Click;
-            // 
             // bttn_PausePayment
             // 
             bttn_PausePayment.BackColor = System.Drawing.Color.LightGray;
-            bttn_PausePayment.Location = new System.Drawing.Point(855, 265);
+            bttn_PausePayment.Location = new System.Drawing.Point(853, 154);
             bttn_PausePayment.Margin = new System.Windows.Forms.Padding(2);
             bttn_PausePayment.Name = "bttn_PausePayment";
             bttn_PausePayment.Size = new System.Drawing.Size(188, 110);
@@ -218,20 +194,31 @@
             lbl_Openstaand.TabIndex = 17;
             lbl_Openstaand.Text = "Openstaand:";
             // 
+            // bttn_Pay
+            // 
+            bttn_Pay.BackColor = System.Drawing.Color.LightGray;
+            bttn_Pay.Location = new System.Drawing.Point(853, 309);
+            bttn_Pay.Margin = new System.Windows.Forms.Padding(2);
+            bttn_Pay.Name = "bttn_Pay";
+            bttn_Pay.Size = new System.Drawing.Size(188, 110);
+            bttn_Pay.TabIndex = 18;
+            bttn_Pay.Text = "Betaal rekening";
+            bttn_Pay.UseVisualStyleBackColor = false;
+            bttn_Pay.Click += this.bttn_Pay_Click;
+            // 
             // PaymentForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(1133, 740);
             ControlBox = false;
+            Controls.Add(bttn_Pay);
             Controls.Add(lbl_Openstaand);
             Controls.Add(lbl_Review);
             Controls.Add(textBox1);
             Controls.Add(bttn_PausePayment);
-            Controls.Add(bttn_splitpayment);
             Controls.Add(button3);
             Controls.Add(button2);
-            Controls.Add(bttn_payment);
             Controls.Add(lbl_ReceiptNumber);
             Controls.Add(lbl_Table);
             Controls.Add(lbl_Waiter);
@@ -258,16 +245,16 @@
         private System.Windows.Forms.Label lbl_Waiter;
         private System.Windows.Forms.Label lbl_Table;
         private System.Windows.Forms.Label lbl_ReceiptNumber;
-        private System.Windows.Forms.Button bttn_payment;
+        private System.Windows.Forms.Button bttn_Pay;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ColumnHeader column_Items;
         private System.Windows.Forms.ColumnHeader column_Aantal;
-        private System.Windows.Forms.Button bttn_splitpayment;
         private System.Windows.Forms.Button bttn_PausePayment;
         private System.Windows.Forms.ColumnHeader column_Prijs;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label lbl_Review;
         private System.Windows.Forms.Label lbl_Openstaand;
+       // private System.Windows.Forms.Button bttn_Pay;
     }
 }

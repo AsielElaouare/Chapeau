@@ -146,27 +146,19 @@ namespace ChapeauUI
 
         private void bttn_payment_Click(object sender, EventArgs e)
         {
-            InvoiceService invoiceService = new InvoiceService();
-            invoiceService.FinishInvoice(bill);
 
-            if (bill.table.Status == TableStatusEnum.Occupied) 
-
-            {
-                TafelService tafelService = new TafelService();
-                bill.table.Status = TableStatusEnum.Free;
-                tafelService.UpdateTableStatus(bill.table);
-            }
-
-
-            tableOverview = new TableOverview(bill.employee);
-            tableOverview.Show();
-            this.Close();
 
         }
 
         private void bttn_splitpayment_Click(object sender, EventArgs e)
         {
-           
+
+        }
+
+        private void bttn_Pay_Click(object sender, EventArgs e)
+        {
+            PopUpPayment popUpPayment = new PopUpPayment(bill, this);
+            popUpPayment.Show();
         }
     }
 }
