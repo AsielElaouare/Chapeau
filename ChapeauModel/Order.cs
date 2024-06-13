@@ -37,13 +37,6 @@ namespace ChapeauModel
             this.OrderTime = orderTime;
             this.ProductList = new List<Product>();
         }
-        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLineComment, DateTime orderTime, List<Product> products, byte barStatus, byte kitchenStatus) : this(OrderID, TafelNR, Status, OrderLineComment)
-        {
-            this.OrderTime = orderTime;
-            this.ProductList = products;
-            setBarStatus(barStatus);
-            setKitchenStatus(kitchenStatus);
-        }
 
         public Order(int rekeningNR, int orderID, int tafelNR, OrderStatus status)
         {
@@ -58,13 +51,13 @@ namespace ChapeauModel
         public void setBarStatus(byte barStatus)
         {
             if (barStatus == 1) { this.barStatus = OrderStatus.Ready; }
-            else if (!CheckBarOrder()) { this.barStatus = OrderStatus.Delivered; }
+            else if( barStatus == 2 || !CheckBarOrder()) { this.barStatus = OrderStatus.Delivered; }
             else { this.barStatus = OrderStatus.Pending; }
         }
         public void setKitchenStatus(byte kitchenStatus)
         {
             if (kitchenStatus == 1) { this.kitchenStatus = OrderStatus.Ready; }
-            else if (!CheckKitchenOrder()) { this.kitchenStatus = OrderStatus.Delivered; }
+            else if(kitchenStatus == 2 || !CheckKitchenOrder()) { this.kitchenStatus = OrderStatus.Delivered; }
             else { this.kitchenStatus = OrderStatus.Pending; }
         }
 

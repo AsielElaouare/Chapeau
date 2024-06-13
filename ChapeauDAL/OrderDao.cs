@@ -246,39 +246,29 @@ namespace ChapeauDAL
         public Order ReadOrderForTable(SqlDataReader reader)
         {
             Order currentOrder = null;
-
-            List<Product> productList = ProductList(reader);
+            Product currentProduct = null;
             currentOrder = new Order
                 (
                     (int)reader["orderid"],
                     (int)reader["tafelnr"],
                     (string)reader["status"],
                     new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
-                    (DateTime)reader["ordertime"],
-                    productList,
-                    (byte)reader["bar"],
-                    (byte)reader["keuken"]
+                    (DateTime)reader["ordertime"]
                 );
-
-           
-            
+            string products = (string)reader["Article"];
+            string[] productsArray = products.Split(';');
+            foreach (string product in productsArray)
+            {
+                currentProduct = new Product(product, (string)reader["categorie"]);
+                currentOrder.ProductList.Add(currentProduct);
+            }
+            currentOrder.setBarStatus((byte)reader["bar"]);
+            currentOrder.setKitchenStatus((byte)reader["keuken"]);
             return currentOrder;
         }
 
-        private List<Product> ProductList(SqlDataReader reader)
-        {
-            Product currentProduct = null;
-            List <Product> productsList = new List<Product>();
-            string products = (string)reader["Article"];
-            string[] productsArray = products.Split(';');
 
-            foreach (string product in productsArray)
-            {
-                currentProduct = new Product(product, (string)reader["Categorie"]);
-                productsList.Add(currentProduct);
-            }
-            return productsList;
-        }
+        
 
         public void SetDelivered(Order order)
         {
@@ -289,13 +279,17 @@ namespace ChapeauDAL
         }
         private byte SetBarByte(Order order)
         {
-            if (order.barStatus == OrderStatus.Delivered || order.barStatus != OrderStatus.Ready) { return 0; }
-            return 1;
+            if (order.barStatus == OrderStatus.Delivered) { return 2; }
+            else if (order.barStatus == OrderStatus.Ready) { return 1; }
+            else if (order.barStatus == OrderStatus.Pending) { return 0; }
+            return 0;
         }
         private byte SetKitchenByte(Order order)
         {
-            if (order.kitchenStatus == OrderStatus.Delivered || order.kitchenStatus != OrderStatus.Ready) { return 0; }
-            return 1;
+            if (order.kitchenStatus == OrderStatus.Delivered) { return 2; }
+            else if (order.kitchenStatus == OrderStatus.Ready) { return 1; }
+            else if (order.barStatus == OrderStatus.Pending) { return 0; }
+            return 0;
         }
 
         private void UpdateOrder(Order order, byte bar, byte kitchen)
