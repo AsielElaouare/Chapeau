@@ -149,11 +149,13 @@ namespace ChapeauUI
             InvoiceService invoiceService = new InvoiceService();
             invoiceService.FinishInvoice(bill);
 
-            //  if (bill.table.Status == TableStatusEnum.Ordered)
+            if (bill.table.Status == TableStatusEnum.Occupied) 
 
-            TafelService tafelService = new TafelService();
-
-            tafelService.UpdateTableStatus(bill.table, TableStatusEnum.Free.ToString());
+            {
+                TafelService tafelService = new TafelService();
+                bill.table.Status = TableStatusEnum.Free;
+                tafelService.UpdateTableStatus(bill.table);
+            }
 
 
             tableOverview = new TableOverview(bill.employee);

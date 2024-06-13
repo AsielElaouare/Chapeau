@@ -50,7 +50,7 @@ namespace ChapeauUI
         {
             MakeNewInvoice();
 
-            tableService.UpdateTableStatus(table, status);
+            tableService.UpdateTableStatus(table);
            
             table.Status = TableStatusEnum.Occupied;
             tableService.UpdateTableStatus(table);
