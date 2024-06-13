@@ -20,9 +20,8 @@ namespace ChapeauUI
         List<Orderline> orders;
         Employee employee;
         Tafel table;
-        TafelService tafelService = new TafelService();
         public OrderForm(Tafel table, Employee employee)
-        {
+        { //start alles op
             InitializeComponent();
             GetProducts();
             orders = new List<Orderline>();
@@ -31,17 +30,17 @@ namespace ChapeauUI
             tafelNRText.Text = $"bestelling voor tafel {table.TafelNummer}.";
         }
         private void GetProducts()
-        {
+        { // haalt lijst met producten uit database
             ProductService productService = new ProductService();
             products = productService.GetProducts(); 
         }
         private void StoreThisOrder(DateTime timeOfOrde, int selectedTable)
-        {
+        {//slaat order op
             OrderService orderService = new OrderService();
             orderService.StoreOrder(timeOfOrde, selectedTable,orders);
         }
         private void confirmButton_Click(object sender, EventArgs e)
-        {
+        {// roept alle nieuwe schermen op en zorgt er voor dat de order wordt opgeslagenzodra er op confirm order wordt gedrukt
             if (orders.Count != 0)
             {
                 StoreThisOrder(DateTime.Now, table.TafelNummer);
@@ -54,11 +53,11 @@ namespace ChapeauUI
             }
         }
         private void cancelButton_Click(object sender, EventArgs e)
-        {
+        {//gaat naar nieuw scherm als order wordt gecanceld
             GoToTableOverview();
         }
         private void GoToTableOverview()
-        {
+        {// maakt nieuw scherm aan 
             TableOverview tableOverview = new TableOverview(employee);
             tableOverview.Show();
             this.Close();
@@ -79,14 +78,14 @@ namespace ChapeauUI
             FillProductLayoutPanel(ProductKaart.Diner);
         }
         private void MakeSelectedButtonDarkDark(Button selectedButton)
-        {
+        {//maakt geselcteerde knop donker van de 3 kaart soorten
             dinerButton.BackColor = SystemColors.ControlDark;
             lunchButton.BackColor = SystemColors.ControlDark;
             drinksButton.BackColor = SystemColors.ControlDark;
             selectedButton.BackColor = SystemColors.ControlDarkDark;
         }
         private void FillProductLayoutPanel(ProductKaart kaart)
-        {
+        {//vult de kaart pannel
             productLayoutPanel.Controls.Clear();
             List<ProductCategorie> categories = new List<ProductCategorie>();
 
@@ -104,7 +103,7 @@ namespace ChapeauUI
             }
         }
         private void MakePruductForCategorie(ProductKaart kaart, ProductCategorie categorie)
-        {
+        {//vult kaart panel met producten
             foreach (Product product in products)
             {
                 if (kaart == product.Menu && categorie == product.Category)
@@ -120,7 +119,7 @@ namespace ChapeauUI
             }
         }
         private Color SelectProductBtnColor(Product product)
-        {
+        {// laat de hoeveelheid stock zien met kleuren
             if (product.Stock > 10)
             {
                 return SystemColors.ControlDark;
@@ -148,7 +147,7 @@ namespace ChapeauUI
             }
         }
         private void Clickedproduct(string productnaam)
-        {
+        {//zorgt ervoor dat het geselcteerd product wordt toegevogd aan lijst
             foreach (Product product in products)
             {
                 if (productnaam == product.Name)
@@ -165,21 +164,21 @@ namespace ChapeauUI
                 foreach (Orderline order in orders)
                 {
                     if (order.ArticleID == productID&&EnoughStock(productID,order.Quantity))
-                    {
+                    {// voegt 1 toe aan hoeveeld heid bestelde producten
                         order.IncreaseQuantity();
                         break;
                     }
                 }
             }
             else
-            {
+            {// voegt product toe aan lijst
                 Orderline newProduct = new Orderline( 1, null, productID);
                 orders.Add(newProduct);
             }
             DislpayOrders();
         }
         private bool EnoughStock(int productID, int amountOfOrderdProduct)
-        {
+        {// kijkt of er genoeg stock is
             foreach(Product product in products) 
             {
                 if (product.Artikelid == productID && product.Stock > amountOfOrderdProduct)
@@ -191,7 +190,7 @@ namespace ChapeauUI
             return false;
         }
         private bool CheckIfProductIsInList(int ProductID)
-        {
+        {// kijkt of de product in lijst is
             if (orders.Count != 0)
             {
                 foreach (Orderline order in orders)
@@ -320,7 +319,7 @@ namespace ChapeauUI
         }
         private void ChangeTableStatus()
         {
-           
+            TafelService tafelService = new TafelService();
             table.Status = TableStatusEnum.Ordered;
             tafelService.UpdateTableStatus(table);
         }
