@@ -34,7 +34,6 @@
             column_Items = new System.Windows.Forms.ColumnHeader();
             column_Aantal = new System.Windows.Forms.ColumnHeader();
             column_Prijs = new System.Windows.Forms.ColumnHeader();
-            column_Openstaand = new System.Windows.Forms.ColumnHeader();
             lbl_Total = new System.Windows.Forms.Label();
             lbl_BTW = new System.Windows.Forms.Label();
             lbl_Waiter = new System.Windows.Forms.Label();
@@ -43,10 +42,11 @@
             bttn_payment = new System.Windows.Forms.Button();
             button2 = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
-            button4 = new System.Windows.Forms.Button();
-            bttn_PauzeerBetaling = new System.Windows.Forms.Button();
+            bttn_splitpayment = new System.Windows.Forms.Button();
+            bttn_PausePayment = new System.Windows.Forms.Button();
             textBox1 = new System.Windows.Forms.TextBox();
             lbl_Review = new System.Windows.Forms.Label();
+            lbl_Openstaand = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -62,7 +62,7 @@
             // 
             // listview_Bestelling
             // 
-            listview_Bestelling.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { column_Items, column_Aantal, column_Prijs, column_Openstaand });
+            listview_Bestelling.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { column_Items, column_Aantal, column_Prijs });
             listview_Bestelling.Location = new System.Drawing.Point(35, 144);
             listview_Bestelling.Margin = new System.Windows.Forms.Padding(2);
             listview_Bestelling.Name = "listview_Bestelling";
@@ -83,18 +83,13 @@
             // 
             column_Prijs.Text = "Prijs";
             // 
-            // column_Openstaand
-            // 
-            column_Openstaand.Text = "Openstaand";
-            column_Openstaand.Width = 80;
-            // 
             // lbl_Total
             // 
             lbl_Total.AutoSize = true;
             lbl_Total.Location = new System.Drawing.Point(35, 540);
             lbl_Total.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_Total.Name = "lbl_Total";
-            lbl_Total.Size = new System.Drawing.Size(44, 15);
+            lbl_Total.Size = new System.Drawing.Size(67, 25);
             lbl_Total.TabIndex = 3;
             lbl_Total.Text = "Totaal: ";
             // 
@@ -104,7 +99,7 @@
             lbl_BTW.Location = new System.Drawing.Point(35, 567);
             lbl_BTW.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_BTW.Name = "lbl_BTW";
-            lbl_BTW.Size = new System.Drawing.Size(36, 15);
+            lbl_BTW.Size = new System.Drawing.Size(56, 25);
             lbl_BTW.TabIndex = 4;
             lbl_BTW.Text = "BTW: ";
             // 
@@ -114,7 +109,7 @@
             lbl_Waiter.Location = new System.Drawing.Point(35, 118);
             lbl_Waiter.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_Waiter.Name = "lbl_Waiter";
-            lbl_Waiter.Size = new System.Drawing.Size(97, 15);
+            lbl_Waiter.Size = new System.Drawing.Size(146, 25);
             lbl_Waiter.TabIndex = 5;
             lbl_Waiter.Text = "Gastheer/vrouw: ";
             // 
@@ -124,7 +119,7 @@
             lbl_Table.Location = new System.Drawing.Point(312, 118);
             lbl_Table.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_Table.Name = "lbl_Table";
-            lbl_Table.Size = new System.Drawing.Size(37, 15);
+            lbl_Table.Size = new System.Drawing.Size(56, 25);
             lbl_Table.TabIndex = 6;
             lbl_Table.Text = "Tafel: ";
             // 
@@ -134,7 +129,7 @@
             lbl_ReceiptNumber.Location = new System.Drawing.Point(563, 118);
             lbl_ReceiptNumber.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             lbl_ReceiptNumber.Name = "lbl_ReceiptNumber";
-            lbl_ReceiptNumber.Size = new System.Drawing.Size(80, 15);
+            lbl_ReceiptNumber.Size = new System.Drawing.Size(119, 25);
             lbl_ReceiptNumber.TabIndex = 7;
             lbl_ReceiptNumber.Text = "Bon nummer:";
             lbl_ReceiptNumber.Click += lbl_ReceiptNumber_Click;
@@ -148,6 +143,7 @@
             bttn_payment.TabIndex = 8;
             bttn_payment.Text = "Betalen";
             bttn_payment.UseVisualStyleBackColor = true;
+            bttn_payment.Click += bttn_payment_Click;
             // 
             // button2
             // 
@@ -171,28 +167,29 @@
             button3.Text = "button3";
             button3.UseVisualStyleBackColor = false;
             // 
-            // button4
+            // bttn_splitpayment
             // 
-            button4.BackColor = System.Drawing.Color.Gainsboro;
-            button4.Location = new System.Drawing.Point(855, 133);
-            button4.Margin = new System.Windows.Forms.Padding(2);
-            button4.Name = "button4";
-            button4.Size = new System.Drawing.Size(188, 110);
-            button4.TabIndex = 13;
-            button4.Text = "splitten";
-            button4.UseVisualStyleBackColor = false;
+            bttn_splitpayment.BackColor = System.Drawing.Color.Gainsboro;
+            bttn_splitpayment.Location = new System.Drawing.Point(855, 133);
+            bttn_splitpayment.Margin = new System.Windows.Forms.Padding(2);
+            bttn_splitpayment.Name = "bttn_splitpayment";
+            bttn_splitpayment.Size = new System.Drawing.Size(188, 110);
+            bttn_splitpayment.TabIndex = 13;
+            bttn_splitpayment.Text = "splitten";
+            bttn_splitpayment.UseVisualStyleBackColor = false;
+            bttn_splitpayment.Click += bttn_splitpayment_Click;
             // 
-            // bttn_PauzeerBetaling
+            // bttn_PausePayment
             // 
-            bttn_PauzeerBetaling.BackColor = System.Drawing.Color.LightGray;
-            bttn_PauzeerBetaling.Location = new System.Drawing.Point(855, 265);
-            bttn_PauzeerBetaling.Margin = new System.Windows.Forms.Padding(2);
-            bttn_PauzeerBetaling.Name = "bttn_PauzeerBetaling";
-            bttn_PauzeerBetaling.Size = new System.Drawing.Size(188, 110);
-            bttn_PauzeerBetaling.TabIndex = 14;
-            bttn_PauzeerBetaling.Text = "keer terug naar tafeloverzicht";
-            bttn_PauzeerBetaling.UseVisualStyleBackColor = false;
-            bttn_PauzeerBetaling.Click += bttn_PauzeerBetaling_Click;
+            bttn_PausePayment.BackColor = System.Drawing.Color.LightGray;
+            bttn_PausePayment.Location = new System.Drawing.Point(855, 265);
+            bttn_PausePayment.Margin = new System.Windows.Forms.Padding(2);
+            bttn_PausePayment.Name = "bttn_PausePayment";
+            bttn_PausePayment.Size = new System.Drawing.Size(188, 110);
+            bttn_PausePayment.TabIndex = 14;
+            bttn_PausePayment.Text = "keer terug naar tafeloverzicht";
+            bttn_PausePayment.UseVisualStyleBackColor = false;
+            bttn_PausePayment.Click += bttn_PauzeerBetaling_Click;
             // 
             // textBox1
             // 
@@ -207,9 +204,19 @@
             lbl_Review.AutoSize = true;
             lbl_Review.Location = new System.Drawing.Point(218, 540);
             lbl_Review.Name = "lbl_Review";
-            lbl_Review.Size = new System.Drawing.Size(47, 15);
+            lbl_Review.Size = new System.Drawing.Size(70, 25);
             lbl_Review.TabIndex = 16;
             lbl_Review.Text = "Review:";
+            // 
+            // lbl_Openstaand
+            // 
+            lbl_Openstaand.AutoSize = true;
+            lbl_Openstaand.Location = new System.Drawing.Point(35, 615);
+            lbl_Openstaand.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            lbl_Openstaand.Name = "lbl_Openstaand";
+            lbl_Openstaand.Size = new System.Drawing.Size(113, 25);
+            lbl_Openstaand.TabIndex = 17;
+            lbl_Openstaand.Text = "Openstaand:";
             // 
             // PaymentForm
             // 
@@ -217,10 +224,11 @@
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(1133, 740);
             ControlBox = false;
+            Controls.Add(lbl_Openstaand);
             Controls.Add(lbl_Review);
             Controls.Add(textBox1);
-            Controls.Add(bttn_PauzeerBetaling);
-            Controls.Add(button4);
+            Controls.Add(bttn_PausePayment);
+            Controls.Add(bttn_splitpayment);
             Controls.Add(button3);
             Controls.Add(button2);
             Controls.Add(bttn_payment);
@@ -255,11 +263,11 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ColumnHeader column_Items;
         private System.Windows.Forms.ColumnHeader column_Aantal;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button bttn_PauzeerBetaling;
+        private System.Windows.Forms.Button bttn_splitpayment;
+        private System.Windows.Forms.Button bttn_PausePayment;
         private System.Windows.Forms.ColumnHeader column_Prijs;
-        private System.Windows.Forms.ColumnHeader column_Openstaand;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label lbl_Review;
+        private System.Windows.Forms.Label lbl_Openstaand;
     }
 }

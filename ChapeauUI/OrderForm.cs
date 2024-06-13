@@ -20,6 +20,7 @@ namespace ChapeauUI
         List<Orderline> orders;
         Employee employee;
         Tafel table;
+        Bill bill;
         TafelService tafelService = new TafelService();
         
         public OrderForm()
@@ -35,6 +36,7 @@ namespace ChapeauUI
             orders = new List<Orderline>();
             this.employee= employee;
             this.table = table;
+         
             tafelNRText.Text = $"bestelling voor tafel {table.TafelNummer}.";
         }
         private List<Product> GetProducts()
@@ -46,7 +48,7 @@ namespace ChapeauUI
         private void StoreThisOrder(DateTime timeOfOrde, int selectedTable)
         {
             OrderService orderService = new OrderService();
-            orderService.StoreOrder(timeOfOrde, selectedTable,orders);
+            orderService.StoreOrder(timeOfOrde, selectedTable,orders, bill);
         }
         private void confirmButton_Click(object sender, EventArgs e)
         {
