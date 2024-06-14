@@ -61,26 +61,31 @@ namespace ChapeauDAL
         
         public void FinishInvoice(Bill bill)
         {
+            if (bill.review == null) { bill.review = ""; }
+            
+            //if (bill.totalPrice == null) { bill.totalPrice = 0; }
             string query = 
-                $"UPDATE [orderline] SET isbetaald = 1 from orderline " +
+               /* $"UPDATE [orderline] SET isbetaald = 1 from orderline " + 
                 $"join [order] on [orderline].orderid=[order].orderid " +
-                $"WHERE isbetaald=0 and rekeningnr=@rekeningnr " +
-                $"update rekening set review= @review, totaalprijs = @totaalprijs where rekeningnr=@rekeningnr;";
+                $"WHERE isbetaald=0 and rekeningnr=@rekeningnr " + */
+                $"update rekening set review= @review, totaalprijs = @totaalprijs, fooi=@fooi, onbetaald=@onbetaald where rekeningnr=@rekeningnr;";
             SqlParameter[] parameters =
             {
-                new SqlParameter("@review", ""),
-                 new SqlParameter("@totaalprijs", 2),
-                new SqlParameter("@rekeningnr", bill.billNumber )
+                new SqlParameter("@review", bill.review),
+                 new SqlParameter("@totaalprijs", bill.totalPrice), 
+                new SqlParameter("@rekeningnr", bill.billNumber ),
+                new SqlParameter("@fooi", bill.tip ),
+                new SqlParameter("@onbetaald", bill.unpaid )
             };
             ExecuteEditQuery(query, parameters);
-
+            
 
 
 
         }
         public Bill GetOrdersForBill(Bill bill)
         {
-            string query = "select rekening.rekeningnr, [dbo].[order].orderid, tafelnr, opmerking, " +
+            string query = "select rekening.rekeningnr, [dbo].[order].orderid, tafelnr, opmerking, onbetaald, review, " +
                 "[order].[status], serveerderid, orderlinenr, aantal, naam, prijs, artikel.artikelid, categorie " +
                 "from [dbo].[order] " +
                 "join rekening on rekening.rekeningnr = [dbo].[order].rekeningnr " +
@@ -94,14 +99,22 @@ namespace ChapeauDAL
 
             SqlDataReader reader = command.ExecuteReader();
             List<Orderline> orderlines = new List<Orderline>();
-          
-         
 
-            while (reader.Read())
+            if (reader.Read())
             {
-                Orderline orderline = ReadOrdersBill(reader);
-              
-                orderlines.Add(orderline);
+                if (!reader.IsDBNull(reader.GetOrdinal("onbetaald")))
+                { bill.unpaid = (decimal)reader["onbetaald"]; }
+
+                bill.review = reader["review"] as string;
+               
+                do
+                {
+                    Orderline orderline = ReadOrdersBill(reader);
+
+                    orderlines.Add(orderline);
+                }
+
+                while (reader.NextResult());
             }
             reader.Close();
             CloseConnection();
@@ -125,6 +138,7 @@ namespace ChapeauDAL
 
             Orderline orderline = new Orderline(
                  (int)reader["rekeningnr"], (int)reader["aantal"], product);
+                 //(bool)reader["isbetaald"]
 
             
 
