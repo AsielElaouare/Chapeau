@@ -63,6 +63,7 @@ namespace ChapeauUI
 
         private void PopUpFreeTable_Deactivate(object sender, EventArgs e)
         {
+            tableOverview.RefreshTableButtons();
             this.Close();
         }
 
