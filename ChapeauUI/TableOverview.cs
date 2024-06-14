@@ -23,7 +23,7 @@ namespace ChapeauUI
         const int startX = 108;
         int topRowY = 150;
         int bottomRowY = 416;
-        int thirdRowY = 416;
+        int thirdRowY = 528;
         const int spacingX = 189;
         const int columns = 5;
 
@@ -81,15 +81,17 @@ namespace ChapeauUI
         }
         private void CheckLayOut()
         {
-            if (tables.Count <= regularAmountOfTables)
-            {
-                InitializeTables();
-            }
-            else
-            {
-                UpdateRows();
-                InitializeTables();
-            }
+            ResetLayOut();
+            if (tables.Count <= regularAmountOfTables){   InitializeTables();   }
+            else{   UpdateRows();    InitializeTables();   }
+        }
+
+        private void ResetLayOut()
+        {
+            topRowIndex = 0;
+            bottomRowIndex = 0;
+            thirdRowIndex = 0;
+            amountOfTablesCreated = 0;
         }
 
         private void UpdateRows()
@@ -118,10 +120,14 @@ namespace ChapeauUI
                 tableButton.Tag = table;
                 tableButton.FlatStyle = FlatStyle.Flat;
                 tableButton.FlatAppearance.BorderSize = 0;
-                if ((table.TafelNummer + 1) % 2 != 0) { CreateEvenTables(); }
-                else if (amountOfTablesCreated <= 10) { CreateOddTables(); }
+                if (amountOfTablesCreated < regularAmountOfTables)
+                {
+                    if ((table.TafelNummer + 1) % 2 != 0) { CreateEvenTables(); }
+                    else { CreateOddTables(); }
+                }
                 else { CreateExtraTables(); }
                 CreateTables(tableButton, xPosition, yPosition, table);
+                amountOfTablesCreated++;
             }
         }
 

@@ -204,72 +204,73 @@ namespace ChapeauDAL
         public List<Order> GetOrdersForTable(Tafel table)
         {
             string query = @"
-            SELECT 
-                  rk.tafelnr,
-                  [order].orderid AS OrderID,
-                   ol.aantal AS Aantal,
-                   ol.opmerking AS Opmerking,
-                  [order].[status] AS Status,
-                   ak.naam AS Article, 
-                   ak.categorie AS Categorie,
-                  [order].ordertime AS OrderTime,
-                  [order].bar,
-                  [order].keuken
-            FROM 
-                  [order]
-            JOIN 
-                  orderline AS ol ON [order].[orderid] = ol.orderid
-            JOIN 
-                  rekening AS rk ON [order].rekeningnr = rk.rekeningnr
-            JOIN 
-                  artikel AS ak ON ol.artikelid = ak.artikelid
-            WHERE 
-                  rk.tafelnr = @tableNumber AND [status] IS NOT NULL AND [status] <> @deliveredStatus AND [bar] IS NOT NULL AND [keuken] IS NOT NULL 
-            ORDER BY 
-                  [order].ordertime DESC";
+             SELECT 
+                    rk.tafelnr,
+                    [order].orderid AS OrderID,
+                    ol.aantal AS Aantal,
+                    ol.opmerking AS Opmerking,
+                    [order].[status] AS Status,
+                    ak.naam AS Article, 
+                    ak.categorie AS Categorie,
+                    [order].ordertime AS OrderTime,
+                    [order].bar,
+                    [order].keuken
+             FROM 
+                    [order]
+             JOIN 
+                    orderline AS ol ON [order].[orderid] = ol.orderid
+             JOIN 
+                    rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+             JOIN 
+                    artikel AS ak ON ol.artikelid = ak.artikelid
+             WHERE 
+                    rk.tafelnr = @tableNumber AND [status] IS NOT NULL AND [status] <> @deliveredStatus AND [bar] IS NOT NULL AND [keuken] IS NOT NULL 
+             ORDER BY 
+                   [order].ordertime DESC";
+
             SqlCommand command = new SqlCommand(query, OpenConnection());
             command.Parameters.AddWithValue("@tableNumber", table.TafelNummer);
             command.Parameters.AddWithValue("@deliveredStatus", "Delivered");
             SqlDataReader reader = command.ExecuteReader();
+
             List<Order> orders = new List<Order>();
+            Dictionary<int, Order> orderDict = new Dictionary<int, Order>();
 
             while (reader.Read())
             {
+                int orderId = (int)reader["OrderID"];
+                if (!orderDict.ContainsKey(orderId))
+                {
+                    Order order = new Order
+                    (
+                        (int)reader["OrderID"],
+                        (int)reader["tafelnr"],
+                        (string)reader["status"],
+                        new Orderline((int)reader["OrderID"], (int)reader["Aantal"], reader["Opmerking"] as string ?? null),
+                        (DateTime)reader["OrderTime"]
+                    );
+                    orderDict[orderId] = order;
+                }
 
-                Order order = ReadOrderForTable(reader);
-                orders.Add(order);
+                Product product = new Product((string)reader["Article"], (string)reader["Categorie"]);
+                orderDict[orderId].ProductList.Add(product);
+
+
+                orderDict[orderId].setBarStatus((byte)reader["bar"]);
+                orderDict[orderId].setKitchenStatus((byte)reader["keuken"]);
             }
+
             reader.Close();
             CloseConnection();
+
+            orders = orderDict.Values.ToList();
             return orders;
         }
 
-        public Order ReadOrderForTable(SqlDataReader reader)
-        {
-            Order currentOrder = null;
-            Product currentProduct = null;
-            currentOrder = new Order
-                (
-                    (int)reader["orderid"],
-                    (int)reader["tafelnr"],
-                    (string)reader["status"],
-                    new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
-                    (DateTime)reader["ordertime"]
-                );
-            string products = (string)reader["Article"];
-            string[] productsArray = products.Split(';');
-            foreach (string product in productsArray)
-            {
-                currentProduct = new Product(product, (string)reader["categorie"]);
-                currentOrder.ProductList.Add(currentProduct);
-            }
-            currentOrder.setBarStatus((byte)reader["bar"]);
-            currentOrder.setKitchenStatus((byte)reader["keuken"]);
-            return currentOrder;
-        }
 
 
-        
+
+
 
         public void SetDelivered(Order order)
         {
