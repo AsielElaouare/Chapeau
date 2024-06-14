@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PaymentForm));
-            pictureBox1 = new System.Windows.Forms.PictureBox();
+            picb_Logo = new System.Windows.Forms.PictureBox();
             listview_Bestelling = new System.Windows.Forms.ListView();
             column_Items = new System.Windows.Forms.ColumnHeader();
             column_Aantal = new System.Windows.Forms.ColumnHeader();
@@ -42,22 +42,22 @@
             button2 = new System.Windows.Forms.Button();
             button3 = new System.Windows.Forms.Button();
             bttn_PausePayment = new System.Windows.Forms.Button();
-            textBox1 = new System.Windows.Forms.TextBox();
+            txtb_Review = new System.Windows.Forms.TextBox();
             lbl_Review = new System.Windows.Forms.Label();
-            lbl_Openstaand = new System.Windows.Forms.Label();
+            lbl_Due = new System.Windows.Forms.Label();
             bttn_Pay = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picb_Logo).BeginInit();
             SuspendLayout();
             // 
-            // pictureBox1
+            // picb_Logo
             // 
-            pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new System.Drawing.Point(762, 540);
-            pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new System.Drawing.Size(351, 189);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            picb_Logo.Image = (System.Drawing.Image)resources.GetObject("picb_Logo.Image");
+            picb_Logo.Location = new System.Drawing.Point(762, 540);
+            picb_Logo.Margin = new System.Windows.Forms.Padding(2);
+            picb_Logo.Name = "picb_Logo";
+            picb_Logo.Size = new System.Drawing.Size(351, 189);
+            picb_Logo.TabIndex = 0;
+            picb_Logo.TabStop = false;
             // 
             // listview_Bestelling
             // 
@@ -131,7 +131,7 @@
             lbl_ReceiptNumber.Size = new System.Drawing.Size(119, 25);
             lbl_ReceiptNumber.TabIndex = 7;
             lbl_ReceiptNumber.Text = "Bon nummer:";
-            lbl_ReceiptNumber.Click += lbl_ReceiptNumber_Click;
+          
             // 
             // button2
             // 
@@ -167,13 +167,13 @@
             bttn_PausePayment.UseVisualStyleBackColor = false;
             bttn_PausePayment.Click += bttn_PauzeerBetaling_Click;
             // 
-            // textBox1
+            // txtb_Review
             // 
-            textBox1.Location = new System.Drawing.Point(218, 564);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new System.Drawing.Size(492, 150);
-            textBox1.TabIndex = 15;
+            txtb_Review.Location = new System.Drawing.Point(218, 564);
+            txtb_Review.Multiline = true;
+            txtb_Review.Name = "txtb_Review";
+            txtb_Review.Size = new System.Drawing.Size(492, 150);
+            txtb_Review.TabIndex = 15;
             // 
             // lbl_Review
             // 
@@ -184,15 +184,15 @@
             lbl_Review.TabIndex = 16;
             lbl_Review.Text = "Review:";
             // 
-            // lbl_Openstaand
+            // lbl_Due
             // 
-            lbl_Openstaand.AutoSize = true;
-            lbl_Openstaand.Location = new System.Drawing.Point(35, 615);
-            lbl_Openstaand.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            lbl_Openstaand.Name = "lbl_Openstaand";
-            lbl_Openstaand.Size = new System.Drawing.Size(113, 25);
-            lbl_Openstaand.TabIndex = 17;
-            lbl_Openstaand.Text = "Openstaand:";
+            lbl_Due.AutoSize = true;
+            lbl_Due.Location = new System.Drawing.Point(35, 615);
+            lbl_Due.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            lbl_Due.Name = "lbl_Due";
+            lbl_Due.Size = new System.Drawing.Size(113, 25);
+            lbl_Due.TabIndex = 17;
+            lbl_Due.Text = "Openstaand:";
             // 
             // bttn_Pay
             // 
@@ -204,7 +204,7 @@
             bttn_Pay.TabIndex = 18;
             bttn_Pay.Text = "Betaal rekening";
             bttn_Pay.UseVisualStyleBackColor = false;
-            bttn_Pay.Click += this.bttn_Pay_Click;
+            bttn_Pay.Click += bttn_Pay_Click;
             // 
             // PaymentForm
             // 
@@ -213,9 +213,9 @@
             ClientSize = new System.Drawing.Size(1133, 740);
             ControlBox = false;
             Controls.Add(bttn_Pay);
-            Controls.Add(lbl_Openstaand);
+            Controls.Add(lbl_Due);
             Controls.Add(lbl_Review);
-            Controls.Add(textBox1);
+            Controls.Add(txtb_Review);
             Controls.Add(bttn_PausePayment);
             Controls.Add(button3);
             Controls.Add(button2);
@@ -225,20 +225,20 @@
             Controls.Add(lbl_BTW);
             Controls.Add(lbl_Total);
             Controls.Add(listview_Bestelling);
-            Controls.Add(pictureBox1);
+            Controls.Add(picb_Logo);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             Margin = new System.Windows.Forms.Padding(2);
             Name = "PaymentForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Load += PaymentForm_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+          
+            ((System.ComponentModel.ISupportInitialize)picb_Logo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox picb_Logo;
         private System.Windows.Forms.ListView listview_Bestelling;
         private System.Windows.Forms.Label lbl_Total;
         private System.Windows.Forms.Label lbl_BTW;
@@ -252,9 +252,9 @@
         private System.Windows.Forms.ColumnHeader column_Aantal;
         private System.Windows.Forms.Button bttn_PausePayment;
         private System.Windows.Forms.ColumnHeader column_Prijs;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtb_Review;
         private System.Windows.Forms.Label lbl_Review;
-        private System.Windows.Forms.Label lbl_Openstaand;
+        private System.Windows.Forms.Label lbl_Due;
        // private System.Windows.Forms.Button bttn_Pay;
     }
 }

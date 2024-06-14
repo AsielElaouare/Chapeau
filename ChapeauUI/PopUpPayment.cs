@@ -22,6 +22,8 @@ namespace ChapeauUI
             InitializeComponent();
             this.bill = bill;
             this.paymentform = paymentForm;
+            lbl_AmountUnpaid.Text = $"Nog te betalen Bedrag: {bill.unpaid:C}";
+            txtb_Payment.Text = $"{bill.unpaid:0.00}";
         }
 
         private void bttn_Cash_Click(object sender, EventArgs e)
@@ -37,29 +39,86 @@ namespace ChapeauUI
         private void PayBill()
         {
             InvoiceService invoiceService = new InvoiceService();
-            invoiceService.FinishInvoice(bill);
-
-            if (bill.table.Status == TableStatusEnum.Occupied)
-
+            if (txtb_fooi.Text != "")
             {
-                TafelService tafelService = new TafelService();
-                bill.table.Status = TableStatusEnum.Free;
-                tafelService.UpdateTableStatus(bill.table);
+                bill.tip = bill.tip + decimal.Parse(txtb_fooi.Text);
             }
 
+            if (txtb_Payment.Text != "")
+            {
+                if (decimal.Parse(txtb_Payment.Text) > bill.unpaid) { MessageBox.Show("Het bedrag dat wordt betaald is te hoog, mocht de klant meer willen betalen voer dat dan in bij fooi."); }
+                else
+                {
+                    bill.unpaid = bill.unpaid - decimal.Parse(txtb_Payment.Text);
 
-            tableOverview = new TableOverview(bill.employee);
-            tableOverview.Show();
-            paymentform.Close();
-            this.Close();
 
 
+                    invoiceService.FinishInvoice(bill);
+
+                    if (bill.table.Status == TableStatusEnum.Occupied)
+
+                    {
+                        TafelService tafelService = new TafelService();
+                        bill.table.Status = TableStatusEnum.Free;
+                        tafelService.UpdateTableStatus(bill.table);
+                    }
+
+                    if (bill.unpaid == 0)
+                    {
+                        tableOverview = new TableOverview(bill.employee);
+                        tableOverview.Show();
+                        paymentform.Close();
+                        this.Close();
+                    }
+                    else
+                    {
+                        this.Close(); paymentform.Close();
+                        paymentform = new PaymentForm(bill);
+                        paymentform.Show();
+
+                    }
+                }
+            }
         }
 
         private void exitPopUpBtn_Click(object sender, EventArgs e)
         {
             this.Close();
 
+        }
+
+        private void txtb_Payment_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+
+                e.Handled = true;
+            }
+        }
+
+        private void bttn_Pin_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
+            {
+
+                e.Handled = true;
+            }
+
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+
+                e.Handled = true;
+            }
+        }
+
+        private void bttn_Split_Click(object sender, EventArgs e)
+        {
+            if (txtb_Split.Text != "")
+            { txtb_Payment.Text = $"{bill.unpaid / int.Parse(txtb_Split.Text)}"; }
         }
     }
 }

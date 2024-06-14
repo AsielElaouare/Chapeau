@@ -37,6 +37,8 @@
             lbl_chooseamount = new System.Windows.Forms.Label();
             lbl_fooi = new System.Windows.Forms.Label();
             txtb_fooi = new System.Windows.Forms.TextBox();
+            bttn_Split = new System.Windows.Forms.Button();
+            txtb_Split = new System.Windows.Forms.TextBox();
             SuspendLayout();
             // 
             // exitPopUpBtn
@@ -61,7 +63,7 @@
             bttn_Cash.ForeColor = System.Drawing.Color.White;
             bttn_Cash.Image = (System.Drawing.Image)resources.GetObject("bttn_Cash.Image");
             bttn_Cash.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            bttn_Cash.Location = new System.Drawing.Point(12, 174);
+            bttn_Cash.Location = new System.Drawing.Point(12, 203);
             bttn_Cash.Name = "bttn_Cash";
             bttn_Cash.Size = new System.Drawing.Size(272, 68);
             bttn_Cash.TabIndex = 8;
@@ -78,20 +80,22 @@
             bttn_Pin.ForeColor = System.Drawing.Color.White;
             bttn_Pin.Image = (System.Drawing.Image)resources.GetObject("bttn_Pin.Image");
             bttn_Pin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            bttn_Pin.Location = new System.Drawing.Point(290, 174);
+            bttn_Pin.Location = new System.Drawing.Point(290, 203);
             bttn_Pin.Name = "bttn_Pin";
             bttn_Pin.Size = new System.Drawing.Size(272, 68);
             bttn_Pin.TabIndex = 9;
             bttn_Pin.Text = " Betalen met pin";
             bttn_Pin.UseVisualStyleBackColor = false;
             bttn_Pin.Click += bttn_Pin_Click;
+            bttn_Pin.KeyPress += bttn_Pin_KeyPress;
             // 
             // txtb_Payment
             // 
-            txtb_Payment.Location = new System.Drawing.Point(58, 99);
+            txtb_Payment.Location = new System.Drawing.Point(47, 149);
             txtb_Payment.Name = "txtb_Payment";
             txtb_Payment.Size = new System.Drawing.Size(174, 31);
             txtb_Payment.TabIndex = 10;
+            txtb_Payment.KeyPress += txtb_Payment_KeyPress;
             // 
             // lbl_AmountUnpaid
             // 
@@ -105,7 +109,7 @@
             // lbl_chooseamount
             // 
             lbl_chooseamount.AutoSize = true;
-            lbl_chooseamount.Location = new System.Drawing.Point(58, 71);
+            lbl_chooseamount.Location = new System.Drawing.Point(47, 121);
             lbl_chooseamount.Name = "lbl_chooseamount";
             lbl_chooseamount.Size = new System.Drawing.Size(174, 25);
             lbl_chooseamount.TabIndex = 12;
@@ -114,7 +118,7 @@
             // lbl_fooi
             // 
             lbl_fooi.AutoSize = true;
-            lbl_fooi.Location = new System.Drawing.Point(305, 71);
+            lbl_fooi.Location = new System.Drawing.Point(290, 121);
             lbl_fooi.Name = "lbl_fooi";
             lbl_fooi.Size = new System.Drawing.Size(228, 25);
             lbl_fooi.TabIndex = 13;
@@ -122,16 +126,36 @@
             // 
             // txtb_fooi
             // 
-            txtb_fooi.Location = new System.Drawing.Point(305, 99);
+            txtb_fooi.Location = new System.Drawing.Point(290, 149);
             txtb_fooi.Name = "txtb_fooi";
             txtb_fooi.Size = new System.Drawing.Size(228, 31);
             txtb_fooi.TabIndex = 14;
+            // 
+            // bttn_Split
+            // 
+            bttn_Split.Location = new System.Drawing.Point(59, 61);
+            bttn_Split.Name = "bttn_Split";
+            bttn_Split.Size = new System.Drawing.Size(147, 34);
+            bttn_Split.TabIndex = 15;
+            bttn_Split.Text = "Split rekening";
+            bttn_Split.UseVisualStyleBackColor = true;
+            bttn_Split.Click += bttn_Split_Click;
+            // 
+            // txtb_Split
+            // 
+            txtb_Split.Location = new System.Drawing.Point(232, 64);
+            txtb_Split.Name = "txtb_Split";
+            txtb_Split.Size = new System.Drawing.Size(87, 31);
+            txtb_Split.TabIndex = 16;
+            txtb_Split.KeyPress += textBox1_KeyPress;
             // 
             // PopUpPayment
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(574, 294);
+            Controls.Add(txtb_Split);
+            Controls.Add(bttn_Split);
             Controls.Add(txtb_fooi);
             Controls.Add(lbl_fooi);
             Controls.Add(lbl_chooseamount);
@@ -159,5 +183,7 @@
         private System.Windows.Forms.Label lbl_chooseamount;
         private System.Windows.Forms.Label lbl_fooi;
         private System.Windows.Forms.TextBox txtb_fooi;
+        private System.Windows.Forms.Button bttn_Split;
+        private System.Windows.Forms.TextBox txtb_Split;
     }
 }
