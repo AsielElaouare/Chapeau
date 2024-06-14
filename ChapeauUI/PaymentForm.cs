@@ -152,8 +152,8 @@ namespace ChapeauUI
             //  if (bill.table.Status == TableStatusEnum.Ordered)
 
             TafelService tafelService = new TafelService();
-
-            tafelService.UpdateTableStatus(bill.table, TableStatusEnum.Free.ToString());
+            bill.table.Status = TableStatusEnum.Free;
+            tafelService.UpdateTableStatus(bill.table);
 
 
             tableOverview = new TableOverview(bill.employee);

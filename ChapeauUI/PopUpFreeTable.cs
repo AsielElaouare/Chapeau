@@ -50,7 +50,7 @@ namespace ChapeauUI
         {
             MakeNewInvoice();
 
-            tableService.UpdateTableStatus(table, status);
+            tableService.UpdateTableStatus(table);
            
             table.Status = TableStatusEnum.Occupied;
             tableService.UpdateTableStatus(table);
@@ -63,6 +63,7 @@ namespace ChapeauUI
 
         private void PopUpFreeTable_Deactivate(object sender, EventArgs e)
         {
+            tableOverview.RefreshTableButtons();
             this.Close();
         }
 
