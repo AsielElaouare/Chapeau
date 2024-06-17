@@ -19,7 +19,7 @@ namespace ChapeauModel
 
         public List<Orderline> orderlines { get; private set; }
         public List<Product> ProductList { get; set; }
-      
+
         public Order(int OrderID, int TafelNR, string Status, Orderline OrderLine)
         {
             this.OrderID = OrderID;
@@ -51,13 +51,13 @@ namespace ChapeauModel
         public void setBarStatus(byte barStatus)
         {
             if (barStatus == 1) { this.barStatus = OrderStatus.Ready; }
-            else if( barStatus == 2 || !CheckBarOrder()) { this.barStatus = OrderStatus.Delivered; }
+            else if (barStatus == 2 || !CheckBarOrder()) { this.barStatus = OrderStatus.Delivered; }
             else { this.barStatus = OrderStatus.Pending; }
         }
         public void setKitchenStatus(byte kitchenStatus)
         {
             if (kitchenStatus == 1) { this.kitchenStatus = OrderStatus.Ready; }
-            else if(kitchenStatus == 2 || !CheckKitchenOrder()) { this.kitchenStatus = OrderStatus.Delivered; }
+            else if (kitchenStatus == 2 || !CheckKitchenOrder()) { this.kitchenStatus = OrderStatus.Delivered; }
             else { this.kitchenStatus = OrderStatus.Pending; }
         }
 
@@ -75,7 +75,7 @@ namespace ChapeauModel
             bool hasOrdered = false;
             foreach (Product product in ProductList)
             {
-                if (product.Category == ProductCategorie.Bier|| product.Category == ProductCategorie.Wijn || product.Category == ProductCategorie.Gedistilleerd|| product.Category == ProductCategorie.KoffieThee || product.Category == ProductCategorie.Frisdrank) { hasOrdered = true; break; }
+                if (product.Category == ProductCategorie.Bier || product.Category == ProductCategorie.Wijn || product.Category == ProductCategorie.Gedistilleerd || product.Category == ProductCategorie.KoffieThee || product.Category == ProductCategorie.Frisdrank) { hasOrdered = true; break; }
             }
             return hasOrdered;
         }

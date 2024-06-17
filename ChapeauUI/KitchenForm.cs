@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ChapeauModel;
 using System.Media;
+using System.IO;
 
 
 namespace ChapeauUI
@@ -70,16 +71,14 @@ namespace ChapeauUI
             }
         }
 
-        //private void historyOrders_Click(object sender, EventArgs e)
-        //{
-        //    previousOrdersForm.Show();
-        //    this.Hide();
-        //}
-
         private void playNotificationSound()
         {
-            SoundPlayer sound = new SoundPlayer("NewOrder.wav");
-            sound.Play();
+            string file = "..\\..\\..\\Resources\\order-sound.wav";
+            if (File.Exists(file))
+            {
+                SoundPlayer sound = new SoundPlayer(file);
+                sound.Play();
+            }
         }
 
         private void UpdateOpenOrderLabel()
@@ -106,6 +105,13 @@ namespace ChapeauUI
             PreviousOrders previousOrders = new PreviousOrders(this);
             this.Hide();
             previousOrders.Show();
+        }
+
+        private void logOutBtn_Click(object sender, EventArgs e)
+        {
+            LoginForm loginForm = new LoginForm();
+            loginForm.Show();
+            this.Close();
         }
     }
 }
