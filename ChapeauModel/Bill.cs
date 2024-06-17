@@ -13,7 +13,9 @@ namespace ChapeauModel
         public Tafel table { get;  set; }
         public Employee employee { get; set; }
         public string review { get; set; }
-        public decimal totalPrice
+        public decimal tip {  get; set; }
+        public decimal? unpaid { get; set; }
+        public decimal totalPrice 
         {
             get
             {
@@ -33,8 +35,10 @@ namespace ChapeauModel
             this.table = table;
             this.employee = employee;
            
+            
             this.orderlines =new List<Orderline>();
-           
+         
+
         }
     }
 }

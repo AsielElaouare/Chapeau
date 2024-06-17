@@ -18,68 +18,67 @@ namespace ChapeauUI
         private OrderService orderService;
         Bill bill;
         TableOverview tableOverview;
+        bool everything_IsPaid;
 
         public PaymentForm(Bill bill)
         {
             this.bill = bill;
 
+
             InitializeComponent();
 
-            ShowOrder(GetBillOrders(bill));
+            ShowOrder(GetBillOrders());
 
-            CreateLabels(bill, listview_Bestelling);
+            CreateLabels();
+            if (everything_IsPaid) { FreeTable(); }
 
 
 
         }
-        private List<Orderline> GetBillOrders(Bill bill)
+        private List<Orderline> GetBillOrders()
         {
             InvoiceService invoiceService = new InvoiceService();
             bill = invoiceService.GetBillNumber(bill);
             List<Orderline> orderlines = invoiceService.GetNotPaidOrderlinesForBill(bill);
             return orderlines;
         }
-        private void UpdatePaid(ListView bill)
+        private void UpdatePaid()
         {
-            decimal total = 0;
-            Orderline orderline;
+            if (bill.unpaid == null) { bill.unpaid = bill.totalPrice; }
+
+            /*  decimal total = 0;
+             * Orderline orderline; 
             foreach (ListViewItem item in bill.Items)
             {
                 orderline = item.Tag as Orderline;
-                total += orderline.product.Prijs * orderline.Quantity;
-            }
+               if (!orderline.Is_Paid)
+                { total += orderline.product.Prijs * orderline.Quantity; }
+            } */
 
-            lbl_Openstaand.Text = $"Openstaand: {total:C}";
+            lbl_Due.Text = $"Openstaand: {bill.unpaid:C}";
+            if (bill.unpaid == 0) { everything_IsPaid = true; }
         }
-        private void CreateLabels(Bill bill, ListView listView)
+        private void FreeTable()
+        { bttn_Pay.Text = "Maak tafel vrij"; }
+        private void CreateLabels()
         {
             lbl_Waiter.Text = $"Gastheer/gastvrouw: {bill.employee.name}";
             lbl_Table.Text = $"Tafel: {bill.table.TafelNummer}";
             lbl_ReceiptNumber.Text = $"Bon nummer: {bill.billNumber}";
-            UpdateTotal(listView);
-            UpdateBtw(listView);
-            UpdatePaid(listView);
-        }
-        private void UpdateTotal(ListView bill)
-        {
-            decimal total = 0;
-            Orderline orderline;
-            foreach (ListViewItem item in bill.Items)
-            {
-                orderline = item.Tag as Orderline;
-                total += orderline.product.Prijs * orderline.Quantity;
-            }
-
-            lbl_Total.Text = $"Totaal: {total:C}";
-
+            lbl_Total.Text = $"Totaal: {bill.totalPrice:C}";
+        
+            DetermineBtw();
+            UpdatePaid();
         }
 
+       
+       
 
-        private void UpdateBtw(ListView Bill)
+        private void DetermineBtw()
         {
             decimal totalbtw = 0;
             Orderline orderline;
-            foreach (ListViewItem item in Bill.Items)
+            foreach (ListViewItem item in listview_Bestelling.Items)
             {
                 orderline = item.Tag as Orderline;
                 switch (orderline.product.Category)
@@ -121,20 +120,10 @@ namespace ChapeauUI
 
             listview_Bestelling.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
-        private void label1_Click(object sender, EventArgs e)
-        {
 
-        }
+       
 
-        private void PaymentForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lbl_ReceiptNumber_Click(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private void bttn_PauzeerBetaling_Click(object sender, EventArgs e)
         {
@@ -144,27 +133,33 @@ namespace ChapeauUI
             this.Close();
         }
 
-        private void bttn_payment_Click(object sender, EventArgs e)
+      
+
+
+        private void bttn_Pay_Click(object sender, EventArgs e)
         {
-            InvoiceService invoiceService = new InvoiceService();
-            invoiceService.FinishInvoice(bill);
+            if (!everything_IsPaid)
+            {
+                PopUpPayment popUpPayment = new PopUpPayment(bill, this);
+                bill.review = txtb_Review.Text;
+                popUpPayment.Show();
+            }
+            else
+            {
+                InvoiceService invoiceService = new InvoiceService();
+                invoiceService.FinishInvoice(bill);
 
-            //  if (bill.table.Status == TableStatusEnum.Ordered)
+                TafelService tafelService = new TafelService();
+                bill.table.Status = TableStatusEnum.Free;
+                tafelService.UpdateTableStatus(bill.table);
 
-            TafelService tafelService = new TafelService();
-            bill.table.Status = TableStatusEnum.Free;
-            tafelService.UpdateTableStatus(bill.table);
+                tableOverview = new TableOverview(bill.employee);
+                tableOverview.Show();
+                this.Close();
 
 
-            tableOverview = new TableOverview(bill.employee);
-            tableOverview.Show();
-            this.Close();
 
-        }
-
-        private void bttn_splitpayment_Click(object sender, EventArgs e)
-        {
-           
+            }
         }
     }
 }

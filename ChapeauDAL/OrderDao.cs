@@ -16,7 +16,8 @@ namespace ChapeauDAL
 {
     public class OrderDao : BaseDao
     {
-        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orderlines, Bill bill)
+
+        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines)
         {
             int orderId = 0;
             string query = @"
