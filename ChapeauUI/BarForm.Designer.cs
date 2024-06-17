@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BarForm));
             barFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             previousOrdersBar = new System.Windows.Forms.Button();
             OpenOrdersBarLabel = new System.Windows.Forms.Label();
+            logOutBtn = new BottomLeftRoundedButton();
             SuspendLayout();
             // 
             // barFlowLayoutPanel
@@ -70,16 +72,32 @@
             OpenOrdersBarLabel.Text = "Open: ";
             OpenOrdersBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // logOutBtn
+            // 
+            logOutBtn.BackColor = System.Drawing.Color.FromArgb(255, 20, 20);
+            logOutBtn.BackgroundImage = (System.Drawing.Image)resources.GetObject("logOutBtn.BackgroundImage");
+            logOutBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            logOutBtn.FlatAppearance.BorderSize = 0;
+            logOutBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            logOutBtn.Location = new System.Drawing.Point(1350, 0);
+            logOutBtn.Name = "logOutBtn";
+            logOutBtn.Size = new System.Drawing.Size(48, 48);
+            logOutBtn.TabIndex = 5;
+            logOutBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            logOutBtn.UseVisualStyleBackColor = false;
+            logOutBtn.Click += logOutBtn_Click;
+            // 
             // BarForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1398, 643);
+            ControlBox = false;
+            Controls.Add(logOutBtn);
             Controls.Add(OpenOrdersBarLabel);
             Controls.Add(previousOrdersBar);
             Controls.Add(barFlowLayoutPanel);
             Name = "BarForm";
-            Text = "Bar View";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -90,5 +108,6 @@
         private System.Windows.Forms.Button previousOrdersBar;
         private System.Windows.Forms.Button historyOrders;
         private System.Windows.Forms.Label OpenOrdersBarLabel;
+        private BottomLeftRoundedButton logOutBtn;
     }
 }

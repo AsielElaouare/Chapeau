@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ChapeauUI
@@ -39,7 +40,9 @@ namespace ChapeauUI
         private void DisplayOrderData()
         {
             orderTimer.Interval = 1000;
-            orderInfLabel.Text = $"Order: {Order.OrderID}                               Tafel: {Order.TafelNR}";
+            orderInfLabel.Text = $"Order: {Order.OrderID}                             Tafel: {Order.TafelNR}";
+
+
             foreach (Product product in Order.ProductList)
             {
                 DrawLabels(product);
@@ -97,31 +100,40 @@ namespace ChapeauUI
 
         private void CheckProductCategory(Product product, Label dishLabel, Label dishLabelComment)
         {
-            dishLabel.Text = product.Name;
+            dishLabel.Text = $"{product.Quantity}x {product.Name}";
             switch (product.Category)
             {
                 case ProductCategorie.Voorgerechten:
+                    sideDishesLabel.Visible = true;
                     sideDishesLayoutPanel.Controls.Add(dishLabel);
                     sideDishesLayoutPanel.Controls.Add(dishLabelComment);
                     break;
+                case ProductCategorie.Tussengerechten:
+                    tussengerechtenLabel.Visible = true;
+                    entreesFlowLayoutPanel.Controls.Add(dishLabel);
+                    entreesFlowLayoutPanel.Controls.Add(dishLabelComment);
+                    break;
                 case ProductCategorie.Hoofdgerechten:
+                    mainDishesLabel.Visible = true;
                     mainDishesLayoutPanel.Controls.Add(dishLabel);
                     mainDishesLayoutPanel.Controls.Add(dishLabelComment);
                     break;
                 case ProductCategorie.Nagerechten:
+                    dessertsLabel.Visible = true;
                     dessetsDishesLayoutPanel.Controls.Add(dishLabel);
                     dessetsDishesLayoutPanel.Controls.Add(dishLabelComment);
                     break;
                 default:
                     break;
             }
-            if (!string.IsNullOrEmpty(Order.OrderLine.Commentary))
-                dishLabelComment.Text = "Opmerking: " + Order.OrderLine.Commentary;
+            if (!string.IsNullOrWhiteSpace(product.Comment))
+                dishLabelComment.Text = "Opmerking: " + product.Comment;
         }
 
         private void remakeOrder_Click(object sender, EventArgs e)
         {
             orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending, OrderType.Kitchen);
+            orderLabel.Text = $"Vooltoide Bestellingen: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
             flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
         }
         private void UpdateOrderTime(object sender, EventArgs e)
@@ -130,5 +142,7 @@ namespace ChapeauUI
             string formatString = elapsedTime.ToString(@"hh\:mm\:ss");
             timeLabel.Text = $"{formatString}";
         }
+
+
     }
 }

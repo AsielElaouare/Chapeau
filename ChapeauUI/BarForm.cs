@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace ChapeauUI
 {
@@ -72,8 +74,12 @@ namespace ChapeauUI
 
         private void playNotificationSound()
         {
-            SoundPlayer sound = new SoundPlayer("NewOrder.wav");
-            sound.Play();
+            string file = "..\\..\\..\\Resources\\order-sound.wav";
+            if (File.Exists(file))
+            {
+                SoundPlayer sound = new SoundPlayer(file);
+                sound.Play();
+            }
         }
         public void InitTimer()
         {
@@ -94,5 +100,13 @@ namespace ChapeauUI
             this.Hide();
             previousOrders.Show();
         }
+
+        private void logOutBtn_Click(object sender, EventArgs e)
+        {
+            LoginForm loginForm = new LoginForm();
+            loginForm.Show();
+            this.Close();
+        }
     }
 }
+

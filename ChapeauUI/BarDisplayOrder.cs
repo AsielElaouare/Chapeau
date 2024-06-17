@@ -64,7 +64,7 @@ namespace ChapeauUI
             Label drinkLabel = new Label();
             Label drinkLabelCommment = new Label();
 
-            drinkLabel.Text = product.Name;
+            drinkLabel.Text = $"{product.Quantity}x {product.Name}";
 
             drinkLabelCommment.ForeColor = Color.White;
             drinkLabelCommment.Font = new Font(drinkLabelCommment.Font, FontStyle.Italic);
@@ -75,6 +75,10 @@ namespace ChapeauUI
             drinkLabel.Margin = new Padding(0, 10, 0, 0);
             drinksFlowLayoutPnl.Controls.Add(drinkLabel);
             drinksFlowLayoutPnl.Controls.Add(drinkLabelCommment);
+            if (!string.IsNullOrWhiteSpace(product.Comment))
+            {
+                drinkLabelCommment.Text = product.Comment;
+            }
         }
 
         private void StartBtn_Click(object sender, EventArgs e)

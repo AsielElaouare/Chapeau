@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace ChapeauDAL
 {
     public class OrderDao : BaseDao
     {
+
         public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines)
         {
             int orderId = 0;
@@ -90,7 +92,8 @@ namespace ChapeauDAL
                 rk.tafelnr,
                 [order].orderid,
                 SUM(ol.aantal) AS aantal,
-                STRING_AGG([ol].opmerking, '; ') AS opmerking,
+                STRING_AGG(COALESCE(ol.opmerking, ''), '; ') AS opmerking,
+                STRING_AGG(OL.aantal, ',') AS concatenated_quantity,
                 [order].[status],
                 STRING_AGG(ak.naam, '; ') AS Article, 
                 STRING_AGG(ak.categorie, ', ') AS categorie,
@@ -136,7 +139,20 @@ namespace ChapeauDAL
         public Order ReadOrders(SqlDataReader reader)
         {
             Order currentOrder = null;
-            Product currentProduct = null;
+            Product currentProduct;
+            Orderline currentOrderLine;
+
+            string quantity = (string)reader["concatenated_quantity"];
+            string[] quantityPerProduct = quantity.Split(',');
+
+            string products = (string)reader["Article"];
+            string[] productsArray = products.Split(';');
+
+            string comments = (string)reader["opmerking"];
+            string[] productComment = comments.Split(';');
+
+            string category = (string)reader["categorie"];
+            string[] categories = category.Split(',');
 
             currentOrder = new Order
                 (
@@ -147,17 +163,18 @@ namespace ChapeauDAL
                     (DateTime)reader["orderTime"]
                 );
 
-            string products = (string)reader["Article"];
-            string[] productsArray = products.Split(';');
 
-            foreach (string product in productsArray)
+            int index = 0;
+            foreach (string productName in productsArray)
             {
-                currentProduct = new Product(product, (string)reader["categorie"]);
+                currentProduct = new Product(productName, categories[index], int.Parse(quantityPerProduct[index]), productComment[index]);
                 currentOrder.ProductList.Add(currentProduct);
-
+                index++;
             }
             return currentOrder;
         }
+
+
         public void CompleteDeliveredOrder(int orderId, OrderStatus orderStatus)
         {
             string query = $"UPDATE [order] SET [status] = @orderStatus, [bar] = 1 WHERE [orderId] = @OrderId";
@@ -266,11 +283,6 @@ namespace ChapeauDAL
             orders = orderDict.Values.ToList();
             return orders;
         }
-
-
-
-
-
 
         public void SetDelivered(Order order)
         {
