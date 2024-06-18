@@ -26,7 +26,7 @@ namespace ChapeauUI
             this.kitchenForm = kitchenForm;
             InitializeComponent();
             DisplayOrdersKitchen();
-            madeOrdersLabel.Text = $"Vooltoide bestellingen: {flowLayoutPreviousOrdersPanel.Controls.Count}";
+            madeOrdersLabel.Text = $"Voltooide bestellingen: {flowLayoutPreviousOrdersPanel.Controls.Count}";
         }
 
         public PreviousOrders(BarForm barForm)
@@ -35,7 +35,7 @@ namespace ChapeauUI
             this.barForm = barForm;
             InitializeComponent();
             DisplayOrdersBar();
-            madeOrdersLabel.Text = $"Vooltoide bestellingen: {flowLayoutPreviousOrdersPanel.Controls.Count}";
+            madeOrdersLabel.Text = $"Voltooide bestellingen: {flowLayoutPreviousOrdersPanel.Controls.Count}";
         }
 
         private void DisplayOrdersKitchen()

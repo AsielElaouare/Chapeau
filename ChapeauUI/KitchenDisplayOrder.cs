@@ -133,7 +133,7 @@ namespace ChapeauUI
         private void remakeOrder_Click(object sender, EventArgs e)
         {
             orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending, OrderType.Kitchen);
-            orderLabel.Text = $"Vooltooide Bestellingen: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
+            orderLabel.Text = $"Voltooide Bestellingen: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
             flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
         }
         private void UpdateOrderTime(object sender, EventArgs e)
