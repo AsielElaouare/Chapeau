@@ -11,6 +11,7 @@ namespace ChapeauUI
 {
     public partial class KitchenDisplayOrder : UserControl
     {
+        //dit moet gefixt zijn!!!
         private Order Order;
         private Label orderLabel;
         private OrderService orderService;
@@ -20,6 +21,7 @@ namespace ChapeauUI
 
         public KitchenDisplayOrder(Order order, Label openOrdersLabel)
         {
+            this.Tag = order;
             this.Order = order;
             this.orderService = new OrderService();
             this.orderLabel = openOrdersLabel;
@@ -27,8 +29,10 @@ namespace ChapeauUI
             DisplayOrderData();
             CheckTypeOfOrder();
         }
-        public KitchenDisplayOrder(Order order, Label openOrdersLabel, List<Order> orders)
+        //fix this
+        public KitchenDisplayOrder(Order order, Label openOrdersLabel)
         {
+            this.Tag = order;
             this.Order = order;
             this.orderService = new OrderService();
             this.orderLabel = openOrdersLabel;

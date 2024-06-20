@@ -17,87 +17,78 @@ namespace ChapeauUI
 {
     public partial class KitchenForm : Form
     {
-        private Timer timer;
-        private List<Order> orders;
-        private OrderService orderService;
-        private DateOnly dateToday;
 
-        public KitchenForm()
+        public KitchenForm(Employee employee)
         {
-            this.orderService = new OrderService();
-            dateToday = DateOnly.FromDateTime(DateTime.Now);
-            InitTimer();
             InitializeComponent();
-            DisplayOrders();
-            UpdateLabelOpenOrders();
-        }
-
-        public void Update()
-        {
-            List<Order> latestOrders = orderService.GetOrdersForKitchen(OrderStatus.Pending, dateToday);
-
-            foreach (Order order in latestOrders)
+            if (employee.role == EmployeeRoleEnum.Chef)
             {
-                if (!orders.Any(o => o.OrderID == order.OrderID))
-                {
-                    orders.Add(order);
-                    KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel, orders);
-                    flowLayoutKitchenPnl.Controls.Add(kitchenDisplayOrder);
-
-                    playNotificationSound();
-                }
+                DisplayOrdersForKitchen();
+                InitTimerKitchen();
+            }
+            else if (employee.role == EmployeeRoleEnum.Barista)
+            {
+                DisplayOrdersForBar();
             }
             UpdateLabelOpenOrders();
         }
-        private void UpdateLabelOpenOrders()
-        {
-            openOrdersLabel.Text = $"Open: {flowLayoutKitchenPnl.Controls.Count}";
-        }
-        private List<Order> GetKitchenOrders()
-        {
-            OrderService orderService = new OrderService();
-            List<Order> orders = orderService.GetOrdersForKitchen(OrderStatus.Pending, dateToday); ;
-            return orders;
-        }
 
-        private void DisplayOrders()
+        private void DisplayOrdersForKitchen()
         {
-            orders = GetKitchenOrders();
+            List<Order> orders = GetKitchenOrders();
             foreach (Order order in orders)
             {
                 KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel, orders);
                 flowLayoutKitchenPnl.Controls.Add(kitchenDisplayOrder);
-
             }
         }
 
-        private void playNotificationSound()
+
+        private void DisplayOrdersForBar()
         {
-            string file = "..\\..\\..\\Resources\\order-sound.wav";
-            if (File.Exists(file))
+            List<Order> orders = GetBarOrders();
+            foreach (Order order in orders)
             {
-                SoundPlayer sound = new SoundPlayer(file);
-                sound.Play();
+                BarDisplayOrder barDisplayOrder = new BarDisplayOrder(order, openOrdersLabel);
+                flowLayoutKitchenPnl.Controls.Add(barDisplayOrder);
             }
         }
 
-        private void UpdateOpenOrderLabel()
-        {
-            flowLayoutKitchenPnl.Refresh();
-            openOrdersLabel.Text = $"Open: {flowLayoutKitchenPnl.Controls.Count}";
-        }
 
-        public void InitTimer()
+        public void UpdateOrdersForKitchen()
         {
-            timer = new Timer();
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = 5000;
-            timer.Start();
+            List<Order> latestOrders = GetKitchenOrders();
+            foreach (Order order in latestOrders)
+            {
+                foreach (Control control in flowLayoutKitchenPnl.Controls)
+                {
+                    Order orderTag = control.Tag as Order;
+                    if (orderTag.OrderID != order.OrderID)
+                    {
+                        KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, openOrdersLabel);
+                        flowLayoutKitchenPnl.Controls.Add(kitchenDisplayOrder);
+                    }
+                }
+            }
+            latestOrders.Clear();
+            playNotificationSound();
+            UpdateLabelOpenOrders();
         }
-
-        private void timer_Tick(object sender, EventArgs e)
+        private List<Order> GetBarOrders()
         {
-            Update();
+            OrderService orderService = new OrderService();
+            List<Order> orders = orderService.GetOrdersForBar(OrderStatus.Pending, GetDateToday()); ;
+            return orders;
+        }
+        private List<Order> GetKitchenOrders()
+        {
+            OrderService orderService = new OrderService();
+            List<Order> orders = orderService.GetOrdersForKitchen(OrderStatus.Pending, GetDateToday()); ;
+            return orders;
+        }
+        private void timer_TickKitchen(object sender, EventArgs e)
+        {
+            UpdateOrdersForKitchen();
         }
 
         private void historyOrders_Click(object sender, EventArgs e)
@@ -112,6 +103,34 @@ namespace ChapeauUI
             LoginForm loginForm = new LoginForm();
             loginForm.Show();
             this.Close();
+        }
+
+        private void playNotificationSound()
+        {
+            string file = "..\\..\\..\\Resources\\order-sound.wav";
+            if (File.Exists(file))
+            {
+                SoundPlayer sound = new SoundPlayer(file);
+                sound.Play();
+            }
+        }
+        private void UpdateLabelOpenOrders()
+        {
+            openOrdersLabel.Text = $"Open: {flowLayoutKitchenPnl.Controls.Count}";
+        }
+        public void InitTimerKitchen()
+        {
+            Timer timer = new Timer();
+            timer.Tick += new EventHandler(timer_TickKitchen);
+            timer.Interval = 5000;
+            timer.Start();
+        }
+
+        public DateOnly GetDateToday()
+        {
+            DateOnly dateToday;
+            return dateToday = DateOnly.FromDateTime(DateTime.Now);
+
         }
     }
 }

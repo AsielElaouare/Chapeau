@@ -17,7 +17,7 @@ namespace ChapeauDAL
     public class OrderDao : BaseDao
     {
 
-        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines)
+        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orderlines)
         {
             int orderId = 0;
             string query = @"
@@ -106,7 +106,7 @@ namespace ChapeauDAL
                 rekening AS rk ON [order].rekeningnr = rk.rekeningnr
             JOIN 
                 artikel AS ak ON ol.artikelid = ak.artikelid
-            WHERE [status] = @status AND ({categoryCondition}) AND CAST([order].ordertime AS DATE) = @dateToday
+            WHERE [status] = @status AND (@categoryCondition) AND CAST([order].ordertime AS DATE) = @dateToday
             GROUP BY 
                 rk.tafelnr, [order].orderid, [order].[status], [order].orderTime
             ORDER BY 
@@ -117,6 +117,7 @@ namespace ChapeauDAL
                 SqlCommand command = new SqlCommand(query, OpenConnection());
                 command.Parameters.AddWithValue("@status", status.ToString());
                 command.Parameters.AddWithValue("@dateToday", dateToday.ToString("yyyy-MM-dd"));
+                command.Parameters.AddWithValue("@categoryCondition", categoryCondition);
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
