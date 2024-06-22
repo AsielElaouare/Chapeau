@@ -32,7 +32,7 @@ namespace ChapeauModel
         {
             this.OrderID = OrderID;
             this.TafelNR = TafelNR;
-            this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status); 
+            this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status);
             this.OrderLine = OrderLine;
             this.OrderTime = orderTime;
             this.ProductList = new List<Product>();

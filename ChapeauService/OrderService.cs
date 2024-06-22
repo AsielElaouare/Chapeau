@@ -17,23 +17,24 @@ namespace ChapeauService
             orderdb = new OrderDao();
         }
 
-        public void StoreOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orders)
+        public void StoreOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orders)
         {
-             orderdb.StoreNewOrder(timeOfOrder, selectedtable, orders);
+            orderdb.StoreNewOrder(timeOfOrder, selectedtable, orders);
         }
 
         public List<Order> GetOrdersForBar(OrderStatus status, DateOnly todayDate)
         {
-            string[] barCategories = { "bier", "KoffieThee", "Gedistilleerd", "Frisdrank", "wijn" };
+
             List<Order> orders;
-            return orders = orderdb.GetOrders(status, barCategories, todayDate);
+            return orders = orderdb.GetOrders(status, OrderType.Bar, todayDate);
         }
         public List<Order> GetOrdersForKitchen(OrderStatus status, DateOnly dateToday)
         {
-            string[] kitchenCategories = { "Hoofdgerechten", "Nagerechten", "Tussengerechten", "Voorgerechten" };
+
             List<Order> orders;
-            return orders = orderdb.GetOrders(status, kitchenCategories, dateToday);
+            return orders = orderdb.GetOrders(status, OrderType.Kitchen, dateToday);
         }
+
 
         public void UpdateToCompleteOrders(int orederID, OrderStatus orderStatus)
         {
