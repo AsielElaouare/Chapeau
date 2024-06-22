@@ -9,55 +9,35 @@ using System.Windows.Forms;
 
 namespace ChapeauUI
 {
-    public partial class KitchenDisplayOrder : UserControl
+    public partial class UserControlOrder : UserControl
     {
-        //dit moet gefixt zijn!!!
-        private Order Order;
-        private Label orderLabel;
-        private OrderService orderService;
-        private List<Order> orders;
-        private Timer orderTimer = new Timer();
-
-
-        public KitchenDisplayOrder(Order order, Label openOrdersLabel)
+        public UserControlOrder(Order order, Label openOrdersLabel, OrderType orderType)
         {
             this.Tag = order;
-            this.Order = order;
-            this.orderService = new OrderService();
-            this.orderLabel = openOrdersLabel;
             InitializeComponent();
-            DisplayOrderData();
-            CheckTypeOfOrder();
+            DisplayOrderData(order);
+            CheckTypeOfOrder(order);
+            SetupEventHandelers(order, openOrdersLabel, orderType);
         }
-        //fix this
-        public KitchenDisplayOrder(Order order, Label openOrdersLabel)
+
+        private void DisplayOrderData(Order order)
         {
-            this.Tag = order;
-            this.Order = order;
-            this.orderService = new OrderService();
-            this.orderLabel = openOrdersLabel;
-            this.orders = orders;
-            InitializeComponent();
-            DisplayOrderData();
-            CheckTypeOfOrder();
-        }
-        private void DisplayOrderData()
-        {
+            Timer orderTimer = new Timer();
             orderTimer.Interval = 1000;
-            orderInfLabel.Text = $"Order: {Order.OrderID}                             Tafel: {Order.TafelNR}";
+            orderInfLabel.Text = $"Order: {order.OrderID}                             Tafel: {order.TafelNR}";
 
 
-            foreach (Product product in Order.ProductList)
+            foreach (Product product in order.ProductList)
             {
                 DrawLabels(product);
             }
-            orderTimer.Tick += new EventHandler(UpdateOrderTime);
+            orderTimer.Tick += (sender, e) => UpdateOrderTime(sender, e, order);
             orderTimer.Start();
         }
 
-        private void CheckTypeOfOrder()
+        private void CheckTypeOfOrder(Order order)
         {
-            if (Order.Status == OrderStatus.Ready)
+            if (order.Status == OrderStatus.Ready)
             {
                 remakeOrder.Visible = true;
                 remakeOrder.Enabled = true;
@@ -65,26 +45,6 @@ namespace ChapeauUI
                 CompleteBtn.Visible = false;
             }
         }
-        private void StartBtn_Click(object sender, EventArgs e)
-        {
-            CompleteBtn.Enabled = true;
-
-            StartBtn.Enabled = false;
-            // changing status to preparing in database (DAO)
-            timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-            orderService.UpdateToPreparingOrders(Order.OrderID, OrderStatus.Preparing, OrderType.Kitchen);
-        }
-
-        private void CompleteBtn_Click(object sender, EventArgs e)
-        {
-            StartBtn.Enabled = false;
-            timeLabel.BackColor = Color.FromArgb(23, 185, 8);
-            orderService.UpdateToReadyOrders(Order.OrderID, OrderStatus.Ready, OrderType.Kitchen);
-            orderLabel.Text = $"Open: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
-            orders.Remove(Order);
-            flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
-        }
-
         private void DrawLabels(Product product)
         {
             Label dishlabel = new Label();
@@ -128,25 +88,47 @@ namespace ChapeauUI
                     dessetsDishesLayoutPanel.Controls.Add(dishLabelComment);
                     break;
                 default:
+                    drinksHeaderLabel.Visible = true;
+                    drinksFlowLayout.Controls.Add(dishLabel);
+                    drinksFlowLayout.Controls.Add(dishLabelComment);
                     break;
             }
             if (!string.IsNullOrWhiteSpace(product.Comment))
                 dishLabelComment.Text = "Opmerking: " + product.Comment;
         }
 
-        private void remakeOrder_Click(object sender, EventArgs e)
+        private void UpdateOrderTime(object sender, EventArgs e, Order order)
         {
-            orderService.UpdateToRemakingOrder(Order.OrderID, OrderStatus.Pending, OrderType.Kitchen);
-            orderLabel.Text = $"Voltooide Bestellingen: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
-            flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
-        }
-        private void UpdateOrderTime(object sender, EventArgs e)
-        {
-            TimeSpan elapsedTime = DateTime.Now - Order.OrderTime;
+            TimeSpan elapsedTime = DateTime.Now - order.OrderTime;
             string formatString = elapsedTime.ToString(@"hh\:mm\:ss");
             timeLabel.Text = $"{formatString}";
         }
 
+        private void SetupEventHandelers(Order order, Label orderLabel, OrderType orderType)
+        {
+            OrderService orderService = new OrderService();
 
+            remakeOrder.Click += (sender, e) =>
+            {
+                orderService.UpdateToRemakingOrder(order.OrderID, OrderStatus.Pending, orderType);
+                orderLabel.Text = $"Voltooide Bestellingen: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
+                flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
+            };
+            StartBtn.Click += (sender, e) =>
+            {
+                CompleteBtn.Enabled = true;
+                StartBtn.Enabled = false;
+                timeLabel.BackColor = Color.FromArgb(23, 185, 8);
+                orderService.UpdateToPreparingOrders(order.OrderID, OrderStatus.Preparing, orderType);
+            };
+            CompleteBtn.Click += (sender, e) =>
+            {
+                StartBtn.Enabled = false;
+                timeLabel.BackColor = Color.FromArgb(23, 185, 8);
+                orderService.UpdateToReadyOrders(order.OrderID, OrderStatus.Ready, orderType);
+                orderLabel.Text = $"Open: {flowLayoutPanelOrder.Parent.Parent.Controls.Count - 1}";
+                flowLayoutPanelOrder.Parent.Parent.Controls.Remove(this);
+            };
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ChapeauUI
 {
-    partial class KitchenForm
+    partial class KitchenAndBarForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KitchenForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KitchenAndBarForm));
             historyOrders = new System.Windows.Forms.Button();
             openOrdersLabel = new System.Windows.Forms.Label();
             flowLayoutKitchenPnl = new System.Windows.Forms.FlowLayoutPanel();
@@ -46,7 +46,6 @@
             historyOrders.TabIndex = 0;
             historyOrders.Text = "Geschiedenis";
             historyOrders.UseVisualStyleBackColor = false;
-            historyOrders.Click += historyOrders_Click;
             // 
             // openOrdersLabel
             // 
