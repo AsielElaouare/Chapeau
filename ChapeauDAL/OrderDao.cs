@@ -84,40 +84,23 @@ namespace ChapeauDAL
             }
 
         }
-        public List<Order> GetOrders(OrderStatus status, string[] categories, DateOnly dateToday)
+        public List<Order> GetOrders(OrderStatus status, OrderType orderType, DateOnly dateToday)
         {
-            string categoryCondition = string.Join(" OR ", categories.Select(cat => $"ak.categorie = '{cat}'"));
-            string query = $@"
-            SELECT 
-                rk.tafelnr,
-                [order].orderid,
-                SUM(ol.aantal) AS aantal,
-                STRING_AGG(COALESCE(ol.opmerking, ''), '; ') AS opmerking,
-                STRING_AGG(OL.aantal, ',') AS concatenated_quantity,
-                [order].[status],
-                STRING_AGG(ak.naam, '; ') AS Article, 
-                STRING_AGG(ak.categorie, ', ') AS categorie,
-	            [order].ordertime AS [orderTime] 
-            FROM 
-                [order]
-            JOIN 
-                orderline AS OL ON [order].[orderid] = OL.orderid
-            JOIN 
-                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
-            JOIN 
-                artikel AS ak ON ol.artikelid = ak.artikelid
-            WHERE [status] = @status AND (@categoryCondition) AND CAST([order].ordertime AS DATE) = @dateToday
-            GROUP BY 
-                rk.tafelnr, [order].orderid, [order].[status], [order].orderTime
-            ORDER BY 
-                rk.tafelnr, [order].orderid";
+            string query;
+            if (orderType == OrderType.Kitchen)
+            {
+                query = GetKitchenQuery();
+            }
+            else
+            {
+                query = GetBarQuery();
+            }
             try
             {
                 List<Order> orders = new List<Order>();
                 SqlCommand command = new SqlCommand(query, OpenConnection());
                 command.Parameters.AddWithValue("@status", status.ToString());
                 command.Parameters.AddWithValue("@dateToday", dateToday.ToString("yyyy-MM-dd"));
-                command.Parameters.AddWithValue("@categoryCondition", categoryCondition);
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -156,13 +139,13 @@ namespace ChapeauDAL
             string[] categories = category.Split(',');
 
             currentOrder = new Order
-                (
+            (
                     (int)reader["orderid"],
                     (int)reader["tafelnr"],
                     (string)reader["status"],
                     new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
                     (DateTime)reader["orderTime"]
-                );
+            );
 
 
             int index = 0;
@@ -320,5 +303,63 @@ namespace ChapeauDAL
             ExecuteEditQuery(query, parameters);
         }
 
+
+        private string GetBarQuery()
+        {
+            string query = $@"
+            SELECT 
+                rk.tafelnr,
+                [order].orderid,
+                SUM(ol.aantal) AS aantal,
+                STRING_AGG(COALESCE(ol.opmerking, ''), '; ') AS opmerking,
+                STRING_AGG(OL.aantal, ',') AS concatenated_quantity,
+                [order].[status],
+                STRING_AGG(ak.naam, '; ') AS Article, 
+                STRING_AGG(ak.categorie, ', ') AS categorie,
+	            [order].ordertime AS [orderTime] 
+            FROM 
+                [order]
+            JOIN 
+                orderline AS OL ON [order].[orderid] = OL.orderid
+            JOIN 
+                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                artikel AS ak ON ol.artikelid = ak.artikelid
+            WHERE [status] = @status AND (ak.categorie = 'bier' OR ak.categorie = 'KoffieThee' OR ak.categorie =  'Gedistilleerd'  OR ak.categorie =  'Frisdrank' OR ak.categorie =  'wijn') AND CAST([order].ordertime AS DATE) = @dateToday
+            GROUP BY 
+                rk.tafelnr, [order].orderid, [order].[status], [order].orderTime
+            ORDER BY 
+                rk.tafelnr, [order].orderid";
+            return query;
+        }
+
+        private string GetKitchenQuery()
+        {
+            string query = $@"
+            SELECT 
+                rk.tafelnr,
+                [order].orderid,
+                SUM(ol.aantal) AS aantal,
+                STRING_AGG(COALESCE(ol.opmerking, ''), '; ') AS opmerking,
+                STRING_AGG(OL.aantal, ',') AS concatenated_quantity,
+                [order].[status],
+                STRING_AGG(ak.naam, '; ') AS Article, 
+                STRING_AGG(ak.categorie, ', ') AS categorie,
+	            [order].ordertime AS [orderTime] 
+            FROM 
+                [order]
+            JOIN 
+                orderline AS OL ON [order].[orderid] = OL.orderid
+            JOIN 
+                rekening AS rk ON [order].rekeningnr = rk.rekeningnr
+            JOIN 
+                artikel AS ak ON ol.artikelid = ak.artikelid
+            WHERE [status] = @status AND (ak.categorie = 'Hoofdgerechten' OR ak.categorie = 'Nagerechten' OR ak.categorie = 'Tussengerechten' OR ak.categorie = 'Voorgerechten') AND CAST([order].ordertime AS DATE) = @dateToday
+            GROUP BY 
+                rk.tafelnr, [order].orderid, [order].[status], [order].orderTime
+            ORDER BY 
+                rk.tafelnr, [order].orderid";
+            return query;
+        }
     }
 }
