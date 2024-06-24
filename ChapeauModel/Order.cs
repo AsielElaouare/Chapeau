@@ -20,21 +20,26 @@ namespace ChapeauModel
         public List<Orderline> orderlines { get; private set; }
         public List<Product> ProductList { get; set; }
 
-        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLine)
-        {
-            this.OrderID = OrderID;
-            this.TafelNR = TafelNR;
-            this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status); ;
-            this.OrderLine = OrderLine;
-            this.ProductList = new List<Product>();
-        }
-        public Order(int OrderID, int TafelNR, string Status, Orderline OrderLine, DateTime orderTime)
+
+        //for get orders constructor 
+
+        public Order(int OrderID, int TafelNR, string Status, DateTime orderTime)
         {
             this.OrderID = OrderID;
             this.TafelNR = TafelNR;
             this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status);
             this.OrderLine = OrderLine;
             this.OrderTime = orderTime;
+            this.orderlines = new List<Orderline>();
+        }
+        public Order(int OrderID, int TafelNR, string Status, Orderline orderline, DateTime orderTime)
+        {
+            this.OrderID = OrderID;
+            this.TafelNR = TafelNR;
+            this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status);
+            this.OrderLine = OrderLine;
+            this.OrderTime = orderTime;
+            this.OrderLine = orderline;
             this.ProductList = new List<Product>();
         }
 

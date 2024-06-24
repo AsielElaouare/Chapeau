@@ -16,6 +16,7 @@ namespace ChapeauModel
         Nagerechten,
         Tussengerechten,
         Voorgerechten,
-        Wijn
+        Wijn,
+        NULL
     }
 }

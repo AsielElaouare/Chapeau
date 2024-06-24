@@ -24,15 +24,15 @@ namespace ChapeauService
 
         public List<Order> GetOrdersForBar(OrderStatus status, DateOnly todayDate)
         {
-
+            ProductCategorie[] productCategories = new ProductCategorie[] { ProductCategorie.Bier, ProductCategorie.Wijn, ProductCategorie.KoffieThee, ProductCategorie.Gedistilleerd, ProductCategorie.Frisdrank };
             List<Order> orders;
-            return orders = orderdb.GetOrders(status, OrderType.Bar, todayDate);
+            return orders = orderdb.GetOrders(status, productCategories, todayDate);
         }
         public List<Order> GetOrdersForKitchen(OrderStatus status, DateOnly dateToday)
         {
-
+            ProductCategorie[] productCategories = new ProductCategorie[] { ProductCategorie.Hoofdgerechten, ProductCategorie.Tussengerechten, ProductCategorie.Voorgerechten, ProductCategorie.Nagerechten, ProductCategorie.NULL };
             List<Order> orders;
-            return orders = orderdb.GetOrders(status, OrderType.Kitchen, dateToday);
+            return orders = orderdb.GetOrders(status, productCategories, dateToday);
         }
 
 

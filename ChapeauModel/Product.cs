@@ -13,8 +13,6 @@ namespace ChapeauModel
         public string Name { get; private set; }
         public int Stock { get; private set; }
         public decimal Prijs { get; private set; }
-        public int Quantity { get; private set; }
-        public string Comment { get; private set; }
         public ProductCategorie Category { get; private set; }
         public ProductKaart Menu { get; private set; }
 
@@ -32,13 +30,7 @@ namespace ChapeauModel
             Name = naam;
             Category = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
         }
-        public Product(string naam, string categorie, int quantity, string comment)
-        {
-            Name = naam;
-            Category = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
-            this.Quantity = quantity;
-            this.Comment = comment;
-        }
+
         public Product(string naam, string categorie, decimal prijs)
         {
             this.Name = naam;

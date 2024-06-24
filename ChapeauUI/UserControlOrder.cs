@@ -27,9 +27,9 @@ namespace ChapeauUI
             orderInfLabel.Text = $"Order: {order.OrderID}                             Tafel: {order.TafelNR}";
 
 
-            foreach (Product product in order.ProductList)
+            foreach (Orderline orderLine in order.orderlines)
             {
-                DrawLabels(product);
+                DrawLabels(orderLine);
             }
             orderTimer.Tick += (sender, e) => UpdateOrderTime(sender, e, order);
             orderTimer.Start();
@@ -45,12 +45,12 @@ namespace ChapeauUI
                 CompleteBtn.Visible = false;
             }
         }
-        private void DrawLabels(Product product)
+        private void DrawLabels(Orderline orderline)
         {
             Label dishlabel = new Label();
             Label dishLabelComment = new Label();
 
-            CheckProductCategory(product, dishlabel, dishLabelComment);
+            CheckProductCategory(orderline, dishlabel, dishLabelComment);
 
             dishLabelComment.ForeColor = Color.White;
             dishLabelComment.Font = new Font(dishLabelComment.Font, FontStyle.Italic);
@@ -61,11 +61,10 @@ namespace ChapeauUI
             dishlabel.Margin = new Padding(0, 10, 0, 0);
         }
 
-
-        private void CheckProductCategory(Product product, Label dishLabel, Label dishLabelComment)
+        private void CheckProductCategory(Orderline orderline, Label dishLabel, Label dishLabelComment)
         {
-            dishLabel.Text = $"{product.Quantity}x {product.Name}";
-            switch (product.Category)
+            dishLabel.Text = $"{orderline.Quantity}x {orderline.product.Name}";
+            switch (orderline.product.Category)
             {
                 case ProductCategorie.Voorgerechten:
                     sideDishesLabel.Visible = true;
@@ -93,8 +92,8 @@ namespace ChapeauUI
                     drinksFlowLayout.Controls.Add(dishLabelComment);
                     break;
             }
-            if (!string.IsNullOrWhiteSpace(product.Comment))
-                dishLabelComment.Text = "Opmerking: " + product.Comment;
+            if (!string.IsNullOrWhiteSpace(orderline.Commentary))
+                dishLabelComment.Text = "Opmerking: " + orderline.Commentary;
         }
 
         private void UpdateOrderTime(object sender, EventArgs e, Order order)
@@ -107,7 +106,6 @@ namespace ChapeauUI
         private void SetupEventHandelers(Order order, Label orderLabel, OrderType orderType)
         {
             OrderService orderService = new OrderService();
-
             remakeOrder.Click += (sender, e) =>
             {
                 orderService.UpdateToRemakingOrder(order.OrderID, OrderStatus.Pending, orderType);

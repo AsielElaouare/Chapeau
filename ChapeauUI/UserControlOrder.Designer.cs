@@ -75,7 +75,7 @@ namespace ChapeauUI
             timeLabel.Name = "timeLabel";
             timeLabel.Size = new Size(200, 23);
             timeLabel.TabIndex = 0;
-            timeLabel.TextAlign = ContentAlignment.MiddleRight;
+            timeLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // orderInfLabel
             // 
@@ -283,12 +283,12 @@ namespace ChapeauUI
             remakeOrder.UseVisualStyleBackColor = false;
             remakeOrder.Visible = false;
             // 
-            // KitchenDisplayOrder
+            // UserControlOrder
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(flowLayoutPanelOrder);
-            Name = "KitchenDisplayOrder";
+            Name = "UserControlOrder";
             Size = new Size(200, 427);
             orderPanel.ResumeLayout(false);
             orderPanel.PerformLayout();

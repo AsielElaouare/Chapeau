@@ -8,23 +8,30 @@ namespace ChapeauModel
 {
     public class Orderline
     {
-      
+
         public int OrderID { get; private set; }
         public Order order { get; private set; }
-        public int billnumber { get;  set; }
-        public int Quantity { get;  set; }
+        public int billnumber { get; set; }
+        public int Quantity { get; set; }
         public string Commentary { get; private set; }
         public int ArticleID { get; private set; }
         public Product product { get; private set; }
-        //public bool Is_Paid { get; set; }
-        
+
+        public Orderline(Order order, int quantity, Product product, string Commentary)
+        {
+            this.order = order;
+            this.Quantity = quantity;
+            this.product = product;
+            this.Commentary = Commentary;
+        }
+
         public Orderline(int orderID, int aantal, string opmerking)
         {
             OrderID = orderID;
             Quantity = aantal;
             Commentary = opmerking;
         }
-        public Orderline( int aantal, string opmerking, int artikelID)
+        public Orderline(int aantal, string opmerking, int artikelID)
         {
             Quantity = aantal;
             Commentary = opmerking;
@@ -33,20 +40,20 @@ namespace ChapeauModel
 
         public Orderline(int billnumber, int aantal, Product product)
         {
-          this.billnumber = billnumber;
+            this.billnumber = billnumber;
             this.Quantity = aantal;
             this.product = product;
-           // this.Is_Paid = Is_Paid;
+            // this.Is_Paid = Is_Paid;
         }
 
         public void IncreaseQuantity()
         {
-            Quantity ++;
+            Quantity++;
         }
 
         public void DecreaseQuantity()
         {
-            Quantity --;
+            Quantity--;
         }
         public void SetOrderID(int orderID)
         {
