@@ -5,7 +5,7 @@ using ChapeauModel;
 
 namespace ChapeauUI
 {
-    partial class KitchenDisplayOrder
+    partial class UserControlOrder
     {
         /// <summary> 
         /// Required designer variable.
@@ -48,6 +48,8 @@ namespace ChapeauUI
             sideDishesLayoutPanel = new FlowLayoutPanel();
             mainDishesLayoutPanel = new FlowLayoutPanel();
             dessetsDishesLayoutPanel = new FlowLayoutPanel();
+            drinksHeaderLabel = new Label();
+            drinksFlowLayout = new FlowLayoutPanel();
             flowLayoutPanelOrder = new FlowLayoutPanel();
             StartBtn = new Button();
             CompleteBtn = new Button();
@@ -73,7 +75,7 @@ namespace ChapeauUI
             timeLabel.Name = "timeLabel";
             timeLabel.Size = new Size(200, 23);
             timeLabel.TabIndex = 0;
-            timeLabel.TextAlign = ContentAlignment.MiddleRight;
+            timeLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // orderInfLabel
             // 
@@ -134,6 +136,8 @@ namespace ChapeauUI
             orderPanel.Controls.Add(mainDishesLayoutPanel);
             orderPanel.Controls.Add(dessertsLabel);
             orderPanel.Controls.Add(dessetsDishesLayoutPanel);
+            orderPanel.Controls.Add(drinksHeaderLabel);
+            orderPanel.Controls.Add(drinksFlowLayout);
             orderPanel.FlowDirection = FlowDirection.TopDown;
             orderPanel.Location = new Point(0, 0);
             orderPanel.Margin = new Padding(0);
@@ -201,6 +205,29 @@ namespace ChapeauUI
             dessetsDishesLayoutPanel.Size = new Size(0, 0);
             dessetsDishesLayoutPanel.TabIndex = 7;
             // 
+            // drinksHeaderLabel
+            // 
+            drinksHeaderLabel.BackColor = Color.FromArgb(255, 143, 143);
+            drinksHeaderLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            drinksHeaderLabel.Location = new Point(0, 165);
+            drinksHeaderLabel.Margin = new Padding(0, 10, 0, 0);
+            drinksHeaderLabel.Name = "drinksHeaderLabel";
+            drinksHeaderLabel.Size = new Size(200, 16);
+            drinksHeaderLabel.TabIndex = 10;
+            drinksHeaderLabel.Text = "Dranken";
+            drinksHeaderLabel.Visible = false;
+            // 
+            // drinksFlowLayout
+            // 
+            drinksFlowLayout.AutoSize = true;
+            drinksFlowLayout.FlowDirection = FlowDirection.TopDown;
+            drinksFlowLayout.Location = new Point(0, 181);
+            drinksFlowLayout.Margin = new Padding(0);
+            drinksFlowLayout.MaximumSize = new Size(200, 0);
+            drinksFlowLayout.Name = "drinksFlowLayout";
+            drinksFlowLayout.Size = new Size(0, 0);
+            drinksFlowLayout.TabIndex = 11;
+            // 
             // flowLayoutPanelOrder
             // 
             flowLayoutPanelOrder.BackColor = Color.Gray;
@@ -226,7 +253,6 @@ namespace ChapeauUI
             StartBtn.TabIndex = 1;
             StartBtn.Text = "Start";
             StartBtn.UseVisualStyleBackColor = false;
-            StartBtn.Click += StartBtn_Click;
             // 
             // CompleteBtn
             // 
@@ -241,7 +267,6 @@ namespace ChapeauUI
             CompleteBtn.TabIndex = 2;
             CompleteBtn.Text = "Compleet";
             CompleteBtn.UseVisualStyleBackColor = false;
-            CompleteBtn.Click += CompleteBtn_Click;
             // 
             // remakeOrder
             // 
@@ -257,14 +282,13 @@ namespace ChapeauUI
             remakeOrder.Text = "Maak Opniew";
             remakeOrder.UseVisualStyleBackColor = false;
             remakeOrder.Visible = false;
-            remakeOrder.Click += remakeOrder_Click;
             // 
-            // KitchenDisplayOrder
+            // UserControlOrder
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(flowLayoutPanelOrder);
-            Name = "KitchenDisplayOrder";
+            Name = "UserControlOrder";
             Size = new Size(200, 427);
             orderPanel.ResumeLayout(false);
             orderPanel.PerformLayout();
@@ -297,5 +321,7 @@ namespace ChapeauUI
         private Button remakeOrder;
         private Label tussengerechtenLabel;
         private FlowLayoutPanel entreesFlowLayoutPanel;
+        private Label drinksHeaderLabel;
+        private FlowLayoutPanel drinksFlowLayout;
     }
 }

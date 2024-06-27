@@ -17,7 +17,7 @@ namespace ChapeauDAL
     public class OrderDao : BaseDao
     {
 
-        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orderlines)
+        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orderlines)
         {
             int orderId = 0;
             string query = @"
@@ -84,10 +84,9 @@ namespace ChapeauDAL
             }
 
         }
-        public List<Order> GetOrders(OrderStatus status, string[] categories, DateOnly dateToday)
+        public List<Order> GetOrders(OrderStatus status, ProductCategorie[] productCategories, DateOnly dateToday)
         {
-            string categoryCondition = string.Join(" OR ", categories.Select(cat => $"ak.categorie = '{cat}'"));
-            string query = $@"
+            string query = @"
             SELECT 
                 rk.tafelnr,
                 [order].orderid,
@@ -106,7 +105,7 @@ namespace ChapeauDAL
                 rekening AS rk ON [order].rekeningnr = rk.rekeningnr
             JOIN 
                 artikel AS ak ON ol.artikelid = ak.artikelid
-            WHERE [status] = @status AND ({categoryCondition}) AND CAST([order].ordertime AS DATE) = @dateToday
+            WHERE [status] = @status AND (ak.categorie = @category1 OR ak.categorie = @category2 OR ak.categorie =  @category3  OR ak.categorie = @category4 OR ak.categorie = @category5) AND CAST([order].ordertime AS DATE) = @dateToday
             GROUP BY 
                 rk.tafelnr, [order].orderid, [order].[status], [order].orderTime
             ORDER BY 
@@ -116,12 +115,16 @@ namespace ChapeauDAL
                 List<Order> orders = new List<Order>();
                 SqlCommand command = new SqlCommand(query, OpenConnection());
                 command.Parameters.AddWithValue("@status", status.ToString());
+                command.Parameters.AddWithValue("@category1", productCategories[0].ToString());
+                command.Parameters.AddWithValue("@category2", productCategories[1].ToString());
+                command.Parameters.AddWithValue("@category3", productCategories[2].ToString());
+                command.Parameters.AddWithValue("@category4", productCategories[3].ToString());
+                command.Parameters.AddWithValue("@category5", productCategories[4].ToString());
                 command.Parameters.AddWithValue("@dateToday", dateToday.ToString("yyyy-MM-dd"));
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
-
                     Order order = ReadOrders(reader);
                     orders.Add(order);
                 }
@@ -133,13 +136,13 @@ namespace ChapeauDAL
             {
                 throw new Exception("Error occurred while executing database operations.", ex);
             }
-
         }
 
         public Order ReadOrders(SqlDataReader reader)
         {
+            //public Order(int OrderID, int TafelNR, string Status, Orderline OrderLine, DateTime orderTime)
+
             Order currentOrder = null;
-            Product currentProduct;
             Orderline currentOrderLine;
 
             string quantity = (string)reader["concatenated_quantity"];
@@ -155,20 +158,18 @@ namespace ChapeauDAL
             string[] categories = category.Split(',');
 
             currentOrder = new Order
-                (
+            (
                     (int)reader["orderid"],
                     (int)reader["tafelnr"],
                     (string)reader["status"],
-                    new Orderline((int)reader["orderId"], (int)reader["aantal"], reader["opmerking"] as string ?? null),
                     (DateTime)reader["orderTime"]
-                );
-
+            );
 
             int index = 0;
             foreach (string productName in productsArray)
             {
-                currentProduct = new Product(productName, categories[index], int.Parse(quantityPerProduct[index]), productComment[index]);
-                currentOrder.ProductList.Add(currentProduct);
+                currentOrderLine = new Orderline(currentOrder, int.Parse(quantityPerProduct[index]), new Product(productName, categories[index]), productComment[index]);
+                currentOrder.orderlines.Add(currentOrderLine);
                 index++;
             }
             return currentOrder;
@@ -318,6 +319,5 @@ namespace ChapeauDAL
             };
             ExecuteEditQuery(query, parameters);
         }
-
     }
 }
