@@ -19,8 +19,10 @@ namespace ChapeauDAL
 
         public void StoreNewOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orderlines)
         {
-            int orderId = 0;
-            string query = @"
+            try
+            {
+                int orderId = 0;
+                string query = @"
                 DECLARE @currentrekeningnummer INT;
                 SELECT TOP 1 @currentrekeningnummer = [rekeningnr] 
                 FROM [dbo].[rekening] 
@@ -31,8 +33,6 @@ namespace ChapeauDAL
                 VALUES (@currentrekeningnummer, @timeOfOrder); 
 
                 SELECT CAST(SCOPE_IDENTITY() AS INT) AS newOrderID;";
-            try
-            {
 
                 SqlCommand command = new SqlCommand(query, OpenConnection());
                 command.Parameters.AddWithValue("@timeOfOrder", timeOfOrder.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -65,24 +65,12 @@ namespace ChapeauDAL
         }
         private void StoreOrderline(Orderline orderline, int orderid)
         {
-            if (orderline.Commentary != null)
-            {
-                SqlCommand command = new SqlCommand("INSERT INTO [orderline] (orderid, aantal, opmerking, artikelid) VALUES (@orderId, @aantal, @opmerking, @artikelid)", OpenConnection());
-                command.Parameters.AddWithValue("@orderId", orderid);
-                command.Parameters.AddWithValue("@aantal", orderline.Quantity);
-                command.Parameters.AddWithValue("@opmerking", orderline.Commentary);
-                command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
-                command.ExecuteNonQuery();
-            }
-            else
-            {
-                SqlCommand command = new SqlCommand("INSERT INTO [orderline] (orderid, aantal, artikelid) VALUES (@orderId, @aantal, @artikelid)", OpenConnection());
-                command.Parameters.AddWithValue("@orderId", orderid);
-                command.Parameters.AddWithValue("@aantal", orderline.Quantity);
-                command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
-                command.ExecuteNonQuery();
-            }
-
+            SqlCommand command = new SqlCommand("INSERT INTO [orderline] (orderid, aantal, opmerking, artikelid) VALUES (@orderId, @aantal, @opmerking, @artikelid)", OpenConnection());
+            command.Parameters.AddWithValue("@orderId", orderid);
+            command.Parameters.AddWithValue("@aantal", orderline.Quantity);
+            command.Parameters.AddWithValue("@opmerking", string.IsNullOrEmpty(orderline.Commentary) ? (object)DBNull.Value : orderline.Commentary);
+            command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
+            command.ExecuteNonQuery();
         }
         public List<Order> GetOrders(OrderStatus status, ProductCategorie[] productCategories, DateOnly dateToday)
         {
