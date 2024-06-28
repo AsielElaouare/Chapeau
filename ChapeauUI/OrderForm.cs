@@ -134,7 +134,6 @@ namespace ChapeauUI
                 return Color.Red; 
             }
         }
-
         private void Product_Button_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
