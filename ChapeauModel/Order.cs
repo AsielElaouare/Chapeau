@@ -43,14 +43,11 @@ namespace ChapeauModel
             this.ProductList = new List<Product>();
         }
 
-        public Order(int rekeningNR, int orderID, int tafelNR, OrderStatus status)
+        public Order(DateTime orderTime, int tafelNR, List<Orderline> orderlines)
         {
-            this.RekeningNR = rekeningNR;
-            this.OrderID = orderID;
-            this.TafelNR = tafelNR;
-            this.Status = status;
-
-            this.orderlines = new List<Orderline>();
+            OrderTime = orderTime;
+            TafelNR = tafelNR;
+            this.orderlines = orderlines;
         }
 
         public void setBarStatus(byte barStatus)

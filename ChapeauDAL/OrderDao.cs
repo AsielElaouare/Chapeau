@@ -17,7 +17,7 @@ namespace ChapeauDAL
     public class OrderDao : BaseDao
     {
 
-        public void StoreNewOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orderlines)
+        public void StoreNewOrder(Order order)
         {
             try
             {
@@ -35,15 +35,15 @@ namespace ChapeauDAL
                 SELECT CAST(SCOPE_IDENTITY() AS INT) AS newOrderID;";
 
                 SqlCommand command = new SqlCommand(query, OpenConnection());
-                command.Parameters.AddWithValue("@timeOfOrder", timeOfOrder.ToString("yyyy-MM-dd HH:mm:ss"));
-                command.Parameters.AddWithValue("@selectedTable", $"{selectedtable}");
+                command.Parameters.AddWithValue("@timeOfOrder", order.OrderTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                command.Parameters.AddWithValue("@selectedTable", $"{order.TafelNR}");
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     orderId = Convert.ToInt32((int)reader["newOrderID"]);
                 }
                 reader.Close();
-                foreach (Orderline line in orderlines)
+                foreach (Orderline line in order.orderlines)
                 {
                     StoreOrderline(line, orderId);
                     AdjustStock(line);

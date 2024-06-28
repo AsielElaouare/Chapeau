@@ -37,7 +37,8 @@ namespace ChapeauUI
         private void StoreThisOrder(DateTime timeOfOrde, int selectedTable)
         {//slaat order op
             OrderService orderService = new OrderService();
-            orderService.StoreOrder(timeOfOrde, selectedTable,orders);
+            Order order = new Order(timeOfOrde, selectedTable, orders);
+            orderService.StoreOrder(order);
         }
         private void confirmButton_Click(object sender, EventArgs e)
         {// roept alle nieuwe schermen op en zorgt er voor dat de order wordt opgeslagenzodra er op confirm order wordt gedrukt

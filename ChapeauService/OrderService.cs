@@ -17,9 +17,9 @@ namespace ChapeauService
             orderdb = new OrderDao();
         }
 
-        public void StoreOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orders)
+        public void StoreOrder(Order order)
         {
-            orderdb.StoreNewOrder(timeOfOrder, selectedtable, orders);
+            orderdb.StoreNewOrder( order);
         }
 
         public List<Order> GetOrdersForBar(OrderStatus status, DateOnly todayDate)
