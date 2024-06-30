@@ -20,8 +20,7 @@ namespace ChapeauDAL
         public void StoreNewOrder(Order order)
         {
             try
-            {
-                
+            {  
                 string query = @"
                 DECLARE @currentrekeningnummer INT;
                 SELECT TOP 1 @currentrekeningnummer = [rekeningnr] 
