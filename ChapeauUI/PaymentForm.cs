@@ -14,22 +14,27 @@ namespace ChapeauUI
 {
     public partial class PaymentForm : Form
     {
-        private List<Order> orders;
-        private OrderService orderService;
-        Bill bill;
-        TableOverview tableOverview;
+        
+
+        private Bill bill;
+       
+
+        //een bool om aan te geven of de bon al is betaald, afhankelijk van het antwoord laat het een andere button zien
         bool everything_IsPaid;
 
-        public PaymentForm(Bill bill)
+        public PaymentForm(Table table, Employee employee)
         {
-            this.bill = bill;
+            this.bill = new Bill(table, employee);
 
 
             InitializeComponent();
-
+          
+           
             ShowOrder(GetBillOrders());
 
+            //verandert de tekst van alle labels gebasseerd op het bill object.
             CreateLabels();
+            UpdatePaid();
             if (everything_IsPaid) { FreeTable(); }
 
 
@@ -38,23 +43,12 @@ namespace ChapeauUI
         private List<Orderline> GetBillOrders()
         {
             InvoiceService invoiceService = new InvoiceService();
-            bill = invoiceService.GetBillNumber(bill);
-            List<Orderline> orderlines = invoiceService.GetNotPaidOrderlinesForBill(bill);
+            List<Orderline> orderlines = invoiceService.GetOrderlinesForBill(bill);
             return orderlines;
         }
         private void UpdatePaid()
-        {
+        {   
             if (bill.unpaid == null) { bill.unpaid = bill.totalPrice; }
-
-            /*  decimal total = 0;
-             * Orderline orderline; 
-            foreach (ListViewItem item in bill.Items)
-            {
-                orderline = item.Tag as Orderline;
-               if (!orderline.Is_Paid)
-                { total += orderline.product.Prijs * orderline.Quantity; }
-            } */
-
             lbl_Due.Text = $"Openstaand: {bill.unpaid:C}";
             if (bill.unpaid == 0) { everything_IsPaid = true; }
         }
@@ -66,50 +60,23 @@ namespace ChapeauUI
             lbl_Table.Text = $"Tafel: {bill.table.TafelNummer}";
             lbl_ReceiptNumber.Text = $"Bon nummer: {bill.billNumber}";
             lbl_Total.Text = $"Totaal: {bill.totalPrice:C}";
-        
-            DetermineBtw();
-            UpdatePaid();
+            lbl_BTW.Text = $"BTW: {bill.VAT:C}";
+            lbl_Tip.Text = $"Fooi: {bill.tip:C}";
+
+          
         }
 
        
        
-
-        private void DetermineBtw()
-        {
-            decimal totalbtw = 0;
-            Orderline orderline;
-            foreach (ListViewItem item in listview_Bestelling.Items)
-            {
-                orderline = item.Tag as Orderline;
-                switch (orderline.product.Category)
-                {
-                    case ProductCategorie.Bier: totalbtw += orderline.product.Prijs * 0.21m * orderline.Quantity; break;
-                    case ProductCategorie.Frisdrank: totalbtw += orderline.product.Prijs * 0.09m * orderline.Quantity; break;
-                    case ProductCategorie.Gedistilleerd: totalbtw += orderline.product.Prijs * 0.21m * orderline.Quantity; break;
-                    case ProductCategorie.Hoofdgerechten: totalbtw += orderline.product.Prijs * 0.09m * orderline.Quantity; break;
-                    case ProductCategorie.KoffieThee: totalbtw += orderline.product.Prijs * 0.09m * orderline.Quantity; break;
-                    case ProductCategorie.Nagerechten: totalbtw += orderline.product.Prijs * 0.09m * orderline.Quantity; break;
-                    case ProductCategorie.Tussengerechten: totalbtw += orderline.product.Prijs * 0.09m * orderline.Quantity; break;
-                    case ProductCategorie.Voorgerechten: totalbtw += orderline.product.Prijs * 0.09m * orderline.Quantity; break;
-                    case ProductCategorie.Wijn: totalbtw += orderline.product.Prijs * 0.21m * orderline.Quantity; break;
-                    default: break;
-                }
-
-
-                lbl_BTW.Text = $"BTW: {totalbtw:C}";
-            }
-
-
-        }
-        public void ShowOrder(List<Orderline> orders)
-        {
+        private void ShowOrder(List<Orderline> orderlines)
+        { // verbindt en weergeeft een lijst van orderlines aan de listview
             listview_Bestelling.Items.Clear();
-            foreach (Orderline ol in orders)
+            foreach (Orderline ol in orderlines)
             {
                 ListViewItem orderline = new ListViewItem(ol.product.Name);
                 orderline.SubItems.Add(ol.Quantity.ToString());
                 orderline.SubItems.Add(ol.product.Prijs.ToString());
-                //order.SubItems.Add(ord.OrderID.ToString());
+                
 
 
 
@@ -128,7 +95,7 @@ namespace ChapeauUI
         private void bttn_PauzeerBetaling_Click(object sender, EventArgs e)
         {
 
-            tableOverview = new TableOverview(bill.employee);
+           TableOverview tableOverview = new TableOverview(bill.employee);
             tableOverview.Show();
             this.Close();
         }
@@ -138,12 +105,15 @@ namespace ChapeauUI
 
         private void bttn_Pay_Click(object sender, EventArgs e)
         {
+            bill.review = txtb_Review.Text;
+            //als nog niet alles is betaald krijg je een popup om bethaalmethode te kiezen
             if (!everything_IsPaid)
             {
                 PopUpPayment popUpPayment = new PopUpPayment(bill, this);
-                bill.review = txtb_Review.Text;
+               
                 popUpPayment.Show();
             }
+            //als alles is betaald wordt nog een keer de bill naar de database gestuurd en de tafel vrijgemaakt
             else
             {
                 InvoiceService invoiceService = new InvoiceService();
@@ -152,8 +122,8 @@ namespace ChapeauUI
                 TafelService tafelService = new TafelService();
                 bill.table.Status = TableStatusEnum.Free;
                 tafelService.UpdateTableStatus(bill.table);
-
-                tableOverview = new TableOverview(bill.employee);
+                
+               TableOverview tableOverview = new TableOverview(bill.employee);
                 tableOverview.Show();
                 this.Close();
 

@@ -19,8 +19,9 @@ namespace ChapeauUI
         List<Product> products;
         List<Orderline> orders;
         Employee employee;
-        Tafel table;
-        public OrderForm(Tafel table, Employee employee)
+
+        Table table;
+        public OrderForm(Table table, Employee employee)
         { //start alles op
             InitializeComponent();
             GetProducts();

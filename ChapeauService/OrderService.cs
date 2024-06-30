@@ -57,7 +57,7 @@ namespace ChapeauService
             orderdb.StartOrder(orederID, orderStatus, orderType);
         }
 
-        public List<Order> GetOrdersByTable(Tafel table)
+        public List<Order> GetOrdersByTable(Table table)
         {
             List<Order> orders;
             return orders = orderdb.GetOrdersForTable(table);

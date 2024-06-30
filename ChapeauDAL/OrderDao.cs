@@ -219,7 +219,7 @@ namespace ChapeauDAL
             ExecuteEditQuery(query, parameters);
         }
 
-        public List<Order> GetOrdersForTable(Tafel table)
+        public List<Order> GetOrdersForTable(Table table)
         {
             string query = @"
              SELECT 

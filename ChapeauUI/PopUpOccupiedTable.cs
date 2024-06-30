@@ -15,20 +15,20 @@ namespace ChapeauUI
     public partial class PopUpOccupiedTable : Form
     {
         private Employee employee;
-        private Tafel table;
-        private Bill bill;
+        private Table table;
+   
         private OrderForm orderForm;
         private TableOverview tableOverview;
         private PaymentForm paymentForm;
         private int cornerRadius = 30;
         
-        public PopUpOccupiedTable(Employee employee, Tafel table, TableOverview tableOverview)
+        public PopUpOccupiedTable(Employee employee, Table table, TableOverview tableOverview)
         {
             InitializeComponent();
             SetRoundedRegion();
             this.table = table;
             this.employee = employee;
-            bill = new Bill(table, employee);
+         
 
 
             tableLbl.Text = $"Tafel {table.TafelNummer.ToString()}";
@@ -59,7 +59,7 @@ namespace ChapeauUI
         private void RecieptBtn_Click(object sender, EventArgs e)
         { 
            
-            paymentForm = new PaymentForm(bill);
+            paymentForm = new PaymentForm(table, employee);
             paymentForm.Show();
             this.Close();
             tableOverview.Close();

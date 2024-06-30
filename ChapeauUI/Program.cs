@@ -27,11 +27,10 @@ namespace ChapeauUI
 
 
             LoginForm loginForm1 = new LoginForm();
-            LoginForm loginForm2 = new LoginForm();
-            LoginForm loginForm3 = new LoginForm();
+
+            
             loginForm1.Show();
-            loginForm2.Show(); 
-            loginForm3.Show();
+
 
 
 
