@@ -16,7 +16,6 @@ namespace ChapeauModel
         public int TafelNR { get; private set; }
         public OrderStatus barStatus { get; set; }
         public OrderStatus kitchenStatus { get; set; }
-
         public List<Orderline> orderlines { get; private set; }
         public List<Product> ProductList { get; set; }
 
@@ -43,14 +42,15 @@ namespace ChapeauModel
             this.ProductList = new List<Product>();
         }
 
-        public Order(int rekeningNR, int orderID, int tafelNR, OrderStatus status)
+        public Order(DateTime orderTime, int tafelNR, List<Orderline> orderlines)
         {
-            this.RekeningNR = rekeningNR;
-            this.OrderID = orderID;
-            this.TafelNR = tafelNR;
-            this.Status = status;
-
-            this.orderlines = new List<Orderline>();
+            OrderTime = orderTime;
+            TafelNR = tafelNR;
+            this.orderlines = orderlines;
+        }
+        public void SetOrderID(int orderID)
+        {
+            OrderID = orderID;
         }
 
         public void setBarStatus(byte barStatus)

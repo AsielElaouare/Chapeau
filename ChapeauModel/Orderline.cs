@@ -55,10 +55,7 @@ namespace ChapeauModel
         {
             Quantity--;
         }
-        public void SetOrderID(int orderID)
-        {
-            OrderID = orderID;
-        }
+       
         public void AddComment(string comment)
         {
             Commentary = comment;
