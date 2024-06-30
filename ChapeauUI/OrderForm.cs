@@ -19,6 +19,7 @@ namespace ChapeauUI
         List<Product> products;
         List<Orderline> orders;
         Employee employee;
+
         Table table;
         public OrderForm(Table table, Employee employee)
         { //start alles op
