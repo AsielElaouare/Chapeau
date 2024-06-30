@@ -16,14 +16,14 @@ namespace ChapeauUI
     public partial class TableOverview : Form
     {
         Employee employee;
-        List<Tafel> tables;
+        List<Table> tables;
         OrderService orderService;
         TafelService tableService;
 
         const int startX = 108;
         int topRowY = 150;
         int bottomRowY = 416;
-        int thirdRowY = 416;
+        int thirdRowY = 528;
         const int spacingX = 189;
         const int columns = 5;
 
@@ -71,7 +71,7 @@ namespace ChapeauUI
 
         public void RefreshTableButtons()
         {
-            var tableButtons = this.Controls.OfType<Button>().Where(button => button.Tag is Tafel).ToList();
+            var tableButtons = this.Controls.OfType<Button>().Where(button => button.Tag is Table).ToList();
             foreach (var tableButton in tableButtons)
             {
                 this.Controls.Remove(tableButton);
@@ -81,15 +81,17 @@ namespace ChapeauUI
         }
         private void CheckLayOut()
         {
-            if (tables.Count <= regularAmountOfTables)
-            {
-                InitializeTables();
-            }
-            else
-            {
-                UpdateRows();
-                InitializeTables();
-            }
+            ResetLayOut();
+            if (tables.Count <= regularAmountOfTables){   InitializeTables();   }
+            else{   UpdateRows();    InitializeTables();   }
+        }
+
+        private void ResetLayOut()
+        {
+            topRowIndex = 0;
+            bottomRowIndex = 0;
+            thirdRowIndex = 0;
+            amountOfTablesCreated = 0;
         }
 
         private void UpdateRows()
@@ -98,7 +100,7 @@ namespace ChapeauUI
             bottomRowY = 314;
         }
 
-        private List<Tafel> GetTables()
+        private List<Table> GetTables()
         {
             TafelService tafelService = new TafelService();
             return tafelService.GetTablesAndStatus();
@@ -107,7 +109,7 @@ namespace ChapeauUI
 
         private void InitializeTables()
         {
-            foreach (Tafel table in tables)
+            foreach (Table table in tables)
             {
                 Button tableButton = new Button();
                 tableButton.Font = new Font(tableButton.Font.FontFamily, 16);
@@ -118,10 +120,14 @@ namespace ChapeauUI
                 tableButton.Tag = table;
                 tableButton.FlatStyle = FlatStyle.Flat;
                 tableButton.FlatAppearance.BorderSize = 0;
-                if ((table.TafelNummer + 1) % 2 != 0) { CreateEvenTables(); }
-                else if (amountOfTablesCreated <= 10) { CreateOddTables(); }
+                if (amountOfTablesCreated < regularAmountOfTables)
+                {
+                    if ((table.TafelNummer + 1) % 2 != 0) { CreateEvenTables(); }
+                    else { CreateOddTables(); }
+                }
                 else { CreateExtraTables(); }
                 CreateTables(tableButton, xPosition, yPosition, table);
+                amountOfTablesCreated++;
             }
         }
 
@@ -129,7 +135,7 @@ namespace ChapeauUI
         private void TableButton_PaintNotReady(object sender, PaintEventArgs e)
         {
             Button button = sender as Button;
-            if (button != null && button.Tag is Tafel table && table.Status == TableStatusEnum.Ordered)
+            if (button != null && button.Tag is Table table && table.Status == TableStatusEnum.Ordered)
             {
                 Image icon = Properties.Resources.time24x24b;
                 int iconSize = 24;
@@ -148,7 +154,7 @@ namespace ChapeauUI
         private void TableButton_PaintReady(object sender, PaintEventArgs e)
         {
             Button button = sender as Button;
-            if (button != null && button.Tag is Tafel table && table.Status == TableStatusEnum.Ordered)
+            if (button != null && button.Tag is Table table && table.Status == TableStatusEnum.Ordered)
             {
                 Image icon = Properties.Resources.time24x24y;
                 int iconSize = 24;
@@ -170,7 +176,7 @@ namespace ChapeauUI
             }
         }
 
-        private Image SelectRightIcon(Tafel table)
+        private Image SelectRightIcon(Table table)
         {
             orderService = new OrderService();
             List<Order> orders = orderService.GetOrdersByTable(table);
@@ -182,7 +188,7 @@ namespace ChapeauUI
             return Properties.Resources.rick_astley50x50TheBestOne;
         }
 
-        private string GetOrderTime(Tafel table)
+        private string GetOrderTime(Table table)
         {
             orderService = new OrderService();
             List<Order> orders = orderService.GetOrdersByTable(table);
@@ -197,7 +203,7 @@ namespace ChapeauUI
             return minutes.ToString();
         }
 
-        private Order getOrderForTable(Tafel table)
+        private Order getOrderForTable(Table table)
         {
             orderService = new OrderService();
             List<Order> orders = orderService.GetOrdersByTable(table);
@@ -232,7 +238,7 @@ namespace ChapeauUI
             yPosition = thirdRowY;
             thirdRowIndex++;
         }
-        private void CreateTables(Button tableButton, int xPosition, int yPosition, Tafel table)
+        private void CreateTables(Button tableButton, int xPosition, int yPosition, Table table)
         {
             tableButton.Location = new Point(xPosition, yPosition);
             tableButton.Size = new Size(161, 100);
@@ -241,7 +247,7 @@ namespace ChapeauUI
             this.Controls.Add(tableButton);
         }
 
-        private Color tableStatus(Tafel table)
+        private Color tableStatus(Table table)
         {
             switch (table.Status)
             {
@@ -253,7 +259,7 @@ namespace ChapeauUI
             }
         }
 
-        private bool CheckOrderReady(Tafel table)
+        private bool CheckOrderReady(Table table)
         {
             orderService = new OrderService();
             List<Order> orders = orderService.GetOrdersByTable(table);
@@ -269,7 +275,7 @@ namespace ChapeauUI
         private void TableButton_Click(object sender, EventArgs e)
         {
             Button clickedButton = sender as Button;
-            Tafel clickedTable = clickedButton.Tag as Tafel;
+            Table clickedTable = clickedButton.Tag as Table;
             OpenCorrectForm(clickedTable);
         }
 
@@ -281,7 +287,7 @@ namespace ChapeauUI
             this.Close();
         }
 
-        private void OpenCorrectForm(Tafel table)
+        private void OpenCorrectForm(Table table)
         {
             switch (table.Status)
             {
@@ -293,18 +299,18 @@ namespace ChapeauUI
             }
         }
 
-        private void OpenPopUpFreeTable(Tafel table)
+        private void OpenPopUpFreeTable(Table table)
         {
             PopUpFreeTable popUpFreeTable = new PopUpFreeTable(employee, table, this);
             popUpFreeTable.Show();
         }
-        private void OpenPopUpOccupiedTable(Tafel table)
+        private void OpenPopUpOccupiedTable(Table table)
         {
             PopUpOccupiedTable popUpOccupiedTable = new PopUpOccupiedTable(employee, table, this);
             popUpOccupiedTable.Show();
         }
 
-        private void OpenPopUpOrderedTable(Tafel table)
+        private void OpenPopUpOrderedTable(Table table)
         {
             if (CheckOrderReady(table)) { PopUpOrderedTable popUpOrderedTable = new PopUpOrderedTable(employee, table, this, getOrderForTable(table)); popUpOrderedTable.Show(); }
             else { OpenPopUpOccupiedTable(table); }

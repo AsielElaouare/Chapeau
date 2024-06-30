@@ -36,7 +36,7 @@
             lbl_AmountUnpaid = new System.Windows.Forms.Label();
             lbl_chooseamount = new System.Windows.Forms.Label();
             lbl_fooi = new System.Windows.Forms.Label();
-            txtb_fooi = new System.Windows.Forms.TextBox();
+            txtb_Fooi = new System.Windows.Forms.TextBox();
             bttn_Split = new System.Windows.Forms.Button();
             txtb_Split = new System.Windows.Forms.TextBox();
             SuspendLayout();
@@ -124,12 +124,13 @@
             lbl_fooi.TabIndex = 13;
             lbl_fooi.Text = "wat geeft de klant aan fooi:";
             // 
-            // txtb_fooi
+            // txtb_Fooi
             // 
-            txtb_fooi.Location = new System.Drawing.Point(290, 149);
-            txtb_fooi.Name = "txtb_fooi";
-            txtb_fooi.Size = new System.Drawing.Size(228, 31);
-            txtb_fooi.TabIndex = 14;
+            txtb_Fooi.Location = new System.Drawing.Point(290, 149);
+            txtb_Fooi.Name = "txtb_Fooi";
+            txtb_Fooi.Size = new System.Drawing.Size(228, 31);
+            txtb_Fooi.TabIndex = 14;
+            txtb_Fooi.KeyPress += txtb_fooi_KeyPress;
             // 
             // bttn_Split
             // 
@@ -147,7 +148,7 @@
             txtb_Split.Name = "txtb_Split";
             txtb_Split.Size = new System.Drawing.Size(87, 31);
             txtb_Split.TabIndex = 16;
-            txtb_Split.KeyPress += textBox1_KeyPress;
+            txtb_Split.KeyPress += txtb_Split_KeyPress;
             // 
             // PopUpPayment
             // 
@@ -156,7 +157,7 @@
             ClientSize = new System.Drawing.Size(574, 294);
             Controls.Add(txtb_Split);
             Controls.Add(bttn_Split);
-            Controls.Add(txtb_fooi);
+            Controls.Add(txtb_Fooi);
             Controls.Add(lbl_fooi);
             Controls.Add(lbl_chooseamount);
             Controls.Add(lbl_AmountUnpaid);
@@ -182,7 +183,7 @@
         private System.Windows.Forms.Label lbl_AmountUnpaid;
         private System.Windows.Forms.Label lbl_chooseamount;
         private System.Windows.Forms.Label lbl_fooi;
-        private System.Windows.Forms.TextBox txtb_fooi;
+        private System.Windows.Forms.TextBox txtb_Fooi;
         private System.Windows.Forms.Button bttn_Split;
         private System.Windows.Forms.TextBox txtb_Split;
     }

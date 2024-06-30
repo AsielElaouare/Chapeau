@@ -17,22 +17,29 @@ namespace ChapeauService
             orderdb = new OrderDao();
         }
 
-        public void StoreOrder(DateTime timeOfOrder, int selectedtable,List<Orderline> orders, Bill bill)
+        public void StoreOrder(DateTime timeOfOrder, int selectedtable, List<Orderline> orders)
         {
-             orderdb.StoreNewOrder(timeOfOrder, selectedtable, orders, bill);
+            orderdb.StoreNewOrder(timeOfOrder, selectedtable, orders);
         }
 
         public List<Order> GetOrdersForBar(OrderStatus status, DateOnly todayDate)
         {
-            string[] barCategories = { "bier", "KoffieThee", "Gedistilleerd", "Frisdrank", "wijn" };
+            ProductCategorie[] productCategories = new ProductCategorie[] { ProductCategorie.Bier, ProductCategorie.Wijn, ProductCategorie.KoffieThee, ProductCategorie.Gedistilleerd, ProductCategorie.Frisdrank };
             List<Order> orders;
-            return orders = orderdb.GetOrders(status, barCategories, todayDate);
+            return orders = orderdb.GetOrders(status, productCategories, todayDate);
         }
         public List<Order> GetOrdersForKitchen(OrderStatus status, DateOnly dateToday)
         {
-            string[] kitchenCategories = { "Hoofdgerechten", "Nagerechten", "Tussengerechten", "Voorgerechten" };
+            ProductCategorie[] productCategories = new ProductCategorie[] { ProductCategorie.Hoofdgerechten, ProductCategorie.Tussengerechten, ProductCategorie.Voorgerechten, ProductCategorie.Nagerechten, ProductCategorie.NULL };
             List<Order> orders;
-            return orders = orderdb.GetOrders(status, kitchenCategories, dateToday);
+            return orders = orderdb.GetOrders(status, productCategories, dateToday);
+        }
+
+
+        public void UpdateToCompleteOrders(int orederID, OrderStatus orderStatus)
+        {
+            orderdb.CompleteDeliveredOrder(orederID, orderStatus);
+
         }
 
         public void UpdateToReadyOrders(int orederID, OrderStatus orderStatus, OrderType orderType)
@@ -50,7 +57,7 @@ namespace ChapeauService
             orderdb.StartOrder(orederID, orderStatus, orderType);
         }
 
-        public List<Order> GetOrdersByTable(Tafel table)
+        public List<Order> GetOrdersByTable(Table table)
         {
             List<Order> orders;
             return orders = orderdb.GetOrdersForTable(table);

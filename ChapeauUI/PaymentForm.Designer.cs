@@ -46,6 +46,7 @@
             lbl_Review = new System.Windows.Forms.Label();
             lbl_Due = new System.Windows.Forms.Label();
             bttn_Pay = new System.Windows.Forms.Button();
+            lbl_Tip = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)picb_Logo).BeginInit();
             SuspendLayout();
             // 
@@ -131,7 +132,6 @@
             lbl_ReceiptNumber.Size = new System.Drawing.Size(119, 25);
             lbl_ReceiptNumber.TabIndex = 7;
             lbl_ReceiptNumber.Text = "Bon nummer:";
-          
             // 
             // button2
             // 
@@ -206,12 +206,23 @@
             bttn_Pay.UseVisualStyleBackColor = false;
             bttn_Pay.Click += bttn_Pay_Click;
             // 
+            // lbl_Tip
+            // 
+            lbl_Tip.AutoSize = true;
+            lbl_Tip.Location = new System.Drawing.Point(35, 640);
+            lbl_Tip.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            lbl_Tip.Name = "lbl_Tip";
+            lbl_Tip.Size = new System.Drawing.Size(51, 25);
+            lbl_Tip.TabIndex = 19;
+            lbl_Tip.Text = "Fooi:";
+            // 
             // PaymentForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.White;
             ClientSize = new System.Drawing.Size(1133, 740);
             ControlBox = false;
+            Controls.Add(lbl_Tip);
             Controls.Add(bttn_Pay);
             Controls.Add(lbl_Due);
             Controls.Add(lbl_Review);
@@ -230,7 +241,6 @@
             Margin = new System.Windows.Forms.Padding(2);
             Name = "PaymentForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-          
             ((System.ComponentModel.ISupportInitialize)picb_Logo).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -255,6 +265,7 @@
         private System.Windows.Forms.TextBox txtb_Review;
         private System.Windows.Forms.Label lbl_Review;
         private System.Windows.Forms.Label lbl_Due;
-       // private System.Windows.Forms.Button bttn_Pay;
+        private System.Windows.Forms.Label lbl_Tip;
+        // private System.Windows.Forms.Button bttn_Pay;
     }
 }

@@ -16,14 +16,14 @@ namespace ChapeauUI
     public partial class PopUpFreeTable : Form
     {
         Employee employee;
-        Tafel table;
+        Table table;
         Bill bill;
         OrderForm orderForm;
         TableOverview tableOverview;
         TafelService tableService;
         InvoiceService invoiceService;
         private int cornerRadius = 30;
-        public PopUpFreeTable(Employee employee, Tafel table, TableOverview tableOverview)
+        public PopUpFreeTable(Employee employee, Table table, TableOverview tableOverview)
         {
             InitializeComponent();
             SetRoundedRegion();
@@ -63,6 +63,7 @@ namespace ChapeauUI
 
         private void PopUpFreeTable_Deactivate(object sender, EventArgs e)
         {
+            tableOverview.RefreshTableButtons();
             this.Close();
         }
 
@@ -79,9 +80,9 @@ namespace ChapeauUI
         private void MakeNewInvoice()
         {
             invoiceService = new InvoiceService();
-            bill= new Bill(table,employee);
-            invoiceService.CreateInvoice(bill);
-            //return bill;
+         
+            invoiceService.CreateInvoice(table, employee);
+            
         }
 
         private void exitPopUpBtn_Click(object sender, EventArgs e)

@@ -1,6 +1,6 @@
 ﻿namespace ChapeauUI
 {
-    partial class KitchenForm
+    partial class KitchenAndBarForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KitchenAndBarForm));
             historyOrders = new System.Windows.Forms.Button();
             openOrdersLabel = new System.Windows.Forms.Label();
             flowLayoutKitchenPnl = new System.Windows.Forms.FlowLayoutPanel();
+            logOutBtn = new BottomLeftRoundedButton();
             SuspendLayout();
             // 
             // historyOrders
@@ -44,7 +46,6 @@
             historyOrders.TabIndex = 0;
             historyOrders.Text = "Geschiedenis";
             historyOrders.UseVisualStyleBackColor = false;
-            historyOrders.Click += historyOrders_Click;
             // 
             // openOrdersLabel
             // 
@@ -72,16 +73,32 @@
             flowLayoutKitchenPnl.TabIndex = 2;
             flowLayoutKitchenPnl.WrapContents = false;
             // 
+            // logOutBtn
+            // 
+            logOutBtn.BackColor = System.Drawing.Color.FromArgb(255, 20, 20);
+            logOutBtn.BackgroundImage = (System.Drawing.Image)resources.GetObject("logOutBtn.BackgroundImage");
+            logOutBtn.Cursor = System.Windows.Forms.Cursors.Hand;
+            logOutBtn.FlatAppearance.BorderSize = 0;
+            logOutBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            logOutBtn.Location = new System.Drawing.Point(1425, -2);
+            logOutBtn.Name = "logOutBtn";
+            logOutBtn.Size = new System.Drawing.Size(48, 48);
+            logOutBtn.TabIndex = 3;
+            logOutBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            logOutBtn.UseVisualStyleBackColor = false;
+            logOutBtn.Click += logOutBtn_Click;
+            // 
             // KitchenForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1473, 610);
+            ControlBox = false;
+            Controls.Add(logOutBtn);
             Controls.Add(flowLayoutKitchenPnl);
             Controls.Add(openOrdersLabel);
             Controls.Add(historyOrders);
             Name = "KitchenForm";
-            Text = "Kitchen View";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -91,5 +108,6 @@
         private System.Windows.Forms.Button historyOrders;
         private System.Windows.Forms.Label openOrdersLabel;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutKitchenPnl;
+        private BottomLeftRoundedButton logOutBtn;
     }
 }

@@ -37,10 +37,12 @@
             // flowLayoutPreviousOrdersPanel
             // 
             flowLayoutPreviousOrdersPanel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            flowLayoutPreviousOrdersPanel.AutoScroll = true;
             flowLayoutPreviousOrdersPanel.Location = new System.Drawing.Point(3, 55);
             flowLayoutPreviousOrdersPanel.Name = "flowLayoutPreviousOrdersPanel";
-            flowLayoutPreviousOrdersPanel.Size = new System.Drawing.Size(1453, 547);
+            flowLayoutPreviousOrdersPanel.Size = new System.Drawing.Size(1366, 532);
             flowLayoutPreviousOrdersPanel.TabIndex = 0;
+            flowLayoutPreviousOrdersPanel.WrapContents = false;
             // 
             // goBackBtn
             // 
@@ -52,7 +54,6 @@
             goBackBtn.TabIndex = 1;
             goBackBtn.Text = "Huidige Orders";
             goBackBtn.UseVisualStyleBackColor = false;
-            goBackBtn.Click += goBackBtn_Click;
             // 
             // PreviousOrdersLabel
             // 
@@ -73,20 +74,20 @@
             madeOrdersLabel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 2);
             madeOrdersLabel.Size = new System.Drawing.Size(220, 27);
             madeOrdersLabel.TabIndex = 3;
-            madeOrdersLabel.Text = "Vooltoide bestellingen: ";
+            madeOrdersLabel.Text = "Voltooide Bestellingen: ";
             madeOrdersLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // PreviousOrders
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1460, 614);
+            ClientSize = new System.Drawing.Size(1381, 599);
+            ControlBox = false;
             Controls.Add(madeOrdersLabel);
             Controls.Add(PreviousOrdersLabel);
             Controls.Add(goBackBtn);
             Controls.Add(flowLayoutPreviousOrdersPanel);
             Name = "PreviousOrders";
-            Text = "PreviousOrders";
             ResumeLayout(false);
             PerformLayout();
         }

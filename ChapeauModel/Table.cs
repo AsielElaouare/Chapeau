@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChapeauModel
 {
-    public class Tafel
+    public class Table
     {
         public int TafelNummer { get; private set; }
         public int ZitPlaatsen { get; private set; }
@@ -14,13 +14,13 @@ namespace ChapeauModel
 
         public TableStatusEnum Status { get; set; }
 
-        public Tafel(int tafelNummer, int zitPlaatsen)
+        public Table(int tafelNummer, int zitPlaatsen)
         {
             TafelNummer = tafelNummer;
             ZitPlaatsen = zitPlaatsen;
         }
 
-        public Tafel(int tafelNummer, int zitPlaatsen, string status) : this(tafelNummer, zitPlaatsen)
+        public Table(int tafelNummer, int zitPlaatsen, string status) : this(tafelNummer, zitPlaatsen)
         {
             Status = SetStatus(status);
         }

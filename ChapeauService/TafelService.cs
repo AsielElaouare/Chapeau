@@ -15,22 +15,22 @@ namespace ChapeauService
         {
             tafeldb = new TafelDao();
         }
-        public List<Tafel> GetTafel()
+        public List<Table> GetTafel()
         {
             return tafeldb.GetAllTafels();
         }
 
-        public List<Tafel> GetTablesAndStatus()
+        public List<Table> GetTablesAndStatus()
         {
             return tafeldb.GetAllTablesAndStatus();
         }
 
-        public void UpdateTableStatus(Tafel table)
+        public void UpdateTableStatus(Table table)
         {
             tafeldb.UpdateTableStatus(table, ConvertTableStatus(table));
         }
 
-        private string ConvertTableStatus(Tafel table)
+        private string ConvertTableStatus(Table table)
         {
             switch(table.Status)
             {

@@ -16,8 +16,8 @@ namespace ChapeauUI
     public partial class PopUpOrderedTable : Form
     {
         private Employee employee;
-        private Tafel table;
-        private Bill bill;
+        private Table table;
+     
         private OrderForm orderForm;
         private PaymentForm paymentForm;
         private TableOverview tableOverview;
@@ -26,13 +26,13 @@ namespace ChapeauUI
         private TafelService tafelService = new TafelService();
         private int cornerRadius = 30;
         
-        public PopUpOrderedTable(Employee employee, Tafel table, TableOverview tableOverview, Order order)
+        public PopUpOrderedTable(Employee employee, Table table, TableOverview tableOverview, Order order)
         {
             InitializeComponent();
             SetRoundedRegion();
             this.table = table;
             this.employee = employee;
-            bill = new Bill(table, employee);
+        
             tableLbl.Text = $"Tafel {table.TafelNummer.ToString()}";
             this.tableOverview = tableOverview;
             this.order = order;
@@ -77,7 +77,7 @@ namespace ChapeauUI
             orderService = new OrderService();
             order.barStatus = OrderStatus.Delivered;
             orderService.SetOrderDelivered(order);
-            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); }
+            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); orderService.UpdateToCompleteOrders(order.OrderID, OrderStatus.Delivered); }
             this.Close();
         }
 
@@ -86,14 +86,14 @@ namespace ChapeauUI
             orderService = new OrderService();
             order.kitchenStatus = OrderStatus.Delivered;
             orderService.SetOrderDelivered(order);
-            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); }
+            if (order.barStatus == OrderStatus.Delivered && order.kitchenStatus == OrderStatus.Delivered) { table.Status = TableStatusEnum.Occupied; tafelService.UpdateTableStatus(table); orderService.UpdateToCompleteOrders(order.OrderID, OrderStatus.Delivered); }
             this.Close();
         }
 
         private void BillBtn_Click(object sender, EventArgs e)
         {
             
-            paymentForm = new PaymentForm(bill);
+            paymentForm = new PaymentForm(table, employee);
             paymentForm.Show();
 
             this.Close();

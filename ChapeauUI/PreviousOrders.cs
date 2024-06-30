@@ -17,63 +17,54 @@ namespace ChapeauUI
 {
     public partial class PreviousOrders : Form
     {
-        private KitchenForm kitchenForm;
-        private BarForm barForm;
-        private OrderService orderService;
-        public PreviousOrders(KitchenForm kitchenForm)
+        public PreviousOrders(Employee employee, KitchenAndBarForm form)
         {
-            this.orderService = new OrderService();
-            this.kitchenForm = kitchenForm;
             InitializeComponent();
-            DisplayOrdersKitchen();
-            madeOrdersLabel.Text = $"Vooltoide bestellingen: {flowLayoutPreviousOrdersPanel.Controls.Count}";
+            form.Hide();
+            if (employee.role == EmployeeRoleEnum.Barista)
+            {
+                DisplayOrdersBar();
+            }
+            else if (employee.role == EmployeeRoleEnum.Chef)
+            {
+                DisplayOrdersKitchen();
+            }
+            madeOrdersLabel.Text = $"Voltooide bestellingen: {flowLayoutPreviousOrdersPanel.Controls.Count}";
+            SetupEventHandlers(form);
         }
-
-        public PreviousOrders(BarForm barForm)
-        {
-            this.orderService = new OrderService();
-            this.barForm = barForm;
-            InitializeComponent();
-            DisplayOrdersBar();
-            madeOrdersLabel.Text = $"Vooltoide bestellingen: {flowLayoutPreviousOrdersPanel.Controls.Count}";
-        }
-
         private void DisplayOrdersKitchen()
         {
+            OrderService orderService = new OrderService();
             DateOnly dateToday = DateOnly.FromDateTime(DateTime.Now);
             List<Order> orders = orderService.GetOrdersForKitchen(OrderStatus.Ready, dateToday);
 
             foreach (Order order in orders)
             {
-                KitchenDisplayOrder kitchenDisplayOrder = new KitchenDisplayOrder(order, madeOrdersLabel);
+                UserControlOrder kitchenDisplayOrder = new UserControlOrder(order, madeOrdersLabel, OrderType.Kitchen);
                 flowLayoutPreviousOrdersPanel.Controls.Add(kitchenDisplayOrder);
             }
         }
 
         private void DisplayOrdersBar()
         {
+            OrderService orderService = new OrderService();
             DateOnly dateToday = DateOnly.FromDateTime(DateTime.Now);
-            List<Order> orders = orderService.GetOrdersForKitchen(OrderStatus.Ready, dateToday);
+            List<Order> orders = orderService.GetOrdersForBar(OrderStatus.Ready, dateToday);
 
             foreach (Order order in orders)
             {
-                BarDisplayOrder kitchenDisplayOrder = new BarDisplayOrder(order, madeOrdersLabel);
+                UserControlOrder kitchenDisplayOrder = new UserControlOrder(order, madeOrdersLabel, OrderType.Bar);
                 flowLayoutPreviousOrdersPanel.Controls.Add(kitchenDisplayOrder);
             }
         }
 
-        private void goBackBtn_Click(object sender, EventArgs e)
+        private void SetupEventHandlers(KitchenAndBarForm kitchen)
         {
-            this.Close();
-            if (kitchenForm != null)
+            goBackBtn.Click += (sender, e) =>
             {
-                kitchenForm.Show();
-            }
-            else
-            {
-                barForm.Show();
-            }
+                this.Close();
+                kitchen.Show();
+            };
         }
-
     }
 }

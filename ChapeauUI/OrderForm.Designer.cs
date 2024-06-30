@@ -117,6 +117,7 @@ namespace ChapeauUI
             // productLayoutPanel
             // 
             productLayoutPanel.BackColor = Color.FromArgb(224, 224, 224);
+            productLayoutPanel.Font = new Font("Yu Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             productLayoutPanel.Location = new Point(26, 99);
             productLayoutPanel.Name = "productLayoutPanel";
             productLayoutPanel.Size = new Size(690, 586);
@@ -140,8 +141,7 @@ namespace ChapeauUI
             // 
             // OrderForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(1115, 697);
             Controls.Add(tafelNRText);
             Controls.Add(orderLayoutPanel);

@@ -16,21 +16,20 @@ namespace ChapeauService
             invoiceDAO = new InvoiceDAO();
         }
 
-        public void CreateInvoice(Bill bill)
+        public void CreateInvoice(Table table, Employee employee)
         {
-            invoiceDAO.CreateInvoice(bill);
+            invoiceDAO.CreateInvoice(table, employee);
         }
-        public Bill GetBillNumber(Bill bill)
-        { return invoiceDAO.GetBillNumber(bill);}
+       
 
         public void FinishInvoice(Bill bill)
         {
             invoiceDAO.FinishInvoice(bill); 
         }
-        public List<Orderline> GetNotPaidOrderlinesForBill(Bill bill)
+        public List<Orderline> GetOrderlinesForBill(Bill bill)
         {
-            List<Orderline> orderlines;
-            return orderlines = invoiceDAO.GetOrdersForBill(bill).orderlines;
+           
+            return  invoiceDAO.GetOrdersForBill(bill).orderlines;
         }
 
     }

@@ -30,6 +30,7 @@ namespace ChapeauModel
             Name = naam;
             Category = (ProductCategorie)Enum.Parse(typeof(ProductCategorie), categorie);
         }
+
         public Product(string naam, string categorie, decimal prijs)
         {
             this.Name = naam;
