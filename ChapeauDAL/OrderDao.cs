@@ -21,7 +21,7 @@ namespace ChapeauDAL
         {
             try
             {
-                int orderId = 0;
+                
                 string query = @"
                 DECLARE @currentrekeningnummer INT;
                 SELECT TOP 1 @currentrekeningnummer = [rekeningnr] 
@@ -40,12 +40,13 @@ namespace ChapeauDAL
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    orderId = Convert.ToInt32((int)reader["newOrderID"]);
+                 order.SetOrderID( Convert.ToInt32((int)reader["newOrderID"]));
+                    
                 }
                 reader.Close();
                 foreach (Orderline line in order.orderlines)
                 {
-                    StoreOrderline(line, orderId);
+                    StoreOrderline(line, order.OrderID);
                     AdjustStock(line);
                 }
                 CloseConnection();

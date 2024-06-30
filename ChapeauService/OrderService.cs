@@ -19,7 +19,7 @@ namespace ChapeauService
 
         public void StoreOrder(Order order)
         {
-            orderdb.StoreNewOrder( order);
+            orderdb.StoreNewOrder(order);
         }
 
         public List<Order> GetOrdersForBar(OrderStatus status, DateOnly todayDate)
@@ -34,8 +34,6 @@ namespace ChapeauService
             List<Order> orders;
             return orders = orderdb.GetOrders(status, productCategories, dateToday);
         }
-
-
         public void UpdateToCompleteOrders(int orederID, OrderStatus orderStatus)
         {
             orderdb.CompleteDeliveredOrder(orederID, orderStatus);
