@@ -11,7 +11,6 @@ namespace ChapeauModel
 
         public int OrderID { get; private set; }
         public Order order { get; private set; }
-        public int billnumber { get; set; }
         public int Quantity { get; set; }
         public string Commentary { get; private set; }
         public int ArticleID { get; private set; }
@@ -38,12 +37,12 @@ namespace ChapeauModel
             ArticleID = artikelID;
         }
 
-        public Orderline(int billnumber, int aantal, Product product)
+        public Orderline( int aantal, Product product)
         {
-            this.billnumber = billnumber;
+           
             this.Quantity = aantal;
             this.product = product;
-            // this.Is_Paid = Is_Paid;
+         
         }
 
         public void IncreaseQuantity()

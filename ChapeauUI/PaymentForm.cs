@@ -48,7 +48,7 @@ namespace ChapeauUI
         }
         private void UpdatePaid()
         {   
-            if (bill.unpaid == null) { bill.unpaid = bill.totalPrice; }
+           
             lbl_Due.Text = $"Openstaand: {bill.unpaid:C}";
             if (bill.unpaid == 0) { everything_IsPaid = true; }
         }

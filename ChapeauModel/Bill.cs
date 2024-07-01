@@ -14,7 +14,8 @@ namespace ChapeauModel
         public Employee employee { get; set; }
         public string review { get; set; }
         public decimal tip { get; set; }
-        public decimal? unpaid { get; set; }
+        public decimal unpaid { get { return (totalPrice - paid); } }
+        public decimal paid { get; set; }
         public decimal VAT
         {
             get
@@ -39,7 +40,7 @@ namespace ChapeauModel
 
         public Bill(Table table, Employee employee)
         {
-            this.billNumber = billNumber;
+            
             this.table = table;
             this.employee = employee;
 
