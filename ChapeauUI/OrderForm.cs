@@ -35,17 +35,17 @@ namespace ChapeauUI
             ProductService productService = new ProductService();
             products = productService.GetProducts(); 
         }
-        private void StoreThisOrder(DateTime timeOfOrde, int selectedTable)
+        private void StoreThisOrder()
         {//slaat order op
             OrderService orderService = new OrderService();
-            Order order = new Order(timeOfOrde, selectedTable, orders);
+            Order order = new Order(DateTime.Now, table, orders);
             orderService.StoreOrder(order);
         }
         private void confirmButton_Click(object sender, EventArgs e)
         {// roept alle nieuwe schermen op en zorgt er voor dat de order wordt opgeslagenzodra er op confirm order wordt gedrukt
             if (orders.Count != 0)
             {
-                StoreThisOrder(DateTime.Now, table.TafelNummer);
+                StoreThisOrder();
                 ChangeTableStatus();
                 GoToTableOverview();
             }
@@ -153,18 +153,18 @@ namespace ChapeauUI
             {
                 if (productnaam == product.Name)
                 {
-                    AddProductToList(product.Artikelid);
+                    AddProductToList(product);
                     break;
                 }
             }
         }
-        private void AddProductToList(int productID)
+        private void AddProductToList(Product product)
         {
-            if (CheckIfProductIsInList(productID))
+            if (CheckIfProductIsInList(product.Artikelid))
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArticleID == productID&&EnoughStock(productID,order.Quantity))
+                    if (order.product.Artikelid == product.Artikelid && EnoughStock(product.Artikelid, order.Quantity))
                     {// voegt 1 toe aan hoeveeld heid bestelde producten
                         order.IncreaseQuantity();
                         break;
@@ -173,7 +173,7 @@ namespace ChapeauUI
             }
             else
             {// voegt product toe aan lijst
-                Orderline newProduct = new Orderline( 1, null, productID);
+                Orderline newProduct = new Orderline( 1, null, product);
                 orders.Add(newProduct);
             }
             DislpayOrders();
@@ -196,7 +196,7 @@ namespace ChapeauUI
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArticleID == ProductID)
+                    if (order.product.Artikelid == ProductID)
                     {
                         return true;
                     }
@@ -237,7 +237,7 @@ namespace ChapeauUI
             Button opmerkingBtn = new Button();
             opmerkingBtn.Text = "opmerking";
             opmerkingBtn.Size = new Size(150, 35);
-            opmerkingBtn.Tag = order.ArticleID;
+            opmerkingBtn.Tag = order.product.Artikelid;
             opmerkingBtn.Click += Opmerking_Button_Click;
             opmerkingBtn.BackColor = Color.DodgerBlue;
             orderLayoutPanel.Controls.Add(opmerkingBtn);
@@ -247,7 +247,7 @@ namespace ChapeauUI
             Button verwijderBtn = new Button();
             verwijderBtn.Text = "-1";
             verwijderBtn.Size = new Size(150, 35);
-            verwijderBtn.Tag = order.ArticleID;
+            verwijderBtn.Tag = order.product.Artikelid;
             verwijderBtn.Click += Verwijder_Button_Click;
             verwijderBtn.BackColor = Color.Red;
             orderLayoutPanel.Controls.Add(verwijderBtn);
@@ -262,7 +262,7 @@ namespace ChapeauUI
         private void MakeProductNameInOrderlist(Orderline order)
         {
             Label procductNaamLabel = new Label();
-            procductNaamLabel.Text = ProductIDToProductName(order.ArticleID);
+            procductNaamLabel.Text = ProductIDToProductName(order.product.Artikelid);
             procductNaamLabel.Size = new Size(280, 35);
             orderLayoutPanel.Controls.Add(procductNaamLabel);
         }
@@ -275,11 +275,11 @@ namespace ChapeauUI
         {
             foreach (Orderline order in orders)
             {
-                if (order.ArticleID == (int)clickedButton.Tag && order.Commentary == null)
+                if (order.product.Artikelid == (int)clickedButton.Tag && order.Commentary == null)
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:")); break;
                 }
-                else if(order.ArticleID == (int)clickedButton.Tag)
+                else if(order.product.Artikelid == (int)clickedButton.Tag)
                 {
                     order.AddComment(Microsoft.VisualBasic.Interaction.InputBox("Voer iets in:", "", order.Commentary)); break;
                 }
@@ -294,12 +294,12 @@ namespace ChapeauUI
             {
                 foreach (Orderline order in orders)
                 {
-                    if (order.ArticleID == (int)clickedButton.Tag && order.Quantity == 1)
+                    if (order.product.Artikelid == (int)clickedButton.Tag && order.Quantity == 1)
                     {
                         orders.Remove(order);
                         break;
                     }
-                    else if (order.ArticleID == (int)clickedButton.Tag)
+                    else if (order.product.Artikelid == (int)clickedButton.Tag)
                     {
                         order.DecreaseQuantity();
                     }
