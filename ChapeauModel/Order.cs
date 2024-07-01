@@ -11,29 +11,29 @@ namespace ChapeauModel
         public int OrderID { get; private set; }
         public OrderStatus Status { get; private set; }
         public DateTime OrderTime { get; private set; }
+        public Table Table { get; private set; }
         public Orderline OrderLine { get; private set; }
-        public int TafelNR { get; private set; }
+        
         public OrderStatus barStatus { get; set; }
         public OrderStatus kitchenStatus { get; set; }
         public List<Orderline> orderlines { get; private set; }
         public List<Product> ProductList { get; set; }
 
 
-        //for get orders constructor 
 
-        public Order(int OrderID, int TafelNR, string Status, DateTime orderTime)
+        public Order(int OrderID, Table Table, string Status, DateTime orderTime)
         {
             this.OrderID = OrderID;
-            this.TafelNR = TafelNR;
+            this.Table = Table;
             this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status);
             this.OrderLine = OrderLine;
             this.OrderTime = orderTime;
             this.orderlines = new List<Orderline>();
         }
-        public Order(int OrderID, int TafelNR, string Status, Orderline orderline, DateTime orderTime)
+        public Order(int OrderID, Table table, string Status, Orderline orderline, DateTime orderTime)
         {
             this.OrderID = OrderID;
-            this.TafelNR = TafelNR;
+            this.Table = table;
             this.Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), Status);
             this.OrderLine = OrderLine;
             this.OrderTime = orderTime;
@@ -41,10 +41,10 @@ namespace ChapeauModel
             this.ProductList = new List<Product>();
         }
 
-        public Order(DateTime orderTime, int tafelNR, List<Orderline> orderlines)
+        public Order(DateTime orderTime, Table table, List<Orderline> orderlines)
         {
-            OrderTime = orderTime;
-            TafelNR = tafelNR;
+            this.OrderTime = orderTime;
+            this.Table = table;
             this.orderlines = orderlines;
         }
         public void SetOrderID(int orderID)

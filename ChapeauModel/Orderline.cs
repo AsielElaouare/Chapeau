@@ -13,7 +13,6 @@ namespace ChapeauModel
         public Order order { get; private set; }
         public int Quantity { get; set; }
         public string Commentary { get; private set; }
-        public int ArticleID { get; private set; }
         public Product product { get; private set; }
 
         public Orderline(Order order, int quantity, Product product, string Commentary)
@@ -30,11 +29,11 @@ namespace ChapeauModel
             Quantity = aantal;
             Commentary = opmerking;
         }
-        public Orderline(int aantal, string opmerking, int artikelID)
+        public Orderline(int aantal, string opmerking, Product product)
         {
             Quantity = aantal;
             Commentary = opmerking;
-            ArticleID = artikelID;
+            this.product = product;
         }
 
         public Orderline( int aantal, Product product)

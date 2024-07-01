@@ -35,7 +35,7 @@ namespace ChapeauDAL
 
                 SqlCommand command = new SqlCommand(query, OpenConnection());
                 command.Parameters.AddWithValue("@timeOfOrder", order.OrderTime.ToString("yyyy-MM-dd HH:mm:ss"));
-                command.Parameters.AddWithValue("@selectedTable", $"{order.TafelNR}");
+                command.Parameters.AddWithValue("@selectedTable", $"{order.Table.TafelNummer}");
                 SqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
@@ -59,7 +59,7 @@ namespace ChapeauDAL
         private void AdjustStock(Orderline orderline)
         {
             SqlCommand command = new SqlCommand("UPDATE [dbo].[artikel] SET [voorraad] = [voorraad] - @aantal WHERE [artikelid] = @artikelid;", OpenConnection());
-            command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
+            command.Parameters.AddWithValue("@artikelid", orderline.product.Artikelid);
             command.Parameters.AddWithValue("@aantal", orderline.Quantity);
             command.ExecuteNonQuery();
         }
@@ -69,7 +69,7 @@ namespace ChapeauDAL
             command.Parameters.AddWithValue("@orderId", orderid);
             command.Parameters.AddWithValue("@aantal", orderline.Quantity);
             command.Parameters.AddWithValue("@opmerking", string.IsNullOrEmpty(orderline.Commentary) ? (object)DBNull.Value : orderline.Commentary);
-            command.Parameters.AddWithValue("@artikelid", orderline.ArticleID);
+            command.Parameters.AddWithValue("@artikelid", orderline.product.Artikelid);
             command.ExecuteNonQuery();
         }
         public List<Order> GetOrders(OrderStatus status, ProductCategorie[] productCategories, DateOnly dateToday)
@@ -97,7 +97,7 @@ namespace ChapeauDAL
             GROUP BY 
                 rk.tafelnr, [order].orderid, [order].[status], [order].orderTime
             ORDER BY 
-                rk.tafelnr, [order].orderid";
+                [order].orderid, rk.tafelnr";
             try
             {
                 List<Order> orders = new List<Order>();
@@ -148,7 +148,7 @@ namespace ChapeauDAL
             currentOrder = new Order
             (
                     (int)reader["orderid"],
-                    (int)reader["tafelnr"],
+                    new Table((int)reader["tafelnr"]),
                     (string)reader["status"],
                     (DateTime)reader["orderTime"]
             );
@@ -250,7 +250,7 @@ namespace ChapeauDAL
                     Order order = new Order
                     (
                         (int)reader["OrderID"],
-                        (int)reader["tafelnr"],
+                        new Table((int)reader["tafelnr"]),
                         (string)reader["status"],
                         new Orderline((int)reader["OrderID"], (int)reader["Aantal"], reader["Opmerking"] as string ?? null),
                         (DateTime)reader["OrderTime"]

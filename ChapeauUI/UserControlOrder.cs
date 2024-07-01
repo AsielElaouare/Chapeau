@@ -24,7 +24,7 @@ namespace ChapeauUI
         {
             Timer orderTimer = new Timer();
             orderTimer.Interval = 1000;
-            orderInfLabel.Text = $"Order: {order.OrderID}                             Tafel: {order.TafelNR}";
+            orderInfLabel.Text = $"Order: {order.OrderID}                             Tafel: {order.Table.TafelNummer}";
 
 
             foreach (Orderline orderLine in order.orderlines)

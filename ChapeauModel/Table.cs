@@ -14,6 +14,10 @@ namespace ChapeauModel
 
         public TableStatusEnum Status { get; set; }
 
+        public Table(int tableNummer)
+        {
+            this.TafelNummer = tableNummer;
+        }
         public Table(int tafelNummer, int zitPlaatsen)
         {
             TafelNummer = tafelNummer;
