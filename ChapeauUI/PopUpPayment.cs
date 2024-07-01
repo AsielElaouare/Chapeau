@@ -1,5 +1,6 @@
 ﻿using ChapeauModel;
 using ChapeauService;
+using Microsoft.IdentityModel.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,11 +40,7 @@ namespace ChapeauUI
 
         private void PayBill()
         {
-            InvoiceService invoiceService = new InvoiceService();
-            decimal paymentAmount;
-            decimal tipmount;
-
-            if (txtb_Payment.Text != "")
+           if (txtb_Payment.Text != "")
             { // checkt eerst of de input klopt
                 if (!checkinput(txtb_Payment)) { MessageBox.Show("foutieve invoer bij betalingsveld, probeer opniew"); return; }
                 if (txtb_Fooi.Text != "")
@@ -51,25 +48,29 @@ namespace ChapeauUI
                     if (!checkinput(txtb_Fooi)) { MessageBox.Show("foutieve invoer bij fooi, probeer opniew"); return; }
                     bill.tip = bill.tip + decimal.Parse(txtb_Fooi.Text);
                 }
-                //checkt of de input niet te hoog is
-                if (decimal.Parse(txtb_Payment.Text) > bill.unpaid) { MessageBox.Show("Het bedrag dat wordt betaald is te hoog, mocht de klant meer willen betalen voer dat dan in bij fooi."); }
-                else
-                {
-                    bill.unpaid = bill.unpaid - decimal.Parse(txtb_Payment.Text);
-                    invoiceService.FinishInvoice(bill);
-                    if (bill.unpaid == 0) { BackToTables();  } else { BackToBill(); }
-                }
+
+                //checkt of de input niet te hoog is, rondt af op 2 decimalen om te voorkomen dat er 0,000001 nog betaald moet worden
+                if (Math.Round(decimal.Parse(txtb_Payment.Text),2) > Math.Round(bill.unpaid,2)) { MessageBox.Show("Het bedrag dat wordt betaald is te hoog, mocht de klant meer willen betalen voer dat dan in bij fooi."); }
+                else { Pay();}
             }
             else MessageBox.Show("Voer het bedrag in dat de klant wil betalen");
         }
 
-
-        // hij blijft op de bill form zolang niet alles is betaald
-        private void BackToBill()
+        private void Pay()
+        {
+            InvoiceService invoiceService = new InvoiceService();
+            bill.paid = Math.Round(bill.paid, 2) + Math.Round(decimal.Parse(txtb_Payment.Text), 2);
+            invoiceService.FinishInvoice(bill);
+            if (bill.unpaid == 0) { BackToTables(); } else { BackToBillPopUp(); }
+        }
+        // hij blijft op de bill popup form zolang niet alles is betaald
+        private void BackToBillPopUp()
         {
             this.Close(); paymentform.Close();
-            paymentform = new PaymentForm(bill.table, bill.employee);
-            paymentform.Show();
+           PaymentForm paymentformnew = new PaymentForm(bill.table, bill.employee);
+            paymentformnew.Show();
+            PopUpPayment popUpPayment = new PopUpPayment(bill, paymentformnew);
+            popUpPayment.Show();
         }
         private void BackToTables()
         { //als de tafel zijn bestelling heeft ontvangen en is betaald wordt hij op vrij gezet
@@ -86,7 +87,7 @@ namespace ChapeauUI
             this.Close();
         }
   
-        //probeert het te parsen en mocht dat niet lukken return hij false
+        //probeert het te parsen en mocht dat niet lukken returnt hij false
         private bool checkinput(TextBox textBox)
         { if (decimal.TryParse(textBox.Text, out decimal result))
             { return true; }
@@ -107,7 +108,7 @@ namespace ChapeauUI
                 e.Handled = true;
             }
         }
-
+        //kommas worden gezien als correcte input
         private void bttn_Pin_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != ',')
@@ -122,8 +123,12 @@ namespace ChapeauUI
 
         private void bttn_Split_Click(object sender, EventArgs e)
         {
-            if (txtb_Split.Text != "")
-            { txtb_Payment.Text = $"{bill.unpaid / int.Parse(txtb_Split.Text)}"; }
+            if (txtb_Split.Text != "" && int.Parse(txtb_Split.Text) != 0)
+            {
+                decimal split = Math.Round(bill.unpaid / int.Parse(txtb_Split.Text), 2);
+                txtb_Payment.Text = split.ToString();
+            }
+            else { MessageBox.Show("Vul alsjeblieft een correct getal in om het bedrag door te splitten"); }
         }
 
         private void txtb_fooi_KeyPress(object sender, KeyPressEventArgs e)

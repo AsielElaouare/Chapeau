@@ -9,7 +9,6 @@ namespace ChapeauModel
     public class Order
     {
         public int OrderID { get; private set; }
-        public int RekeningNR { get; private set; }
         public OrderStatus Status { get; private set; }
         public DateTime OrderTime { get; private set; }
         public Orderline OrderLine { get; private set; }

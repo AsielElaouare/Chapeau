@@ -35,14 +35,14 @@ namespace ChapeauDAL
             {
                 string query =
 
-                    $"update rekening set review= @review, totaalprijs = @totaalprijs, fooi=@fooi, onbetaald=@onbetaald where rekeningnr=@rekeningnr;";
+                    $"update rekening set review= @review, totaalprijs = @totaalprijs, fooi=@fooi, betaald=@betaald where rekeningnr=@rekeningnr;";
                 SqlParameter[] parameters =
                 {
                 new SqlParameter("@review", bill.review),
                  new SqlParameter("@totaalprijs", bill.totalPrice),
                 new SqlParameter("@rekeningnr", bill.billNumber ),
                 new SqlParameter("@fooi", bill.tip ),
-                new SqlParameter("@onbetaald", bill.unpaid )
+                new SqlParameter("@betaald", bill.paid )
             };
                 ExecuteEditQuery(query, parameters);
             } 
@@ -56,7 +56,7 @@ namespace ChapeauDAL
         // deze methode neemt een bill object als argument, vult hem op, en returnt hem
         public Bill GetOrdersForBill(Bill bill)
         { // de query haalt alle gegevens op die ik nodig heb om een bill object te vullen door de order tabel te combineren met rekening, orderline en artikel
-            string query = "select rekening.rekeningnr, onbetaald, review, fooi, " +
+            string query = "select rekening.rekeningnr, betaald, review, fooi, " +
                 "serveerderid, orderlinenr, aantal, artikel.naam, prijs, artikel.artikelid, categorie " +
                 "from [dbo].[order] " +
                 "join rekening on rekening.rekeningnr = [dbo].[order].rekeningnr " +
@@ -74,15 +74,9 @@ namespace ChapeauDAL
 
             if (reader.Read())
             {
-                //er wordt gecheckt of het in de database als nul is opgeslagen
-                if (!reader.IsDBNull(reader.GetOrdinal("onbetaald")))
-                { bill.unpaid = (decimal?)reader["onbetaald"]; }
-
-                if (!reader.IsDBNull(reader.GetOrdinal("fooi")))
-                { bill.tip = (decimal)reader["fooi"]; }
-                else { bill.tip = 0; }
-
-                    // ik lees alleen de eerste lijn om de bill object te vullen
+                // ik lees alleen de eerste lijn om de bill object te vullen
+                bill.paid = (decimal)reader["betaald"];
+                 bill.tip = (decimal)reader["fooi"]; 
                     bill.review = reader["review"] as string;
                 bill.billNumber = (int)reader["rekeningnr"];
              
@@ -116,7 +110,7 @@ namespace ChapeauDAL
 
 
             Orderline orderline = new Orderline(
-                 (int)reader["rekeningnr"], (int)reader["aantal"], product);
+                (int)reader["aantal"], product);
             return orderline;
         }
     }
